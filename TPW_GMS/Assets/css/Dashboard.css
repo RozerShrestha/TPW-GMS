@@ -1,0 +1,51 @@
+﻿body,html {
+  
+    height:100%;
+}
+.topHeader {
+    background-color:#3e6b86;
+    height:45px;
+    width:100%;
+    padding:10px;
+}
+.header {
+    background-color:rgba(14, 68, 101, 0.47);
+    height:40px;
+    width:100%;
+    padding:10px;
+    font-weight:bold;
+}
+.half-header {
+    background-color: rgba(14, 68, 101, 0.47);
+    height: 40px;
+    padding: 10px;
+}
+.headerHome {
+    background-color:rgba(14, 68, 101, 0.47);
+    height:25px;
+    width:100%;
+    padding:10px;
+}
+.subheader {
+    background-color:rgba(14, 68, 101, 0.30);
+    height:40px;
+    width:100%;
+    padding:10px;
+    font-weight:bold;
+}
+#btnEdit{
+    float:right;
+}
+.content-wrapper {
+    min-height: 100%;
+    background-color: #ffffff;
+    z-index: 800;
+}
+.wrappers{
+    margin-left:10px;
+}
+.asterik {
+    color: red;
+    font-weight: bold;
+    margin-left: 2px;
+}

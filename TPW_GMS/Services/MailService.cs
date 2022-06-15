@@ -1,0 +1,495 @@
+﻿using NLog;
+using System;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Web;
+using TPW_GMS.Data;
+
+namespace TPW_GMS.Services
+{
+    public class MailService
+    {
+        private const string passphrase = "TPWP@ssw0rd123#";
+        private static TPWDataContext db = new TPWDataContext();
+        private static int i = 0;
+        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private static ExtraInformation extraInformation = (from c in db.ExtraInformations
+                                 where c.extraInformationId == 1
+                                 select c).SingleOrDefault();
+        private static string txtEmail = MailService.EmailProvider();
+
+        public static bool SendEmail(string memberId)
+        {
+            var memberInfo = db.MemberInformations.Where(p => p.memberId == memberId).SingleOrDefault();
+            string txtSubject = "";
+            string message1 = "";
+            string message2 = "";
+            if (Convert.ToDateTime(memberInfo.memberExpireDate) < DateTime.Now)
+            {
+                txtSubject = "Gym Subcription Expired";
+                message1 = "has Expired on ";
+                message2 = "Please Renew as soon as possible";
+            }
+            else
+            {
+                txtSubject = "Gym Subcription is going to Expire";
+                message1 = "will Expire on";
+                message2 = "Please Renew Early";
+            }
+            //creating body format dynamically
+            string txtBody = "Dear " + memberInfo.fullname + "," + Environment.NewLine + Environment.NewLine +
+            "Your Subcription to the GYM for the package " + memberInfo.memberCatagory + " duration " +memberInfo.memberPaymentType + " " + message1 + memberInfo.memberExpireDate + ". " + message2 + Environment.NewLine +
+            "Thank you." + Environment.NewLine + Environment.NewLine +
+            "Regards," + Environment.NewLine +
+            "The Physique Workshop";
+            memberInfo.email = "rozer.shrestha611@gmail.com";
+            bool emailStatus = GeneralEmailFormat(false, memberInfo.email, memberInfo.fullname, txtSubject, txtBody);
+            if (emailStatus)
+            {
+                memberInfo.emailStatus = true;
+                db.SubmitChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }  
+        }
+        public static string SendEmailQR(string message, string memberId, string toEmail, string subject, string path)
+        {
+            using (TPWDataContext db = new TPWDataContext())
+            {
+                string status = "";
+                try
+                {
+                    var extraInfo = db.ExtraInformations;
+                    var emailInfo = (from c in extraInfo
+                                     where c.extraInformationId == 1
+                                     select c).SingleOrDefault();
+                    var em = EmailProvider();
+                    var fromEmailAdd = new MailAddress(em, "The Physique Workshop");
+                    var toEmailAdd = new MailAddress(toEmail);
+                    string pwd = emailInfo.password;
+                    string txtSubject = subject;
+
+                    using (var mm = new MailMessage(fromEmailAdd, toEmailAdd))
+                    {
+                        mm.Subject = txtSubject;
+                        //mm.Body = txtBody;
+                        mm.IsBodyHtml = true;
+                        //mm.Attachments.Add();
+                        mm.AlternateViews.Add(getEmbeddedImageQR(memberId, message, path));
+
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Host = "smtp.gmail.com";
+                        smtp.EnableSsl = true;
+                        smtp.UseDefaultCredentials = false;
+                        NetworkCredential NetworkCred = new NetworkCredential(fromEmailAdd.Address, pwd);
+                        smtp.Credentials = NetworkCred;
+                        smtp.Port = 587;
+                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        smtp.Send(mm);
+                        status = "";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    status = ex.Message;
+                }
+                return status;
+            }
+        }
+        public static string SendMarketingEmail(string message, string toEmail, string name, string subject, string filePath, string emType)
+        {
+            var altMessage = message.Replace("$", name);
+            using (TPWDataContext db = new TPWDataContext())
+            {
+                string status = "";
+                try
+                {
+                    var emailInfo = db.ExtraInformations.Where(c => c.extraInformationId == 1).SingleOrDefault();
+                    var em = EmailProvider();
+                    
+                    var fromEmailAdd = new MailAddress(em, "The Physique Workshop");
+                    var toEmailAdd = new MailAddress(toEmail);
+                    string pwd = emailInfo.password;
+                    string txtSubject = subject;
+
+                    using (var mm = new MailMessage(fromEmailAdd, toEmailAdd))
+                    {
+                        mm.Subject = txtSubject;
+                        //mm.Body = txtBody;
+                        mm.IsBodyHtml = true;
+                        if(emType=="em4")
+                            mm.AlternateViews.Add(getEmbeddedImageForEmailMarketing(altMessage, filePath));
+                        else
+                            mm.Body = altMessage;
+
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Host = "smtp.gmail.com";
+                        smtp.EnableSsl = true;
+                        smtp.UseDefaultCredentials = false;
+                        NetworkCredential NetworkCred = new NetworkCredential(fromEmailAdd.Address, pwd);
+                        smtp.Credentials = NetworkCred;
+                        smtp.Port = 587;
+                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        smtp.Send(mm);
+
+                        //update the mail count
+                        status = "";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    status = ex.Message;
+                }
+                return status;
+            }
+        }
+        //this email is for message broadcast
+        public static string SendBroadCastEmail(string message, string toEmail, string subject)
+        {
+            bool emailStatus = GeneralEmailFormat(true, toEmail, toEmail, subject, message);
+            if (emailStatus)
+                return "";
+            else
+                return "error"; 
+        }
+        //this Email sending is for Staff Attendance Module
+        public static bool SendEmailStaffAttendence(string message, string toEmail, string subject)
+        {
+            using (TPWDataContext db = new TPWDataContext())
+            {
+                try
+                {
+                    var extraInfo = db.ExtraInformations;
+                    var email = (from c in extraInfo
+                                 where c.extraInformationId == 1
+                                 select c).SingleOrDefault();
+                    var em = EmailProvider();
+                    var fromEmailAdd = new MailAddress(em, "The Physique Workshop");
+                    var toEmailAdd = new MailAddress(toEmail);
+                    string pwd = email.password;
+
+                    using (var mm = new MailMessage(fromEmailAdd, toEmailAdd))
+                    {
+                        mm.Subject = subject;
+                        mm.Body = message;
+                        mm.IsBodyHtml = false;
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Host = "smtp.gmail.com";
+                        smtp.EnableSsl = true;
+                        smtp.UseDefaultCredentials = false;
+                        NetworkCredential NetworkCred = new NetworkCredential(fromEmailAdd.Address, email.password);
+                        smtp.Credentials = NetworkCred;
+                        smtp.Port = 587;
+                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        smtp.Send(mm);
+                    }
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+        public static void sendEmailNewMember(string memberid, string username, string branch, string password, string membershipOption, string catagoryType, string membershipDate, string membershipPaymentType, string membershipBeginDate, string membershipExpireDate, string email, string fullname, string contactNo, string dateOfBirth, string address, string discountCode, string finalAmount, string paidAmount, string dueAmount)
+        {
+            using (TPWDataContext db = new TPWDataContext())
+            {
+                try
+                {
+                    var extraInfo = db.ExtraInformations;
+                    var emailInfo = (from c in extraInfo
+                                     where c.extraInformationId == 1
+                                     select c).SingleOrDefault();
+                    var em = EmailProvider();
+                    var fromEmailAdd = new MailAddress(em, "The Physique Workshop");
+                    var toEmailAdd = new MailAddress(email);
+                    string pwd = emailInfo.password;
+                    string txtSubject = "New Membership";
+                    using (var mm = new MailMessage(fromEmailAdd, toEmailAdd))
+                    {
+                        mm.Subject = txtSubject;
+                        //mm.Body = txtBody;
+                        mm.IsBodyHtml = true;
+                        mm.AlternateViews.Add(getEmbeddedImageNewMember(memberid, username, branch, password, membershipOption, catagoryType, membershipDate, membershipPaymentType, membershipBeginDate, membershipExpireDate, email, fullname, contactNo, dateOfBirth, address, discountCode, finalAmount, paidAmount, dueAmount));
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Host = "smtp.gmail.com";
+                        smtp.EnableSsl = true;
+                        smtp.UseDefaultCredentials = false;
+                        NetworkCredential NetworkCred = new NetworkCredential(fromEmailAdd.Address, pwd);
+                        smtp.Credentials = NetworkCred;
+                        smtp.Port = 587;
+                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        smtp.Send(mm);
+                    }
+                    _logger.Info("##" + "New Form-{0} Mail send to new member", username);
+                }
+                catch (Exception)
+                {
+                    _logger.Warn("##" + "New Form-{0} Mail Not send to new member", username);
+                }
+            }
+        }
+        public static string sendEmailToGuest(string name, string toEmail)
+        {
+            using (TPWDataContext db = new TPWDataContext())
+            {
+                string status = "";
+                try
+                {
+                    var emailInfo = (from c in db.ExtraInformations
+                                     where c.extraInformationId == 1
+                                     select c).SingleOrDefault();
+                    var em = EmailProvider();
+                    var fromEmailAdd = new MailAddress(em, "The Physique Workshop");
+                    var toEmailAdd = new MailAddress(toEmail);
+                    string pwd = emailInfo.password;
+                    string txtSubject = "Attendance Information";
+
+                    using (var mm = new MailMessage(fromEmailAdd, toEmailAdd))
+                    {
+                        mm.Subject = txtSubject;
+                        mm.IsBodyHtml = true;
+                        mm.AlternateViews.Add(getEmbeddedImageGuestQR(name, toEmail));
+
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Host = "smtp.gmail.com";
+                        smtp.EnableSsl = true;
+                        smtp.UseDefaultCredentials = false;
+                        NetworkCredential NetworkCred = new NetworkCredential(fromEmailAdd.Address, pwd);
+                        smtp.Credentials = NetworkCred;
+                        smtp.Port = 587;
+                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        smtp.Send(mm);
+                        status = "";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    status = ex.Message;
+                }
+                return status;
+            }
+        }
+        public static AlternateView getEmbeddedImageNewMember(string memberid, string username, string branch, string password, string membershipOption, string catagoryType, string membershipDate, string membershipPaymentType, string membershipBeginDate, string membershipExpireDate, string email, string fullname, string contactNo, string dateOfBirth, string address, string discountCode, string finalAmount, string paidAmount, string dueAmount)
+        {
+            using (TPWDataContext db = new TPWDataContext())
+            {
+                try
+                {
+                var extraInfo = db.ExtraInformations;
+                var emailInfo = (from c in extraInfo
+                                 where c.extraInformationId == 1
+                                 select c).SingleOrDefault();
+                string txtEmail = emailInfo.email;
+                string pwd = emailInfo.password;
+                string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, "Image\\QRCode\\" + memberid + ".jpeg");
+                LinkedResource res = new LinkedResource(filePath);
+                res.ContentId = Guid.NewGuid().ToString();
+                var htmlBody = @"<div>Dear " + fullname + ",</div><br />" +
+                                "<div>Welcome to our TPW Family,</div>" +
+                                "<div>As the newest member of our family, we are here to take care of you in your fitness journey. " +
+                                "We understand that your special needs require specially designed programs and guidance for the very special person that you are." +
+                                "We are here to make sure that you always have a friend and that you are never alone in your fitness journey." +
+                                "We are here with you in your beginning and we will cheer you on when you reach that finish line." +
+                                "Just promise us that you will never hesitate to give us a nudge when you need someone in your transformation." +
+                                "We’ll be your friend, your teacher, your motivator and most importantly your cheerleaders.</div><br />" +
+                                "<div>Please use This QR Code for daily Attendance Purpose</div>" +
+                                "<img src='cid:" + res.ContentId + @"' style='width:200px'/>" +
+                                "<span style='color: red'><b><i>You can check into any of the Branch of TPW</i></b></span>" +
+                                "<h3>Following are the Branch List:</h3>" +
+                                "<table>" +
+                                "<thead>" +
+                                "<tr style='background - color: #dcdcdc;'>" +
+                                "<td><b>Branch</b></td>" +
+                                "<td><b>Location</b></td>" +
+                                "<td><b>Contact</b></td>" +
+                                "</tr>" +
+                                "</thead>" +
+                                "<tbody>" +
+                                "<tr><td><b>Kamaladi<b></td><td>On Top of Jyoti Bikash Bank, Putalisadak to hatisar Road</td><td>01-4413485</td></tr>" +
+                                "<tr><td><b>Maitidevi<b></td><td>On Top of Nepal Banijya Bank, Near Seto pul Petrol Pump</td><td>01-4432716</td></tr>" +
+                                "<tr><td><b>Maharajgunj<b></td><td>On Top of SBI Bank Building, opposite to Australian Embassy</td><td>01-4017606</td></tr>" +
+                                "<tr><td><b>Kumaripati<b></td><td>On Top of Trimurti Gunasabhu Bhawan, Opposite to Korean Shop</td><td>01-5521190</td></tr>" +
+                                "<tr><td><b>Baneshwor<b></td><td>On Top of LG Showroom, Opposite to Shantinagar gate</td><td>01-4106800</td></tr>" +
+                                "</tbody>" +
+                                "</table><br>" +
+                                "<span><i>You can check in a total of 12 times every month to other branches</i></span><br>" +
+                                "<table>" +
+                                "<tr><td>MemberId: </td><td>" + memberid + "</td></tr>" +
+                                "<tr><td>UserName: </td><td>" + username + "</td></tr>" +
+                                "<tr><td>Password: </td><td>" + password + "</td></tr>" +
+                                "<tr><td>Branch: </td><td>" + branch + "</td></tr>" +
+                                "<tr><td>Membership Option: </td><td>" + membershipOption + "</td></tr>" +
+                                "<tr><td>Membership Catagory: </td><td>" + catagoryType + "</td></tr>" +
+                                "<tr><td>Membership Date: </td><td>" + membershipDate + "</td></tr>" +
+                                "<tr><td>Membership Payment Type: </td><td>" + membershipPaymentType + "</td></tr>" +
+                                "<tr><td>Membership Renew Date: </td><td>" + membershipBeginDate + "</td></tr>" +
+                                "<tr><td>Membership Expire Date: </td><td>" + membershipExpireDate + "</td></tr>" +
+                                "<tr><td>Email: </td><td>" + email + "</td></tr>" +
+                                "<tr><td>Full Name: </td><td>" + fullname + "</td></tr>" +
+                                "<tr><td>Contact No: </td><td>" + contactNo + "</td></tr>" +
+                                "<tr><td>Date Of Brith: </td><td>" + dateOfBirth + "</td></tr>" +
+                                 "<tr><td>Address: </td><td>" + address + "</td></tr>" +
+                                "<tr><td>Discount Code: </td><td>" + discountCode + "</td></tr>" +
+                                "<tr><td>Final Amount: </td><td>" + finalAmount + "</td></tr>" +
+                                "<tr><td>Paid Amount: </td><td>" + paidAmount + "</td></tr>" +
+                                "<tr><td>Due Amount: </td><td>" + dueAmount + "</td></tr>" +
+                                " </table><br />" +
+                                "<div>Thank you.</div>" +
+                                "<div>Regards,</div>" +
+                                "<div>The Physique Workshop</div>";
+
+                AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
+                alternateView.LinkedResources.Add(res);
+                return alternateView;
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+        }
+        private static AlternateView getEmbeddedImageQR(string memberId, string message, string path)
+        {
+            using (TPWDataContext db = new TPWDataContext())
+            {
+                var newPath = path;
+                //var extraInfo = db.ExtraInformations;
+                //var emailInfo = (from c in extraInfo
+                //                 where c.extraInformationId == 1
+                //                 select c).SingleOrDefault();
+                //string txtEmail = emailInfo.email;
+                //string pwd = emailInfo.password;
+                //string filePath = HttpContext.Current.Server.MapPath(@"~\Image\QRCode\" + memberId + ".jpeg");
+                string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, "Image\\QRCode\\" + memberId + ".jpeg");
+                //string filePath = newPath;
+                LinkedResource res = new LinkedResource(filePath);
+                res.ContentId = Guid.NewGuid().ToString();
+                var htmlBody = @"" + message + "<br>" +
+                    "<div>Please use This QR Code for daily Attendance Purpose</div>" +
+                    "<img src='cid:" + res.ContentId + @"' style='width:200px'/><br>" +
+                    "<span style='color: red'><b><i>You can also checkin into any of the Branch of TPW</i></b></span>" +
+                    "<h3>Following are the Branch List:</h3>" +
+                    "<table>" +
+                    "<thead>" +
+                    "<tr style='background - color: #dcdcdc;'>" +
+                    "<td><b>Branch</b></td>" +
+                    "<td><b>Location</b></td>" +
+                    "<td><b>Contact</b></td>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>" +
+                    "<tr><td><b>Kamaladi<b></td><td>On Top of Jyoti Bikash Bank, Putalisadak to hatisar Road</td><td>01-4413485</td></tr>" +
+                    "<tr><td><b>Maitidevi<b></td><td>On Top of Nepal Banijya Bank, Near Seto pul Petrol Pump</td><td>01-4432716</td></tr>" +
+                    "<tr><td><b>Maharajgunj<b></td><td>On Top of SBI Bank Building, opposite to Australian Embassy</td><td>01-4017606</td></tr>" +
+                    "<tr><td><b>Kumaripati<b></td><td>On Top of Trimurti Gunasabhu Bhawan, Opposite to Korean Shop</td><td>01-5521190</td></tr>" +
+                    "<tr><td><b>Baneshwor<b></td><td>On Top of LG Showroom, Opposite to Shantinagar gate</td><td>01-4106800</td></tr>" +
+                    "</tbody>" +
+                    "</table><br>" +
+                     "<span><i>You can check in a total of 12 times every month to other branches</i></span><br>" +
+                    "<b>Regards,<br>" +
+                    "The Physique Workshop";
+
+                AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
+                alternateView.LinkedResources.Add(res);
+                return alternateView;
+            }
+        }
+        private static AlternateView getEmbeddedImageGuestQR(string name, string email)
+        {
+            using (TPWDataContext db = new TPWDataContext())
+            {
+                string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, "Image\\Guests\\" + email + ".jpeg");
+                //string filePath = newPath;
+                LinkedResource res = new LinkedResource(filePath);
+                res.ContentId = Guid.NewGuid().ToString();
+                var htmlBody = @"" + "Dear "+ name + ",<br>" +
+                    "<div>Please use This QR Code for Attendance Purpose</div>" +
+                    "<img src='cid:" + res.ContentId + @"' style='width:200px'/><br>" +
+                    "<span style='color: red'><b><i>You can checkin into any of the Branch of TPW</i></b></span>" +
+                    "<h3>Following are the Branch List:</h3>" +
+                    "<table>" +
+                    "<thead>" +
+                    "<tr style='background - color: #dcdcdc;'>" +
+                    "<td><b>Branch</b></td>" +
+                    "<td><b>Location</b></td>" +
+                    "<td><b>Contact</b></td>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>" +
+                    "<tr><td><b>Kamaladi<b></td><td>On Top of Jyoti Bikash Bank, Putalisadak to hatisar Road</td><td>01-4413485</td></tr>" +
+                    "<tr><td><b>Maitidevi<b></td><td>On Top of Nepal Banijya Bank, Near Seto pul Petrol Pump</td><td>01-4432716</td></tr>" +
+                    "<tr><td><b>Maharajgunj<b></td><td>On Top of SBI Bank Building, opposite to Australian Embassy</td><td>01-4017606</td></tr>" +
+                    "<tr><td><b>Kumaripati<b></td><td>On Top of Trimurti Gunasabhu Bhawan, Opposite to Korean Shop</td><td>01-5521190</td></tr>" +
+                    "<tr><td><b>Baneshwor<b></td><td>On Top of LG Showroom, Opposite to Shantinagar gate</td><td>01-4106800</td></tr>" +
+                    "</tbody>" +
+                    "</table><br>" +
+                    "<b>Regards,<br>" +
+                    "The Physique Workshop";
+
+                AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
+                alternateView.LinkedResources.Add(res);
+                return alternateView;
+            }
+        }
+        private static AlternateView getEmbeddedImageForEmailMarketing(string message, string filePath)
+        {
+            LinkedResource res = new LinkedResource(filePath);
+            res.ContentId = Guid.NewGuid().ToString();
+            var imgReplace = "<img src='cid:" + res.ContentId + @"' style='width:200px'/><br>";
+            var htmlBody = message.Replace("{qr}", imgReplace);
+            AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
+            alternateView.LinkedResources.Add(res);
+            return alternateView;
+
+        }
+        private static bool GeneralEmailFormat(bool html,string receiverEmail, string receiverFullName, string subject, string body )
+        {
+            try
+            {
+                using (MailMessage mm = new MailMessage(txtEmail, receiverEmail))
+                {
+                    mm.Subject = subject;
+                    mm.Body = body;
+                    mm.IsBodyHtml = html;
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Host = extraInformation.smtpClient;
+                    smtp.EnableSsl = true;
+                    NetworkCredential NetworkCred = new NetworkCredential(txtEmail, extraInformation.password);
+                    smtp.UseDefaultCredentials = true;
+                    smtp.Credentials = NetworkCred;
+                    smtp.Port =Convert.ToInt32(extraInformation.port);
+                    smtp.Send(mm);
+                    _logger.Info("##" + "Email send to: " + receiverFullName + "with Email ID " + receiverEmail + " Message: " + body);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn("##" + "Email Not Send to: " + receiverFullName + "with Email ID " + receiverEmail + " due to " + ex.Message);
+                return false;
+            }
+            
+        }
+        public static string EmailProvider()
+        {
+            var em = (from p in db.ExtraInformations
+                      where p.extraInformationId == 1
+                      select p.email).SingleOrDefault();
+
+            var emSelect = em.Split('#')[i];
+            i++;
+            i = i > 5 ? 0 : i;
+            return emSelect;
+        }
+    }
+}

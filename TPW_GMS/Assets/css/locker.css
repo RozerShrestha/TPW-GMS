@@ -1,0 +1,76 @@
+﻿.locker {
+    /*margin-top: 50px;*/
+    box-sizing: border-box;
+    padding: 5px 5px;
+    width: 267px;
+    height: 310px;
+    background-color: white;
+    box-shadow: 10px 0px 15px -5px rgba(0, 0, 0, 0.15), -10px 0px 15px -5px rgba(0, 0, 0, 0.15);
+}
+.expired {
+    border-top: 20px solid #b12c1e;
+    border-bottom: 5px solid #b12c1e;
+}
+.expiredBg {
+    background-color: #b12c1e !important;
+}
+.notExpired {
+    border-top: 20px solid #3c763d;
+    border-bottom: 5px solid #3c763d;
+}
+.notExpiredBg {
+    background-color: #3c763d !important;
+}
+.notAssigned {
+    border-top: 20px solid #c5b018;
+    border-bottom: 5px solid #c5b018;
+}
+.notAssignedBg {
+    background-color: #c5b018 !important;
+}
+.unavailable {
+    border-top: 20px solid #444444;
+    border-bottom: 5px solid #444444;
+}
+.unavailableBg {
+    background-color: #444444 !important;
+}
+.locker h2 {
+    font: bold 28px/1.2 'Open Sans', sans-serif;
+    color: #3D3D3D;
+    margin: 0 0 12px;
+    padding: 0 0 10px;
+    border-bottom: 1px solid #455A64;
+}
+
+.locker p {
+    font: 15px/1.4 'Open Sans', sans-serif;
+    color: #3D3D3D;
+    padding: 0;
+}
+
+.material-button {
+    float: right;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5em;
+    color: #fff;
+    background: #78909C;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0,0,0,.275);
+    outline: none;
+}
+.material-button:hover {
+    background: #455A64;
+    box-shadow: 0px 1px 1px black;
+}
+.compress{
+    font-size:12px;
+
+}
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.8;
+}

@@ -1,0 +1,21 @@
+﻿.GridPager a, .GridPager span
+    {
+        display: block;
+        height: 25px;
+        width: 25px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: underline;
+    }
+    .GridPager a
+    {
+        background-color: #b6c7d0;
+        color: #ffffff;
+        border: 1px solid #969696;
+    }
+    .GridPager span
+    {
+        background-color: #0e0e0e;
+        color: #f7f7f7;
+        border: 1px solid #0c0c0c;
+    }

@@ -1,0 +1,472 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="TPW_GMS.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>The Physique Workshop</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link href="Assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="Assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="Assets/css/jquery-ui.css" rel="stylesheet" />
+    <link href="dist/css/AdminLTE.css" rel="stylesheet">
+    <link href="dist/css/skins/_all-skins.min.css" rel="stylesheet">
+    <link href="Assets/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="Assets/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <link href="Assets/css/Dashboard.css" rel="stylesheet" />
+    <link href="Assets/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="Assets/css/locker.css" rel="stylesheet" />
+    <link href="Assets/DataTables/DataTables-1.10.18/css/jquery.dataTables.css" rel="stylesheet" />
+    <link  href="Assets/DataTables/Buttons-1.5.6/css/buttons.dataTables.css"  rel="stylesheet" />
+    <link  href="Assets/DataTables/FixedHeader-3.1.4/css/fixedHeader.dataTables.css" rel="stylesheet" />
+    <link href="Assets/DataTables/Responsive-2.2.2/css/responsive.dataTables.css"  rel="stylesheet" />
+    <link href="Assets/DataTables/RowGroup-1.1.0/css/rowGroup.dataTables.css" rel="stylesheet" />
+    <link href="Assets/nepali.datepicker.v3/css/nepali.datepicker.v3.min.css" rel="stylesheet" />
+    <link href="Assets/css/GridPager.css" rel="stylesheet" />
+    <link href="Assets/Select2/select2.min.css" rel="stylesheet" />
+    <link href="Assets/TimePicker/timepicker.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .iconDelete{
+            width:15px;
+            height:15px;
+        }
+        .iconView{
+            width:15px;
+            height:15px;
+        }
+        .iconEdit{
+            width:13px;
+            height:13px;
+        }
+        .iconDashboard{
+            width:24px;
+            height:24px;
+        }
+        .innerContentLayout{
+            margin-left:-1px;
+        }
+        .spanWeight{
+            font-weight:bold;
+        }
+        .printableformat{
+            margin-left:10px;
+        }
+        @media (max-width: 767px) {
+            .hide-this-div {
+            display:none;
+            }
+            .main-sidebar{
+                top:50px!important;
+            }
+            .content-wrapper{
+                margin-top:48px!important;
+            }
+        }
+        @media print {
+
+            thead {
+                display: table-header-group;
+            }
+
+            tr {
+                page-break-inside: avoid;
+            }
+
+            .page {
+                /*font-size:small;
+            font-family:Verdana,Arial;*/
+                margin:10px 90px 0px 90px;
+                border: initial;
+                border-radius: initial;
+                width: initial;
+                min-height: initial;
+                box-shadow: initial;
+                background: initial;
+            }
+        }
+        .notificationIcon{
+                margin-left: 5px;
+                display: inline-block;
+                background-color: #3c8dbc;
+                width: 20px;
+                text-align: center;
+                color: white;
+                border-radius: 7px;
+            }
+        table.dataTable tbody th,
+        table.dataTable tbody td {
+            padding: 8px 1px;
+        }
+        .highlight{
+                color:red;
+                font-weight:bold;
+                /*text-align: center;*/
+        }
+        .success{
+             color:darkseagreen;
+             font-weight:bold;
+        }
+        .ml{
+            margin-left:200px
+        }
+    </style>
+
+    <script src="Assets/jquery/jquery.min.js"></script>
+    <script src="Assets/js/bootstrap.min.js"></script>
+
+    <script src="Assets/DataTables/JSZip-2.5.0/jszip.js"></script>
+    <script src="Assets/DataTables/pdfmake-0.1.36/pdfmake.js"></script>
+    <script src="Assets/DataTables/pdfmake-0.1.36/vfs_fonts.js"></script>
+    <script src="Assets/DataTables/DataTables-1.10.18/js/jquery.dataTables.js"></script>
+    <script src="Assets/DataTables/Buttons-1.5.6/js/dataTables.buttons.js"></script>
+    <script src="Assets/DataTables/Buttons-1.5.6/js/buttons.html5.js"></script>
+    <script src="Assets/DataTables/Responsive-2.2.2/js/dataTables.responsive.js"></script>
+    <script src="Assets/DataTables/RowGroup-1.1.0/js/dataTables.rowGroup.js"></script>
+    <script src="Assets/DataTables/FixedHeader-3.1.4/js/dataTables.fixedHeader.js"></script>
+    <script src="Assets/js/jquery-ui.min.js"></script>
+    <script src="Assets/js/jquery.slimscroll.js"></script>
+    <script src="Assets/js/jquery-dateformat.js"></script>
+    <script src="dist/js/adminlte.js"></script>
+    <script src="dist/js/demo.js"></script>
+    <script src="Assets/js/Chart.min.js"></script>
+    <script src="Assets/js/buttonDateControl.js"></script>
+    <script src="Assets/nepali.datepicker.v3/js/nepali.datepicker.v3.min.js"></script>
+    <script src="Assets/Select2/select2.min.js"></script>
+    <script src="Assets/canvasjs-2.3.1/source/CanvasJS.js"></script>
+    <script src="Assets/Vue/vue.js"></script>
+    <script src="Assets/axios/dist/axios.js"></script>
+    <script src="Assets/js/vue-qrcode.js"></script>
+    <script src="Assets/TimePicker/timepicker.min.js"></script>
+    <script src="Assets/js/lodash.min.js"></script>
+    <script>Vue.component(VueQrcode.name, VueQrcode);</script>
+    <script src="Assets/ckeditor5-build-decoupled-document/ckeditor.js"></script>
+    <script src="Assets/js/moment.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //hide side menu to normal users
+            var loginUser = $("#lblUserLogin").text();
+            var userType = document.getElementById("hidUserType").value;
+           
+            if (userType === "Member") {
+                $(".showEmployee").css("display", "none")
+            }
+            if (userType === "Employee") {
+                $(".showMember").css("display", "none")
+            }
+            if (!loginUser.includes("admin")) {
+                $(".showAdmin").css("display", "none");
+            }
+            try {
+                $(".dateControl").datepicker({
+                    dateFormat: 'yy/mm/dd',
+                    changeMonth: true,
+                    changeYear: true,
+                    onSelect: (dateText) => {
+                        $('#nepaliDate').val(ADToBS(dateText));
+                    }
+                });
+                $(".nepali-calendar").nepaliDatePicker({
+                        ndpYear: true,
+                        ndpMonth: true,
+                        ndpYearCount: 30,
+                        dateFormat: "YYYY/MM/DD",
+                    ndpEnglishInput: 'englishDate',
+                    readOnlyInput: true
+                });
+                $(".nepCalendar").nepaliDatePicker({
+                    ndpYear: true,
+                    ndpMonth: true,
+                    ndpYearCount: 30,
+                    dateFormat: "YYYY/MM/DD",
+                    readOnlyInput:true
+                });
+            } catch (e) {
+
+            }
+            $('.select2Example').select2();
+        });
+        function pageLoad(sender, args) {
+            /*if (args.get_isPartialLoad()) {*/
+                try {
+                    $(".nepCalendar").nepaliDatePicker({
+                        ndpYear: true,
+                        ndpMonth: true,
+                        ndpYearCount: 30,
+                        dateFormat: "YYYY/MM/DD"
+                    });
+                    $(".nepali-calendar").nepaliDatePicker({
+                        ndpYear: true,
+                        ndpMonth: true,
+                        ndpYearCount: 30,
+                        dateFormat: "YYYY/MM/DD",
+                        ndpEnglishInput: 'englishDate',
+                        readOnlyInput: true
+                    });
+                    $("#txtMembershipBeginDate").nepaliDatePicker({
+                        ndpYear: true,
+                        ndpMonth: true,
+                        ndpYearCount: 30,
+                        onChange: renewChange,
+                        dateFormat: "YYYY/MM/DD",
+                        readOnlyInput: true
+                    });
+                } catch (e) {
+
+                }
+               
+                $(".dateControl").datepicker({
+                    dateFormat: 'yy/mm/dd',
+                    changeMonth: true,
+                    changeYear: true
+                });
+                $('.timepicker').timepicker({
+                    timeFormat: 'h:mm p',
+                    interval: 60,
+                    minTime: '05',
+                    maxTime: '10:00pm',
+                    defaultTime: '',
+                    startTime: '06:00',
+                    dynamic: false,
+                    dropdown: true,
+                    scrollbar: true
+                });
+                $('.select2Example').select2();
+            //}
+        }
+        function ADToBS(ad) {
+            ad = ad.replaceAll('-', '/');
+            let adObj = NepaliFunctions.ConvertToDateObject(ad, "YYYY/MM/DD");
+            let bsObj = NepaliFunctions.AD2BS(adObj);
+            let bs = NepaliFunctions.ConvertDateFormat(bsObj, "YYYY/MM/DD");
+            return bs;
+        }
+
+        function PrintDivPaymentHistory() {
+            //Other print function
+            var printContents = document.getElementById('pnlPrintPaymentHistory').innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+
+        function PrintDivPaymentPending() {
+            //Other print function
+            var printContents = document.getElementById('pnlPrintPaymentPending').innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }        
+    </script>
+
+</head>
+<body class="skin-blue sidebar-mini fixed">
+    <form runat="server">
+        <asp:ScriptManager ID="scriptMgr1" runat="server" EnablePageMethods="True"></asp:ScriptManager>
+        <asp:HiddenField ID="hidUserType" runat="server" />
+        <header class="main-header">
+            <a href="Dashboard.aspx" class="logo showEmployee">
+                <span class="logo-mini"><b>TPW</b></span>
+                <span class="logo-lg"><b>The</b>PhysiqueWorkshop</span>
+            </a>
+            <a href="MemberDashboard" class="logo showMember">
+                <span class="logo-mini"><b>TPW</b></span>
+                <span class="logo-lg"><b>The</b>PhysiqueWorkshop</span>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-left hide-this-div" style="margin-top: 12px; margin-left: 30px;">
+                    <input type="text" id="nepaliDate" class="form-control input-sm nepali-calendar" style="display: inline; width: 95px" placeholder="Nepali Date" />&nbsp;<span style="color: white; font-weight: bold"> to </span>
+                    <input type="text" class="form-control input-sm dateControl" style="display: inline; width: 95px;" placeholder="English Date" id="englishDate" />
+                </div>
+                <div class="navbar-left" style="margin-top: 12px; margin-left: 100px">
+                    <asp:Label ID="lblCurrentDateNew" Style="font-size: 20px; float: left; color: white;" runat="server" />
+                </div>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Notifications: style can be found in dropdown.less -->
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="label label-warning">10</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 10 notifications</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-users text-aqua"></i>5 new members joined today
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-warning text-yellow"></i>Very long description here that may not fit into the
+                                                page and may cause design problems
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-users text-red"></i>5 new members joined
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-shopping-cart text-green"></i>25 sales made
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-user text-red"></i>You changed your username
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="#">View all</a></li>
+                            </ul>
+                        </li>
+                        <!-- Tasks: style can be found in dropdown.less -->
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <label id="lblUser">Welcome </label>
+                                <span class="hidden-xs-">
+                                    <asp:Label ID="lblUserLogin" runat="server" /></span>
+                            </a>
+                            <ul class="dropdown-menu showEmployee">
+                                <li class="user-footer">
+                                    <div class="pull-right">
+                                        <asp:LinkButton ID="btnLogout" Text="Logout" runat="server" Style="margin-left: 7px;" OnClick="btnLogout_Click"></asp:LinkButton>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <%-- <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>--%>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar" style="top:20px">   
+                <section class="sidebar" style="height: 898px; overflow: hidden; width: auto;">
+                    <ul class="sidebar-menu showEmployee" data-widget="tree">
+                        <li><a href="PriceList.aspx"><i><img src="Assets/Icon/PriceList.png" class="iconDashboard" /></i> <span>Price List</span></a></li>   
+                        <li class="showAdmin" ><a href="MemberTransfer.aspx"><i><img src="Assets/Icon/MemberTransfer.png" class="iconDashboard" /></i> <span>Member Transfer</span></a></li>
+                        <li class="treeview"><a href="#"><i><img src="Assets/Icon/supplement.png" class="iconDashboard" /></i> <span>Attendance</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                            <ul class="treeview-menu">
+                                <li><a href="Attendance.aspx"><i class="fa fa-circle-o"></i>Member Attendance</a></li>
+                                <li><a href="StaffAttendance.aspx.aspx"><i class="fa fa-circle-o"></i>Staff Attendance</a></li>
+                                <%--<li><a href="EmailMarketingAttendance.aspx"><i class="fa fa-circle-o"></i>Email Marketing Attendance</a></li>--%>
+                            <%--<li><a href="GuestAttendance.aspx"><i class="fa fa-circle-o"></i>Guest Attendance</a></li>--%>
+                                <li><a href="AttendanceHistory.aspx"><i class="fa fa-circle-o"></i>Attedance History</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="Locker.aspx">
+                            <i><img src="Assets/Icon/locker.png" class="iconDashboard" /></i> 
+                            <span>Locker</span>
+                            <span class="pull-right-container">
+                                    <small class="label pull-right bg-red"><%= lockerCount %></small>
+                                </span>
+                            </a>
+                        </li>
+                        <li><a href="newform.aspx"><i><img src="Assets/Icon/newUser.png" class="iconDashboard" /></i> <span>New Form</span></a></li>
+                        <li><a href="allmember.aspx"><i><img src="Assets/Icon/allMember.png" class="iconDashboard" /></i> <span>All Member</span></a></li>
+                        <li><%--<a href="PaymentPending.aspx"><i><img src="Assets/Icon/payment_pending.png" class="iconDashboard" /></i> <span>Payment Pending</span><span class="pull-right badge bg-green"><%= paymentPendingCount %></span></a>--%></li>
+                        <li><a href="PaymentPendingNew.aspx"><i><img src="Assets/Icon/payment_pending.png" class="iconDashboard" /></i> <span>Payment Pending</span></a></li>
+                        <li><a href="PaymentHistory.aspx"><i><img src="Assets/Icon/payment-history.png" class="iconDashboard" /></i> <span>Payment History</span></a></li>
+                        <li class="treeview"><a href="#"><i><img src="Assets/Icon/supplement.png" class="iconDashboard" /></i> <span>Supplement</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                            <ul class="treeview-menu">
+                                <li class="showAdmin"><a href="BuySupplements.aspx"><i class="fa fa-circle-o"></i>Buying Supplements</a></li>
+                                <li><a href="SellSupplements.aspx"><i class="fa fa-circle-o"></i>Selling Supplements</a></li>
+                            </ul>
+                        </li>
+                        <li class="showAdmin"><a href="Merchandise.aspx"><i><img src="Assets/Icon/Merchandise.png" class="iconDashboard" /></i> <span>Merchandise</span></a></li>
+                        <li><a href="SellItems.aspx"><i><img src="Assets/Icon/item-sell.png" class="iconDashboard" /></i> <span>Sell Items</span></a></li>
+                        <li><a href="Expenditures.aspx"><i><img src="Assets/Icon/Expenditures.png" class="iconDashboard" /></i> <span>Expenditures</span></a></li>
+                        <li class="showAdmin"><a href="ExtraOthers.aspx"><i><img src="Assets/Icon/attendance.png" class="iconDashboard" /></i> <span>Extra Others</span></a></li>
+                        <li class="showAdmin"><a href="Branch.aspx"><i><img src="Assets/Icon/branch.png" class="iconDashboard" /></i> <span>Branchs</span></a></li>
+                        <li class="treeview"><a href="#"><i><img src="Assets/Icon/trainer.png" class="iconDashboard" /></i> <span>Staff Management</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                            <ul class="treeview-menu">
+                                <li class="showAdmin"><a href="AddStaff.aspx"><i class="fa fa-circle-o"></i>Add Staff</a></li>
+                              <%--  <li class="showAdmin"><a href="AddTrainer.aspx"><i class="fa fa-circle-o"></i>Add Trainer</a></li>--%>
+                                <li><a href="TrainerBooking.aspx"><i class="fa fa-circle-o"></i>Trainer Booking</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview showAdmin"><a href="#"><i><img src="Assets/Icon/commission.png" class="iconDashboard" /></i> <span>Comission</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                            <ul class="treeview-menu">
+                                <li><a href="Commission.aspx"><i class="fa fa-circle-o"></i>Commission Search</a></li>
+                                <li><a href="CommissionLog.aspx"><i class="fa fa-circle-o"></i>Commission Log</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview showAdmin"><a href="#"><i><img src="Assets/Icon/report.png" class="iconDashboard" /></i> <span>Reports</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                            <ul class="treeview-menu">
+                               <%-- <li><a href="TPWReport.aspx"><i class="fa fa-circle-o"></i>Old Report</a></li>--%>
+                                <li><a href="AdmittedAndRenewed.aspx"><i class="fa fa-circle-o"></i>AdmittedAndRenewed Report</a></li>
+                                <li><a href="DailyReport.aspx"><i class="fa fa-circle-o"></i>Daily Report</a></li>
+                                <li><a href="MemberExpiredReport.aspx"><i class="fa fa-circle-o"></i>Member Expired Report</a></li>
+                            </ul>
+                        </li>
+                        <%--<li><a href="JoinTPWNow.aspx"><i><img src="Assets/Icon/joinTPW.png" class="iconDashboard" /></i> <span>Join TPW Now</span></a></li>--%>
+                        <%--<li><a href="Consultation.aspx"><i><img src="Assets/Icon/consultation.png" class="iconDashboard" /></i> <span>Get Consultation</span></a></li>--%>
+                        <%--<li><a href="AskQuestion.aspx"><i><img src="Assets/Icon/question.png" class="iconDashboard" /></i> <span>Questions</span></a></li>--%>
+                        <li class="showAdmin"><a href="GuestList.aspx"><i><img src="Assets/Icon/attendance.png" class="iconDashboard" /></i> <span>Guest List</span></a></li>
+                        <li class="showAdmin"><a href="EmailMarketingTemplate.aspx"><i><img src="Assets/Icon/messageBraodcast.png" class="iconDashboard" /></i> <span>EM Template</span></a></li>
+                        <li class="showAdmin"><a href="EmailMarketingCSV.aspx"><i><img src="Assets/Icon/messageBraodcast.png" class="iconDashboard" /></i> <span>CSV</span></a></li>
+                        <li class="showAdmin"><a href="MessageBroadcast.aspx"><i><img src="Assets/Icon/messageBraodcast.png" class="iconDashboard" /></i> <span>MessageBroadcast</span></a></li>
+                        <li><a href="QRMessageBroadcast.aspx"><i><img src="Assets/Icon/messageBraodcast.png" class="iconDashboard" /></i> <span>QRMessageBroadcast</span></a></li>
+                        <li><a href="EmailMarketing.aspx"><i><img src="Assets/Icon/messageBraodcast.png" class="iconDashboard" /></i> <span>Email Marketing</span></a></li>
+                        <li><a href="Log.aspx"><i><img src="Assets/Icon/messageBraodcast.png" class="iconDashboard" /></i> <span>Log</span></a></li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-envelope"></i><span>Sample</span>
+                                <span class="pull-right-container">
+                                    <small class="label pull-right bg-yellow">12</small>
+                                    <small class="label pull-right bg-green">16</small>
+                                    <small class="label pull-right bg-red">5</small>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <%--<ul class="sidebar-menu" data-widget="tree">
+                        <li><a href="MemberDashboard.aspx"><i><img src="Assets/Icon/PriceList.png" class="iconDashboard" /></i> <span>Price List</span></a></li>  
+                    </ul>--%>
+                </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style=" margin-top:10px; background-color:#efefef">
+            <section class="content-header">
+                <h1><%= headerText %></h1>
+            </section>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer fixed">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0
+            </div>
+            <strong>Copyright &copy; The Physique Workshop </strong>All rights
+            reserved.
+        </footer>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <div class="tab-content">
+                <div id="control-sidebar-home-tab">
+                </div>
+            </div>
+        </aside>
+       
+    </form>
+</body>
+</html>

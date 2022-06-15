@@ -1,0 +1,575 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="TPW-GMS" Class="TPWDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=rozer-pc-accer;Initial Catalog=TPW-GMS;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="TPW_GMSConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ActiveInactiveHistory" Member="ActiveInactiveHistories">
+    <Type Name="ActiveInactiveHistory">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="count" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="type" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrainerClassCommission" Member="TrainerClassCommissions">
+    <Type Name="TrainerClassCommission">
+      <Column Name="trainerClassId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="catagory" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="commission" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AskQn" Member="AskQns">
+    <Type Name="AskQn">
+      <Column Name="askId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="date" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="question" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="status" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BodyMeasurement" Member="BodyMeasurements">
+    <Type Name="BodyMeasurement">
+      <Column Name="measurementId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="measurementDate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="weight" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="height" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="upperArm" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="foreArm" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="chest" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="waist" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="thigh" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="calf" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Branch" Member="Branches">
+    <Type Name="Branch">
+      <Column Name="branchId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="branchName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Catagory" Member="Catagories">
+    <Type Name="Catagory">
+      <Column Name="catagoryId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="catagory" Member="catagory1" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="oneMonth" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="threeMonth" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="sixMonth" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="twelveMonth" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ComissionPaymentLog" Member="ComissionPaymentLogs">
+    <Type Name="ComissionPaymentLog">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="commissionFor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="discountCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="comission" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="status" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ConsultationCharge" Member="ConsultationCharges">
+    <Type Name="ConsultationCharge">
+      <Column Name="consChargeId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="consCharge" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="consFeeToTrainer" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ConsultationLog" Member="ConsultationLogs">
+    <Type Name="ConsultationLog">
+      <Column Name="consultationId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="trainerName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="charge" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="discount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="finalCharge" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="status" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="receiptNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="isPaid" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Dash" Member="Dashes">
+    <Type Name="Dash">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="startDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="endDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DiscountPercentage" Member="DiscountPercentages">
+    <Type Name="DiscountPercentage">
+      <Column Name="discountId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="discount3Month" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="discount6Month" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="discount12Month" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="admissionFee" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EmailFormat" Member="EmailFormats">
+    <Type Name="EmailFormat">
+      <Column Name="emId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Type" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="subject" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="message" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EmMarketing" Member="EmMarketings">
+    <Type Name="EmMarketing">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="mobile" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="emailSendDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="attCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="mailCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Expenditure" Member="Expenditures">
+    <Type Name="Expenditure">
+      <Column Name="expenditureId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="expenditureDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="expenditureType" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="expenditureRate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GymAdmin" Member="GymAdmins">
+    <Type Name="GymAdmin">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="gmCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Influencer" Member="Influencers">
+    <Type Name="Influencer">
+      <Column Name="influencerId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="influencerName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="startDate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="endDate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="influencerCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="influencerComission" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="status" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="contactNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.JoinTPW" Member="JoinTPWs">
+    <Type Name="JoinTPW">
+      <Column Name="jId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="firstName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="lastName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="mobileNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="status" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LockerMg" Member="LockerMgs">
+    <Type Name="LockerMg">
+      <Column Name="lockerId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="lockerNumber" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="renewDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="duration" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="amount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="paymentMethod" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="expireDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="receiptNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="created" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="modified" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="createdBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="modifiedBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Login" Member="Logins">
+    <Type Name="Login">
+      <Column Name="loginId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="roleId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="branchId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="firstname" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="softwareExpireDate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="softwareExpireCheck" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="longitude" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="latitude" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MacAddress" Member="MacAddresses">
+    <Type Name="MacAddress">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="macID" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MarketingAttendance" Member="MarketingAttendances">
+    <Type Name="MarketingAttendance">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="mobile" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="checkinBranch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="checkin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="checkout" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MemberAttandance" Member="MemberAttandances">
+    <Type Name="MemberAttandance">
+      <Column Name="attendanceId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="checkin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="checkout" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="checkinBranch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MemberLogin" Member="MemberLogins">
+    <Type Name="MemberLogin">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Merchan" Member="Merchans">
+    <Type Name="Merchan">
+      <Column Name="merchandiseId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="merchandiseName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="merchandiseType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="merchandiseQuantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="merchandisePrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MerchandiseStatus" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="image" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Role" Member="Roles">
+    <Type Name="Role">
+      <Column Name="roleId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="role" Member="role1" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SellItem" Member="SellItems">
+    <Type Name="SellItem">
+      <Column Name="SellItemId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="itemTypeSell" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="dateItemSell" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="quantityItemSell" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="perPriceItemSell" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="totalPriceItemSell" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="discountItemSell" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="finalPriceItemSell" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="isPaidItemSell" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="paymentMethod" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="bank" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="chequenumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="referenceId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="receiptNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="created" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Staff" Member="Staffs">
+    <Type Name="Staff">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="staffCatagory" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="staffName" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="trainerCatagory" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="contactNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="associateBranch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="JoinDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="discountCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="commission" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="image" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="from1" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="to1" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="from2" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="to2" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="experience" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="status" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="modified" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StaffSalaryDeduction" Member="StaffSalaryDeductions">
+    <Type Name="StaffSalaryDeduction">
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="count" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StartStop" Member="StartStops">
+    <Type Name="StartStop">
+      <Column Name="startstopId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="stopDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="startDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="stopDays" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="stopLimit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Suplement" Member="Suplements">
+    <Type Name="Suplement">
+      <Column Name="suplementId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nameOfSuplement" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="nameOfVender" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="quantity" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="perPrice" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="totalPrice" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="discount" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="finalPrice" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="status" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SuplementSelling" Member="SuplementSellings">
+    <Type Name="SuplementSelling">
+      <Column Name="suplementSellingId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nameOfSuplement_Sell" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="date_Sell" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="customerIdSell" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="customer_Sell" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="quantity_Sell" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="perPrice_Sell" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="totalPrice_Sell" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="discount_Sell" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="finalPrice_Sell" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="discountCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="isPaidSuplementSell" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="paymentMethod" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="bank" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="chequeNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="referenceId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="receiptNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="created" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[test table]" Member="test_tables">
+    <Type Name="test_table">
+      <Column Name="test1" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="test2" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="test3" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="test4" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Trainer" Member="Trainers">
+    <Type Name="Trainer">
+      <Column Name="trainerId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="fullName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="catagory" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="rate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="experience" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="contactNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="availableTime" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="associateBranch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="joinDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="status" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="discountCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="commissionPercentage" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="image" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Guest" Member="Guests">
+    <Type Name="Guest">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="mobile" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="fromDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="toDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="count" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="attCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="created" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="updated" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GuestAttandance" Member="GuestAttandances">
+    <Type Name="GuestAttandance">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="guestId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="checkinBranch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="checkin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="checkout" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeType" Member="FeeTypes">
+    <Type Name="FeeType">
+      <Column Name="feeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="membershipOption" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="membershipType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="oneTenDays" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="oneMonth" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="threeMonth" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="sixMonth" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="twelveMonth" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MemberInformation" Member="MemberInformations">
+    <Type Name="MemberInformation">
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberOption" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberCatagory" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberSubCatagory" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="memberBeginDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="admissionFee" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberPaymentType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberExpireDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="shift" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="emailStatus" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="firstName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="lastName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="fullname" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="contactNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="dateOfBirth" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="emergencyContactPerson" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="gender" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="emergencyContactNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="haveBeenGymBefore" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="haveBeenGymBeforeText" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="anyhealthIssue" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="photo" Type="System.Data.Linq.Binary" DbType="Binary(50)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="image" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="imageLoc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="locker" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="lockerNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="discountCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="paymentMethod" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="receiptNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ActiveInactive" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="isExpired" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="imageByte" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="modifiedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="universalMembershipLimit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="callStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="callRemark" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="createdDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="createdBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="modifiedBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrainerBookingLog" Member="TrainerBookingLogs">
+    <Type Name="TrainerBookingLog">
+      <Column Name="trainerBookingId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="trainerName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Class" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="[from]" Member="from" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="[to]" Member="to" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="clientName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="noOFTrainee" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="charge" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="discount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="finalCharge" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="status" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="trainerCommission" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="discountCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StaffAttandance" Member="StaffAttandances">
+    <Type Name="StaffAttandance">
+      <Column Name="attendanceId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="checkin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="checkout" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="checkinBranch" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="remark" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="lateFlag" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentInfo" Member="PaymentInfos">
+    <Type Name="PaymentInfo">
+      <Column Name="paymentId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="paymentAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="discount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="discountReason" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="disocuntCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="finalAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="paidAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="dueAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="dueClearAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="paymentMethod" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="bank" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="chequeNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="referenceId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="receiptNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="due" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="updatedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="renewExtend" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Report" Member="Reports">
+    <Type Name="Report">
+      <Column Name="reportId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberBeginDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="memberExpireDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="memberOption" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberCatagory" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberPaymentType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="discount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="discountReason" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="discountCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="finalAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="paidAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="dueAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="dueClearAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="receiptNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="paymentMethod" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="created" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="renewExtend" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ExtraInformation" Member="ExtraInformations">
+    <Type Name="ExtraInformation">
+      <Column Name="extraInformationId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="email" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="oneMonth" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="threeMonth" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="sixMonth" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="twelveMonth" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="admission" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="smtpClient" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="port" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="staffLateExtension" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="currentNepaliDate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="marketingEmailFormat" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="subjectMaketing" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="messageBroadcastEmailFormat" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="subjectBroadcast" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

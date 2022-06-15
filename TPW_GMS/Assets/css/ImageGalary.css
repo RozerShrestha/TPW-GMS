@@ -1,0 +1,68 @@
+﻿body {
+			}
+/*Here we can see an example of a CSS gradient and animation.*/
+#grad1 {
+    height: 100px;
+    background: red; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(90deg, black, tan); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(90deg, black, tan); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(90deg, black, tan); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(90deg, black, tan); /* Standard syntax*/
+  animation: grow 3s ease-in-out 3s;}
+
+
+@keyframes grow{
+  from{
+    width: 0px;
+  }
+  to{
+    width: 100%;
+    
+  }
+}
+
+/*Here is an example of CSS user interface.*/
+/*p{
+    background: tan;
+    margin: 5px;
+    font-weight: bold;
+    color: black;
+    font-size: 20px;
+    border: 2px solid;
+    padding: 20px;
+    width: 800px;
+    resize: horizontal;
+    overflow: auto;
+}*/
+
+/*This is contains an example of image gallaries, opacity, and transformations.*/
+div.img {
+     margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 300px;
+    opacity: 1;
+    filter: alpha(opacity=50)
+    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: width 1s;
+}
+
+/*div.img:hover {
+    border: 1px solid #777;
+    opacity: 1;
+    filter: alpha(opacity=100);
+    width: 305px;
+}*/
+
+div.img img {
+    width: 100%;
+    height: auto;
+}
+
+div.desc {
+    padding: 15px;
+    text-align: center;
+    background-color: tan;
+}
+
+
