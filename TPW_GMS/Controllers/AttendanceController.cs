@@ -485,9 +485,9 @@ namespace TPW_GMS.Controllers
                     var staffInfo = (from p in db.Staffs
                                      where p.memberId == trimMemberId
                                      select p).SingleOrDefault();
-                    var staffEmail = (from em in db.MemberInformations
-                                      where em.memberId == trimMemberId
-                                      select em.email).SingleOrDefault();
+                    //var staffEmail = (from em in db.MemberInformations
+                    //                  where em.memberId == trimMemberId
+                    //                  select em.email).SingleOrDefault();
 
                     var twoShift = staffInfo.from2 == "" ? false : true;
                     var yesterdays = DateTime.Now.AddDays(-1).Date;
@@ -573,7 +573,7 @@ namespace TPW_GMS.Controllers
 
                                 new Task(() =>
                                 {
-                                    MailService.SendEmailStaffAttendence(message, staffEmail, "Late PunchIn");
+                                    MailService.SendEmailStaffAttendence(message, trimMemberId, "Late PunchIn");
                                 }).Start();
                             }
                             else

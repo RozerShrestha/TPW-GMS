@@ -1002,7 +1002,7 @@ namespace TPW_GMS
                     "setTimeout(function() { window.location.replace('NewForm.aspx') }, 500);", true);
                     new Task(() =>
                     {
-                       sendEmail(txtMemberId.Text, txtuname.Text, txtBranch.Text, txtPwd.Text, ddlMemberOption.SelectedItem.Text, ddlCatagoryType.SelectedItem.Text, txtMembershipDate.Text, ddlMembershipPaymentType.SelectedItem.Text, txtMembershipBeginDate.Text, txtMembershipExpireDate.Text, txtEmail.Text, txtFirstName.Text + " " + txtLastName.Text, txtContactNo.Text, txtDateOfBirth.Text, txtAddress.Text, txtDiscountCode.Text, txtFinalAmount.Text, txtpaidAmount.Text, txtDueAmount.Text);
+                      MailService.sendEmailNewMember(txtMemberId.Text, txtuname.Text, txtBranch.Text, txtPwd.Text, ddlMemberOption.SelectedItem.Text, ddlCatagoryType.SelectedItem.Text, txtMembershipDate.Text, ddlMembershipPaymentType.SelectedItem.Text, txtMembershipBeginDate.Text, txtMembershipExpireDate.Text, txtEmail.Text, txtFirstName.Text + " " + txtLastName.Text, txtContactNo.Text, txtDateOfBirth.Text, txtAddress.Text, txtDiscountCode.Text, txtFinalAmount.Text, txtpaidAmount.Text, txtDueAmount.Text);
                     }).Start();
                 }
                 catch (Exception ex)

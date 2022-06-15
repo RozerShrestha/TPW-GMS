@@ -19,7 +19,7 @@ namespace TPW_GMS.Services
         private static ExtraInformation extraInformation = (from c in db.ExtraInformations
                                  where c.extraInformationId == 1
                                  select c).SingleOrDefault();
-        private static string txtEmail = MailService.EmailProvider();
+        private static string senderEmail = MailService.EmailProvider();
 
         public static bool SendEmail(string memberId)
         {
@@ -46,7 +46,7 @@ namespace TPW_GMS.Services
             "Regards," + Environment.NewLine +
             "The Physique Workshop";
             memberInfo.email = "rozer.shrestha611@gmail.com";
-            bool emailStatus = GeneralEmailFormat(false, memberInfo.email, memberInfo.fullname, txtSubject, txtBody);
+            bool emailStatus = GeneralEmailFormat(isThereAttachment: false, html: false, memberInformation: memberInfo, subject: txtSubject, body: txtBody);
             if (emailStatus)
             {
                 memberInfo.emailStatus = true;
@@ -60,47 +60,13 @@ namespace TPW_GMS.Services
         }
         public static string SendEmailQR(string message, string memberId, string toEmail, string subject, string path)
         {
-            using (TPWDataContext db = new TPWDataContext())
-            {
-                string status = "";
-                try
-                {
-                    var extraInfo = db.ExtraInformations;
-                    var emailInfo = (from c in extraInfo
-                                     where c.extraInformationId == 1
-                                     select c).SingleOrDefault();
-                    var em = EmailProvider();
-                    var fromEmailAdd = new MailAddress(em, "The Physique Workshop");
-                    var toEmailAdd = new MailAddress(toEmail);
-                    string pwd = emailInfo.password;
-                    string txtSubject = subject;
-
-                    using (var mm = new MailMessage(fromEmailAdd, toEmailAdd))
-                    {
-                        mm.Subject = txtSubject;
-                        //mm.Body = txtBody;
-                        mm.IsBodyHtml = true;
-                        //mm.Attachments.Add();
-                        mm.AlternateViews.Add(getEmbeddedImageQR(memberId, message, path));
-
-                        SmtpClient smtp = new SmtpClient();
-                        smtp.Host = "smtp.gmail.com";
-                        smtp.EnableSsl = true;
-                        smtp.UseDefaultCredentials = false;
-                        NetworkCredential NetworkCred = new NetworkCredential(fromEmailAdd.Address, pwd);
-                        smtp.Credentials = NetworkCred;
-                        smtp.Port = 587;
-                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        smtp.Send(mm);
-                        status = "";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    status = ex.Message;
-                }
+            var memberInfo = db.MemberInformations.Where(p => p.memberId == memberId).SingleOrDefault();
+            string status = "";
+            bool emailStatus = GeneralEmailFormat(isThereAttachment: true, html: false, memberInformation: memberInfo, subject: subject, body: message, path:path);
+            if (emailStatus)
                 return status;
-            }
+            else
+                return "";
         }
         public static string SendMarketingEmail(string message, string toEmail, string name, string subject, string filePath, string emType)
         {
@@ -129,12 +95,12 @@ namespace TPW_GMS.Services
                             mm.Body = altMessage;
 
                         SmtpClient smtp = new SmtpClient();
-                        smtp.Host = "smtp.gmail.com";
+                        smtp.Host = emailInfo.smtpClient;
                         smtp.EnableSsl = true;
                         smtp.UseDefaultCredentials = false;
                         NetworkCredential NetworkCred = new NetworkCredential(fromEmailAdd.Address, pwd);
                         smtp.Credentials = NetworkCred;
-                        smtp.Port = 587;
+                        smtp.Port =Convert.ToInt32(emailInfo.port);
                         smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                         smtp.Send(mm);
 
@@ -152,50 +118,19 @@ namespace TPW_GMS.Services
         //this email is for message broadcast
         public static string SendBroadCastEmail(string message, string toEmail, string subject)
         {
-            bool emailStatus = GeneralEmailFormat(true, toEmail, toEmail, subject, message);
+            var memberInfo = db.MemberInformations.Where(p => p.email == toEmail).SingleOrDefault();
+            bool emailStatus = GeneralEmailFormat(isThereAttachment: false, html: true, memberInformation: memberInfo, subject: subject, body: message);
             if (emailStatus)
                 return "";
             else
                 return "error"; 
         }
         //this Email sending is for Staff Attendance Module
-        public static bool SendEmailStaffAttendence(string message, string toEmail, string subject)
+        public static bool SendEmailStaffAttendence(string message, string memberId, string subject)
         {
-            using (TPWDataContext db = new TPWDataContext())
-            {
-                try
-                {
-                    var extraInfo = db.ExtraInformations;
-                    var email = (from c in extraInfo
-                                 where c.extraInformationId == 1
-                                 select c).SingleOrDefault();
-                    var em = EmailProvider();
-                    var fromEmailAdd = new MailAddress(em, "The Physique Workshop");
-                    var toEmailAdd = new MailAddress(toEmail);
-                    string pwd = email.password;
-
-                    using (var mm = new MailMessage(fromEmailAdd, toEmailAdd))
-                    {
-                        mm.Subject = subject;
-                        mm.Body = message;
-                        mm.IsBodyHtml = false;
-                        SmtpClient smtp = new SmtpClient();
-                        smtp.Host = "smtp.gmail.com";
-                        smtp.EnableSsl = true;
-                        smtp.UseDefaultCredentials = false;
-                        NetworkCredential NetworkCred = new NetworkCredential(fromEmailAdd.Address, email.password);
-                        smtp.Credentials = NetworkCred;
-                        smtp.Port = 587;
-                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        smtp.Send(mm);
-                    }
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
+            var memberInfo = db.MemberInformations.Where(p => p.memberId == memberId).SingleOrDefault();
+            bool emailStatus = GeneralEmailFormat(isThereAttachment: false, html: false, memberInformation: memberInfo, subject: subject, body: message);
+            return emailStatus;
         }
         public static void sendEmailNewMember(string memberid, string username, string branch, string password, string membershipOption, string catagoryType, string membershipDate, string membershipPaymentType, string membershipBeginDate, string membershipExpireDate, string email, string fullname, string contactNo, string dateOfBirth, string address, string discountCode, string finalAmount, string paidAmount, string dueAmount)
         {
@@ -203,14 +138,9 @@ namespace TPW_GMS.Services
             {
                 try
                 {
-                    var extraInfo = db.ExtraInformations;
-                    var emailInfo = (from c in extraInfo
-                                     where c.extraInformationId == 1
-                                     select c).SingleOrDefault();
-                    var em = EmailProvider();
-                    var fromEmailAdd = new MailAddress(em, "The Physique Workshop");
+                    var fromEmailAdd = new MailAddress(senderEmail, "The Physique Workshop");
                     var toEmailAdd = new MailAddress(email);
-                    string pwd = emailInfo.password;
+                    string pwd = extraInformation.password;
                     string txtSubject = "New Membership";
                     using (var mm = new MailMessage(fromEmailAdd, toEmailAdd))
                     {
@@ -219,12 +149,12 @@ namespace TPW_GMS.Services
                         mm.IsBodyHtml = true;
                         mm.AlternateViews.Add(getEmbeddedImageNewMember(memberid, username, branch, password, membershipOption, catagoryType, membershipDate, membershipPaymentType, membershipBeginDate, membershipExpireDate, email, fullname, contactNo, dateOfBirth, address, discountCode, finalAmount, paidAmount, dueAmount));
                         SmtpClient smtp = new SmtpClient();
-                        smtp.Host = "smtp.gmail.com";
+                        smtp.Host = extraInformation.smtpClient;
                         smtp.EnableSsl = true;
                         smtp.UseDefaultCredentials = false;
                         NetworkCredential NetworkCred = new NetworkCredential(fromEmailAdd.Address, pwd);
                         smtp.Credentials = NetworkCred;
-                        smtp.Port = 587;
+                        smtp.Port =Convert.ToInt32(extraInformation.port);
                         smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                         smtp.Send(mm);
                     }
@@ -243,13 +173,9 @@ namespace TPW_GMS.Services
                 string status = "";
                 try
                 {
-                    var emailInfo = (from c in db.ExtraInformations
-                                     where c.extraInformationId == 1
-                                     select c).SingleOrDefault();
-                    var em = EmailProvider();
-                    var fromEmailAdd = new MailAddress(em, "The Physique Workshop");
+                    var fromEmailAdd = new MailAddress(senderEmail, "The Physique Workshop");
                     var toEmailAdd = new MailAddress(toEmail);
-                    string pwd = emailInfo.password;
+                    string pwd = extraInformation.password;
                     string txtSubject = "Attendance Information";
 
                     using (var mm = new MailMessage(fromEmailAdd, toEmailAdd))
@@ -259,12 +185,12 @@ namespace TPW_GMS.Services
                         mm.AlternateViews.Add(getEmbeddedImageGuestQR(name, toEmail));
 
                         SmtpClient smtp = new SmtpClient();
-                        smtp.Host = "smtp.gmail.com";
+                        smtp.Host = extraInformation.smtpClient;
                         smtp.EnableSsl = true;
                         smtp.UseDefaultCredentials = false;
                         NetworkCredential NetworkCred = new NetworkCredential(fromEmailAdd.Address, pwd);
                         smtp.Credentials = NetworkCred;
-                        smtp.Port = 587;
+                        smtp.Port =Convert.ToInt32(extraInformation.port);
                         smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                         smtp.Send(mm);
                         status = "";
@@ -452,30 +378,40 @@ namespace TPW_GMS.Services
             return alternateView;
 
         }
-        private static bool GeneralEmailFormat(bool html,string receiverEmail, string receiverFullName, string subject, string body )
+        private static bool GeneralEmailFormat( bool isThereAttachment, bool html, MemberInformation memberInformation, string subject, string body, string path="", string emType="" )
         {
             try
             {
-                using (MailMessage mm = new MailMessage(txtEmail, receiverEmail))
+                var fromEmailAdd = new MailAddress(senderEmail, "The Physique Workshop");
+                var toEmailAdd = new MailAddress(memberInformation.email);
+                using (MailMessage mm = new MailMessage(fromEmailAdd, toEmailAdd))
                 {
                     mm.Subject = subject;
-                    mm.Body = body;
+                    if (!isThereAttachment)
+                    {
+                        mm.Body = body;
+                    }
                     mm.IsBodyHtml = html;
+                    if (isThereAttachment)
+                    {
+                        mm.AlternateViews.Add(getEmbeddedImageQR(memberInformation.memberId, body, path));
+                    }
+                    
                     SmtpClient smtp = new SmtpClient();
                     smtp.Host = extraInformation.smtpClient;
                     smtp.EnableSsl = true;
-                    NetworkCredential NetworkCred = new NetworkCredential(txtEmail, extraInformation.password);
+                    NetworkCredential NetworkCred = new NetworkCredential(senderEmail, extraInformation.password);
                     smtp.UseDefaultCredentials = true;
                     smtp.Credentials = NetworkCred;
                     smtp.Port =Convert.ToInt32(extraInformation.port);
                     smtp.Send(mm);
-                    _logger.Info("##" + "Email send to: " + receiverFullName + "with Email ID " + receiverEmail + " Message: " + body);
+                    _logger.Info("##" + "Email send to: " + memberInformation.fullname + "with Email ID " + memberInformation.email + " Message: " + body);
                     return true;
                 }
             }
             catch (Exception ex)
             {
-                _logger.Warn("##" + "Email Not Send to: " + receiverFullName + "with Email ID " + receiverEmail + " due to " + ex.Message);
+                _logger.Warn("##" + "Email Not Send to: " + memberInformation.fullname + "with Email ID " + memberInformation.email + " due to " + ex.Message);
                 return false;
             }
             
