@@ -75,7 +75,7 @@ function loadChart() {
             $("#activeMembers").empty();
             for (var i = 0; i < response.length; i++) {
                 if (branch === 'All') {
-                    let info = `<li><a id="am_${response[i].branch}" href="#">${response[i].branch}
+                    let info = `<li><a id="am_${response[i].branch}" data-toggle="modal"  data-target="#activeMemberListModal" onclick=ActiveMemberList('${response[i].branch}') href="#">${response[i].branch}
                                             <span style="margin-left:10px" class="pull-right badge">${response[i].Avg}</span>
                                             <span class="pull-right badge bg-${colorArray[i]}">${response[i].No_of_member}</span>
                                         </a>
@@ -83,9 +83,9 @@ function loadChart() {
                     $("#activeMembers").append(info);
                     am += response[i].No_of_member;
                     avm += response[i].Avg;
-                }
+                 }
                 else if (branch === response[i].branch.charAt(0).toLowerCase() + response[i].branch.slice(1)) {
-                    var info = `<li><a id="am_${response[i].branch}" href="#">${response[i].branch}
+                    var info = `<li><a id="am_${response[i].branch}" data-toggle="modal"  data-target="#activeMemberListModal" onclick=ActiveMemberList('${response[i].branch}') href="#">${response[i].branch}
                                             <span style="margin-left:10px" class="pull-right badge bg-${colorArray[i]}">${response[i].Avg}</span>
                                             <span class="pull-right badge bg-${colorArray[i]}">${response[i].No_of_member}</span>
                                         </a>
@@ -490,4 +490,65 @@ function loadChart() {
     }); 
 
 
+}
+function ActiveMemberList(branch) {
+    var existingTbl = $('#activeMemberList').DataTable();
+    if (existingTbl) {
+        existingTbl.destroy();
+    }
+    var table = $('#activeMemberList').DataTable({
+        fixedHeader: {
+            header: true,
+            headerOffset: 50,
+        },
+        autoWidth: true,
+        language: {
+            sLoadingRecords: '<span style="width:100%;"><img src="Assets/Images/ajax-loader.gif"></span>'
+        },
+        lengthMenu: [[5,25, 50, -1], [5,25, 50, "All"]],
+        ajax: {
+            url: `api/GetActiveMembershipList?branch=${branch}`,
+            dataType: "JSON",
+            dataSrc: "",
+            headers: {
+                'Authorization': 'Bearer ' + window.localStorage.getItem('auth_token')
+            },
+        },
+        columns: [
+            { 'data': 'memberId' },
+            { 'data': 'fullname' },
+            { 'data': 'branch' },
+            { 'data': 'memberPaymentType' },
+            {
+                "data": "memberBeginDate",
+                "render": function (data) {
+                    try {
+                        var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
+                        let objEng = NepaliFunctions.ConvertToDateObject(dat, "YYYY/MM/DD");
+                        let objNep = NepaliFunctions.AD2BS(objEng);
+                        let dt = NepaliFunctions.ConvertDateFormat(objNep, "YYYY/MM/DD");
+
+                        return dt;
+                    } catch (e) {
+                        return '';
+                    }
+                }
+            },
+            {
+                "data": "memberExpireDate",
+                "render": function (data) {
+                    try {
+                        var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
+                        let objEng = NepaliFunctions.ConvertToDateObject(dat, "YYYY/MM/DD");
+                        let objNep = NepaliFunctions.AD2BS(objEng);
+                        let dt = NepaliFunctions.ConvertDateFormat(objNep, "YYYY/MM/DD");
+
+                        return dt;
+                    } catch (e) {
+                        return '';
+                    }
+                }
+            },
+        ]
+    })
 }

@@ -552,6 +552,27 @@ namespace TPW_GMS.Controllers
             }
         }
 
+        [Route("api/GetActiveMembershipList")]
+        [HttpGet]
+        public IHttpActionResult GetActiveMembershipList(string branch)
+        {
+            try
+            {
+                using (var conn = dbCon.CreateConnection())
+                {
+                    var result = conn.Query("ActiveMembershipList",
+                        param: new { branch }
+                        , commandType: System.Data.CommandType.StoredProcedure).ToList();
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Ok(ex);
+            }
+        }
+
         [Route("api/GetCommissionLog")]
         public IEnumerable<ComissionPaymentLog> GetCommissionLog()
         {

@@ -45,7 +45,7 @@ namespace TPW_GMS.Services
             "Thank you." + Environment.NewLine + Environment.NewLine +
             "Regards," + Environment.NewLine +
             "The Physique Workshop";
-            memberInfo.email = "rozer.shrestha611@gmail.com";
+            //memberInfo.email = "rozer.shrestha611@gmail.com";
             bool emailStatus = GeneralEmailFormat(isThereAttachment: false, html: false, memberInformation: memberInfo, subject: txtSubject, body: txtBody);
             if (emailStatus)
             {

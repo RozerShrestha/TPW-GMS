@@ -268,7 +268,7 @@
                     <div class="col-lg-12 showAdmins">
                         <div class="box box-info">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Active Members Branch Wise -Daily</h3>
+                                <h3 class="box-title">Monthly Average Active Member(Branch Wise)</h3>
                             </div>
                              <div class="box-body">
                                 <div id="chartAverageActiveBranchWiseMonthly" style="height: 570px; width: 100%;"></div>
@@ -279,6 +279,7 @@
                 
         </div>
         </div>
+        <%--for information sharing purpose which popup at page load--%>
         <div class="modal fade" id="myModal">
             <div class="modal-dialog">
                 <div class="modal-content" style="width:800px">
@@ -311,6 +312,46 @@
                 </div>
             </div>
         </div>
+
+        <%--for active member list on click--%>
+        <div class="modal fade" id="activeMemberListModal" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Active Member List</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">   
+    <div class="col-xs-12">
+        <div class="box box-info">
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table id="activeMemberList" style="font-size: 12px; width:100%" class="table table-striped table-bordered table-sm">
+                        <thead>
+                            <tr class="border-bottom-0 tr-header header">
+                                <th style="min-width:100px">MemberId</th>
+                                <th style="min-width:100px">Name</th>
+                                <th>Branch</th>
+                                <th>Duration</th>
+                                <th>Renew</th>
+                                <th>Expire Date</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </section>
 
 </asp:Content>

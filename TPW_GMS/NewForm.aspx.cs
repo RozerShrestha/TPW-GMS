@@ -1007,7 +1007,7 @@ namespace TPW_GMS
                 }
                 catch (Exception ex)
                 {
-                    _logger.Info("##" + "New Form-{0}", ex.Message);
+                    _logger.Error("##" + "New Form-{0}", ex.Message);
                     lblInformation.Text = ex.Message;
                 }
             }
@@ -1225,7 +1225,7 @@ namespace TPW_GMS
                 }
                 catch (Exception ex)
                 {
-                    _logger.Info("##" + "New Form-{0} {1}", fullname, ex.Message);
+                    _logger.Error("##" + "New Form-{0} {1}", fullname, ex.Message);
                 }
             }
         }

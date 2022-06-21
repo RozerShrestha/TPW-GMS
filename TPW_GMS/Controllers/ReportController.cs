@@ -32,7 +32,7 @@ namespace TPW_GMS.Controllers
 
                 var itemNewAdmissions = (from m in db.MemberInformations
                                          join p in db.Reports on m.memberId equals p.memberId
-                                         where m.memberDate >= Convert.ToDateTime(r.startDate) && m.memberDate <= Convert.ToDateTime(r.endDate) && p.renewExtend == r.reportType
+                                         where m.memberDate >= Convert.ToDateTime(r.startDate) && m.memberDate <= Convert.ToDateTime(r.endDate) && p.renewExtend == r.reportType && (m.memberOption == "Regular" || m.memberOption == "OffHour" || m.memberOption == "Universal")
                                          select new
                                          {
                                              m.memberId,
@@ -74,7 +74,7 @@ namespace TPW_GMS.Controllers
             {
                 var items = (from m in db.MemberInformations
                              join p in db.Reports on m.memberId equals p.memberId
-                             where p.created >= Convert.ToDateTime(r.startDate) && p.created <= Convert.ToDateTime(r.endDate) && p.renewExtend == r.reportType
+                             where p.created >= Convert.ToDateTime(r.startDate) && p.created <= Convert.ToDateTime(r.endDate) && p.renewExtend == r.reportType && (m.memberOption== "Regular" || m.memberOption== "OffHour" || m.memberOption== "Universal")
                              select new
                              {
                                  m.memberId,
