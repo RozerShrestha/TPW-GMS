@@ -123,7 +123,7 @@
                 </div>
                 <br />
                 <div class="row">
-                    <div class="col-md-3 card-padding">
+                    <div class="col-md-4 card-padding">
                         <div class="box box-widget widget-user-2">
                             <div class="widget-user-header bg-green">
                                <%-- <div class="widget-user-image">
@@ -139,15 +139,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 card-padding">
+                    <div class="col-md-2 card-padding">
                         <div class="box box-widget widget-user-2">
                             <div class="widget-user-header bg-yellow">
                                 <%--<div class="widget-user-image">
                                     <i class="fa fa-users iconplacement"></i>
                                 </div>--%>
                                 <div class="dashHeader">
-                                    Active Members
-                                    <span id="activeMemberhip" class="pull-right headerTotal"></span>
+                                    Active<span id="activeMemberhip" class="pull-right headerTotal"></span>
                                 </div>
                             </div>
                             <div class="box-footer no-padding">
@@ -156,14 +155,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <div class="box box-widget widget-user-2">
                             <div class="widget-user-header bg-red">
                                 <%--<div class="widget-user-image">
                                     <i class="fa fa-users iconplacement"></i>
                                 </div>--%>
                                 <div class="dashHeader">
-                                    <span id="activeAvgMemberhip" class="pull-rightheaderTotal"></span>
+                                    Average<span id="activeAvgMemberhip" class="pull-right headerTotal"></span>
                                 </div>
                             </div>
                             <div class="box-footer no-padding">
@@ -172,14 +171,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 card-padding">
+                    <div class="col-md-2 card-padding">
                         <div class="box box-widget widget-user-2">
                             <div class="widget-user-header bg-blue">
                                 <%--<div class="widget-user-image">
                                     <i class="fa fa-users iconplacement"></i>
                                 </div>--%>
                                 <div class="dashHeader">
-                                    InActive Members<span id="inactiveMembership" class="pull-right headerTotal"></span>
+                                    InActive<span id="inactiveMembership" class="pull-right headerTotal"></span>
                                 </div>
                             </div>
                             <div class="box-footer no-padding">

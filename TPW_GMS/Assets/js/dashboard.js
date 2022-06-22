@@ -53,9 +53,6 @@ function loadChart() {
                     $("#totalMemberShipCount").append(info1);
                     tm += response[i].Count;
                 }
-                //var info = `<li><a id="tm_${response[i].branchName}" href="#">${response[i].branchName}<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
-                //$("#totalMemberShipCount").append(info);
-                //tm += response[i].Count;
             }
             $("#totalMembership").text(tm);
         },
@@ -83,9 +80,10 @@ function loadChart() {
                     am += response[i].No_of_member;
                     avm += response[i].Avg;
 
-                    let infoAvg = `<li><a id="avg_${response[i].branchName}" href="#"><span class="badge bg-red">${response[i].Avg}</span></a></li>`
-
-                        
+                    let infoAvg = `<li><a id="avg_${response[i].branchName}" href="#">${response[i].branch}
+                                            <span class="pull-right badge bg-red}">${response[i].Avg}</span>
+                                        </a>
+                                    </li>`
                     $("#activeAvgMembers").append(infoAvg);
                  }
                 else if (branch === response[i].branch.charAt(0).toLowerCase() + response[i].branch.slice(1)) {
