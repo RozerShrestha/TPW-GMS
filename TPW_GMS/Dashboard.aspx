@@ -11,12 +11,12 @@
     }
     .iconplacement{
         margin-top: 0px;
-        font-size:25px
+        font-size:0px
     }
     .dashHeader{
-        margin-left: 42px;
+        margin-left: 9px;
         font-size: 16px;
-        margin-top: -24px;
+        margin-top: 0px;
         font-family: -webkit-pictograph;
         font-weight: 600;
     }
@@ -63,6 +63,10 @@
     }
     .headerTotal{
         margin-right:19px;
+    }
+    .card-padding{
+        padding-right: 5px;
+        padding-left: 5px;
     }
     /*.branch{
         visibility:hidden;
@@ -119,12 +123,12 @@
                 </div>
                 <br />
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-3 card-padding">
                         <div class="box box-widget widget-user-2">
                             <div class="widget-user-header bg-green">
-                                <div class="widget-user-image">
+                               <%-- <div class="widget-user-image">
                                     <i class="fa fa-users iconplacement"></i>
-                                </div>
+                                </div>--%>
                                 <div class="dashHeader">
                                     Total Membership<span id="totalMembership" class="pull-right headerTotal"></span>
                                 </div>
@@ -135,15 +139,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 card-padding">
                         <div class="box box-widget widget-user-2">
                             <div class="widget-user-header bg-yellow">
-                                <div class="widget-user-image">
+                                <%--<div class="widget-user-image">
                                     <i class="fa fa-users iconplacement"></i>
-                                </div>
+                                </div>--%>
                                 <div class="dashHeader">
                                     Active Members
-                                    <span id="activeAvgMemberhip" class="pull-right headerTotal"></span>
                                     <span id="activeMemberhip" class="pull-right headerTotal"></span>
                                 </div>
                             </div>
@@ -153,12 +156,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-1">
+                        <div class="box box-widget widget-user-2">
+                            <div class="widget-user-header bg-red">
+                                <%--<div class="widget-user-image">
+                                    <i class="fa fa-users iconplacement"></i>
+                                </div>--%>
+                                <div class="dashHeader">
+                                    <span id="activeAvgMemberhip" class="pull-rightheaderTotal"></span>
+                                </div>
+                            </div>
+                            <div class="box-footer no-padding">
+                                <ul id="activeAvgMembers" class="nav nav-stacked">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 card-padding">
                         <div class="box box-widget widget-user-2">
                             <div class="widget-user-header bg-blue">
-                                <div class="widget-user-image">
+                                <%--<div class="widget-user-image">
                                     <i class="fa fa-users iconplacement"></i>
-                                </div>
+                                </div>--%>
                                 <div class="dashHeader">
                                     InActive Members<span id="inactiveMembership" class="pull-right headerTotal"></span>
                                 </div>
@@ -169,12 +188,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2 card-padding">
                         <div class="box box-widget widget-user-2">
-                            <div class="widget-user-header bg-red">
-                                <div class="widget-user-image">
+                            <div class="widget-user-header bg-aqua">
+                                <%--<div class="widget-user-image">
                                     <i class="fa fa-users iconplacement"></i>
-                                </div>
+                                </div>--%>
                                 <div class="dashHeader">
                                     Gym Traffic<span id="gymTraffics" class="pull-right headerTotal"></span>
                                 </div>

@@ -76,13 +76,17 @@ function loadChart() {
             for (var i = 0; i < response.length; i++) {
                 if (branch === 'All') {
                     let info = `<li><a id="am_${response[i].branch}" data-toggle="modal"  data-target="#activeMemberListModal" onclick=ActiveMemberList('${response[i].branch}') href="#">${response[i].branch}
-                                            <span style="margin-left:10px" class="pull-right badge">${response[i].Avg}</span>
                                             <span class="pull-right badge bg-${colorArray[i]}">${response[i].No_of_member}</span>
                                         </a>
                                     </li>`
                     $("#activeMembers").append(info);
                     am += response[i].No_of_member;
                     avm += response[i].Avg;
+
+                    let infoAvg = `<li><a id="avg_${response[i].branchName}" href="#"><span class="badge bg-red">${response[i].Avg}</span></a></li>`
+
+                        
+                    $("#activeAvgMembers").append(infoAvg);
                  }
                 else if (branch === response[i].branch.charAt(0).toLowerCase() + response[i].branch.slice(1)) {
                     var info = `<li><a id="am_${response[i].branch}" data-toggle="modal"  data-target="#activeMemberListModal" onclick=ActiveMemberList('${response[i].branch}') href="#">${response[i].branch}
