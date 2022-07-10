@@ -53,7 +53,7 @@ namespace TPW_GMS.Controllers
                                              p.dueClearAmount,
                                              p.finalAmount,
                                              p.receiptNo,
-                                             //p.updatedDate
+                                             p.created
                                          });
 
                 if (r.branch != "ALL")
@@ -95,7 +95,7 @@ namespace TPW_GMS.Controllers
                                  p.dueClearAmount,
                                  p.finalAmount,
                                  p.receiptNo,
-                                 //p.updatedDate
+                                 p.created
                              }).AsEnumerable();
                 if (r.branch != "ALL")
                     items = items.Where(c => c.branch == r.branch);
