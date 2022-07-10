@@ -219,7 +219,7 @@ namespace TPW_GMS
                 db.Staffs.DeleteOnSubmit(item);
                 db.SubmitChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
