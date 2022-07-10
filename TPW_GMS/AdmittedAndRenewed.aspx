@@ -126,7 +126,7 @@
                         }
                     },
                     {
-                        "data": "updatedDate",
+                        "data": "created",
                         "render": function (data) {
                             try {
                                 var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
