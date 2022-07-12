@@ -18,13 +18,20 @@ namespace TPW_GMS
         protected void Page_Load(object sender, EventArgs e)
         {
             InitialCheck();
-            if (!Page.IsPostBack)
+            if (!IsPostBack)
             {
                 if (roleId == "1" || roleId == "2" || roleId=="4")
                 {
+                    loadBranch();
                     try
                     {
-                        string key = Request.QueryString["key"].ToString();
+                        string key = Request.QueryString["key"];
+                        //new form mode
+                        if (key == null)
+                        {
+                            ddlAssociateBranch.Enabled = false;
+                        }
+                        //edit mode
                         if (key == "edit")
                         {
                             //ddlStaffName.Enabled = false;
@@ -63,7 +70,8 @@ namespace TPW_GMS
                     txtContactNo.Text = editQuery.contactNo;
                     hidSnNo.Value = Convert.ToString(editQuery.id);
                     txtAddress.Text = editQuery.address;
-                    txtAssociateBranch.Text = editQuery.associateBranch;
+                    ddlAssociateBranch.SelectedIndex = ddlAssociateBranch.Items.IndexOf(ddlAssociateBranch.Items.FindByText(editQuery.associateBranch));
+                    //txtAssociateBranch.Text = editQuery.associateBranch;
                     txtTPWJoinDate.Text = DateTime.Parse(editQuery.JoinDate.ToString()).ToString("yyyy/MM/dd");
                     txtStaffDiscountCode.Text = editQuery.discountCode;
                     txtCommissionPercentage.Text = editQuery.commission.ToString();
@@ -96,6 +104,15 @@ namespace TPW_GMS
                 splitUser = l.splitUser;
             }
         }
+        protected void loadBranch()
+        {
+            var branchName = (from p in db.Logins
+                              where !p.firstname.Contains("admin")
+                              select p.username).ToList();
+            ddlAssociateBranch.DataSource = branchName;
+            ddlAssociateBranch.DataBind();
+            ddlAssociateBranch.Items.Insert(0, new ListItem("--Select--", "0"));
+        }
 
         protected void btnAddStaff_Click(object sender, EventArgs e)
         {
@@ -112,7 +129,7 @@ namespace TPW_GMS
                     s.trainerCatagory = ddlCatagory.SelectedItem.Text;
                     s.contactNo = txtContactNo.Text;
                     s.address = txtAddress.Text;
-                    s.associateBranch = txtAssociateBranch.Text;
+                    s.associateBranch = ddlAssociateBranch.SelectedItem.Text;
                     s.JoinDate = Convert.ToDateTime(txtTPWJoinDate.Text);
                     s.discountCode = txtStaffDiscountCode.Text;
                     s.commission = Convert.ToInt32(txtCommissionPercentage.Text);
@@ -156,7 +173,8 @@ namespace TPW_GMS
                         select p).SingleOrDefault();
             txtContactNo.Text = item.contactNo;
             txtAddress.Text = item.address;
-            txtAssociateBranch.Text = item.branch;
+            ddlAssociateBranch.SelectedIndex = ddlAssociateBranch.Items.IndexOf(ddlAssociateBranch.Items.FindByText(item.branch));
+            //txtAssociateBranch.Text = item.branch;
             txtTPWJoinDate.Text = item.memberDate.ToString();
             db.Dispose();
         }
@@ -178,7 +196,7 @@ namespace TPW_GMS
                     s.trainerCatagory = ddlCatagory.SelectedItem.Text;
                     //s.contactNo = txtContactNo.Text;
                     //s.address = txtAddress.Text;
-                    //s.associateBranch = txtAssociateBranch.Text;
+                    s.associateBranch = ddlAssociateBranch.SelectedItem.Text;
                     //s.JoinDate = Convert.ToDateTime(txtTPWJoinDate.Text);
                     s.discountCode = txtStaffDiscountCode.Text;
                     s.commission = Convert.ToInt32(txtCommissionPercentage.Text);
@@ -256,7 +274,7 @@ namespace TPW_GMS
             ddlCatagory.Style.Remove("border-color");
             txtContactNo.Style.Remove("border-color");
             txtAddress.Style.Remove("border-color");
-            txtAssociateBranch.Style.Remove("border-color");
+            //txtAssociateBranch.Style.Remove("border-color");
             txtTPWJoinDate.Style.Remove("border-color");
             txtStaffDiscountCode.Style.Remove("border-color");
             txtCommissionPercentage.Style.Remove("border-color");

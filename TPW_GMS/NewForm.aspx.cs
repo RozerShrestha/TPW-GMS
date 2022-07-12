@@ -690,9 +690,23 @@ namespace TPW_GMS
             }
             else if (ddlPaymentMethod.SelectedItem.Text == "Cheque")
             {
-
-                return (txtBankName.Text != "" && txtChequeNumber.Text != "") ? "" : "Bank Name and Cheque Number is Required";
-                
+                return (txtBankName.Text != "" && txtChequeNumber.Text != "") ? "" : "Bank Name and Cheque Number is Required"; 
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtMembershipDate.Text))
+            {
+                return "Membership Date is invalid";
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtMembershipBeginDate.Text))
+            {
+                return "Renew Date is invalid";
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtMembershipExpireDate.Text))
+            {
+                return "Expired Date is invalid";
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtDateOfBirth.Text))
+            {
+                return "Date of Birth is invalid";
             }
             else
             {

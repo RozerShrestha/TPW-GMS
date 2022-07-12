@@ -242,6 +242,7 @@ namespace TPW_GMS.Services
             }
             return true;
         }
+
         public static bool IsYearRangeNep(int yy)
         {
             if (yy < 2000 || yy > 2089)
@@ -431,7 +432,6 @@ namespace TPW_GMS.Services
                 return date;
             }
         }
-
         public static NepDate DateFormat(string date)
         {
             var dtSplit = date.Split('/');
@@ -442,6 +442,13 @@ namespace TPW_GMS.Services
                 Day = Convert.ToInt32(dtSplit[2])
             };
             return n;
+        }
+
+        public static bool ValidateNepDate(string dateTime)
+        {
+            var dt = DateFormat(dateTime);
+            var result = IsRangeNep(dt.Year, dt.Month, dt.Day);
+            return result;
         }
     }
 }

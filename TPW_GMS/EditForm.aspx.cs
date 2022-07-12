@@ -652,6 +652,22 @@ namespace TPW_GMS
             {
                 return "Please Select Payment Method";
             }
+            else if (!NepaliDateService.ValidateNepDate(txtMembershipDate.Text))
+            {
+                return "Membership Date is invalid";
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtMembershipBeginDate.Text))
+            {
+                return "Renew Date is invalid";
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtMembershipExpireDate.Text))
+            {
+                return "Expired Date is invalid";
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtDateOfBirth.Text))
+            {
+                return "Date of Birth is invalid";
+            }
             //else if ((txtStatic.Text + "-" + txtReceiptNo.Text) == (previousReceiptNo))
             //{
             //    return "Receipt No is same as of Previous, Please enter the new Receipt No";

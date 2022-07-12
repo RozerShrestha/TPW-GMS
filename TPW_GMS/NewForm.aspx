@@ -305,9 +305,13 @@
                                           <asp:TextBox ID="txtReceiptNo" CssClass=" form-control" ClientIDMode="Static" runat="server"></asp:TextBox>
                                       </div>
                                   </div>
-                                  <div class="col-sm-6">
+                                  <div class="col-sm-4">
                                       Remark:
                                       <asp:TextBox ID="txtRemark" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                  </div>
+                                  <div class="col-sm-2">
+                                      Action Taker
+                                      <asp:DropDownList ID="ddlActionTaker" runat="server" CssClass="form-control input-sm"></asp:DropDownList>
                                   </div>
                                   <div class="col-sm-12">
                                       <asp:Button ID="btnPriceCalculate" runat="server" Text="Calculate" CssClass="btn btn-danger" OnClick="btnPriceCalculate_Click" />

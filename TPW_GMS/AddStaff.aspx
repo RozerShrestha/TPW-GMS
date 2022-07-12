@@ -116,7 +116,9 @@
                         </div>
                         <div class="col-sm-3">
                             Associate Branch<span class="asterik">*</span>
-                            <asp:TextBox ID="txtAssociateBranch" runat="server" ReadOnly="true" CssClass="form-control input-sm"></asp:TextBox>
+                            <%--<asp:TextBox ID="txtAssociateBranch" runat="server" ReadOnly="true" CssClass="form-control input-sm"></asp:TextBox>--%>
+                            <asp:DropDownList ID="ddlAssociateBranch" runat="server" CssClass="form-control input-sm"></asp:DropDownList>
+
                         </div>
                         <div class="col-sm-3">
                             TPW Join Date<span class="asterik">*</span>

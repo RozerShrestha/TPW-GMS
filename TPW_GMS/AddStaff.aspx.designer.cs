@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TPW_GMS {
-    
-    
-    public partial class AddStaff {
-        
+namespace TPW_GMS
+{
+
+
+    public partial class AddStaff
+    {
+
         /// <summary>
         /// hidHeader control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidHeader;
-        
+
         /// <summary>
         /// upnlStaffManagement control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upnlStaffManagement;
-        
+
         /// <summary>
         /// ddlStaffCatagory control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlStaffCatagory;
-        
+
         /// <summary>
         /// ddlStaffName control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlStaffName;
-        
+
         /// <summary>
         /// ddlCatagory control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCatagory;
-        
+
         /// <summary>
         /// txtContactNo control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtContactNo;
-        
+
         /// <summary>
         /// txtAddress control.
         /// </summary>
@@ -74,16 +76,16 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAddress;
-        
+
         /// <summary>
-        /// txtAssociateBranch control.
+        /// ddlAssociateBranch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAssociateBranch;
-        
+        protected global::System.Web.UI.WebControls.DropDownList ddlAssociateBranch;
+
         /// <summary>
         /// txtTPWJoinDate control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTPWJoinDate;
-        
+
         /// <summary>
         /// txtStaffDiscountCode control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtStaffDiscountCode;
-        
+
         /// <summary>
         /// txtCommissionPercentage control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCommissionPercentage;
-        
+
         /// <summary>
         /// chkStatus control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkStatus;
-        
+
         /// <summary>
         /// hidSnNo control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidSnNo;
-        
+
         /// <summary>
         /// txtFrom1 control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFrom1;
-        
+
         /// <summary>
         /// txtTo1 control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTo1;
-        
+
         /// <summary>
         /// txtFrom2 control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFrom2;
-        
+
         /// <summary>
         /// txtTo2 control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTo2;
-        
+
         /// <summary>
         /// txtExperience control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtExperience;
-        
+
         /// <summary>
         /// btnAddStaff control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddStaff;
-        
+
         /// <summary>
         /// btnEditStaff control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnEditStaff;
-        
+
         /// <summary>
         /// lblInfo control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblInfo;
-        
+
         /// <summary>
         /// lblPopupErrorr control.
         /// </summary>
@@ -209,7 +211,7 @@ namespace TPW_GMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPopupErrorr;
-        
+
         /// <summary>
         /// btnConfirmDelete control.
         /// </summary>
