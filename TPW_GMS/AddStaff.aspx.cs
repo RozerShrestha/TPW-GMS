@@ -114,43 +114,76 @@ namespace TPW_GMS
             ddlAssociateBranch.Items.Insert(0, new ListItem("--Select--", "0"));
         }
 
-        protected void btnAddStaff_Click(object sender, EventArgs e)
+        protected void btnAddEdit_Click(object sender, EventArgs e)
         {
+            var btnType= (sender as Button).Text;
             var error = validateField();
             if (error == "")
             {
                 try
                 {
-                    Staff s = new Staff();
-                    StaffSalaryDeduction sd = new StaffSalaryDeduction();
-                    s.staffCatagory = ddlStaffCatagory.SelectedItem.Text;
-                    s.memberId = ddlStaffName.SelectedValue;
-                    s.staffName = ddlStaffName.SelectedItem.Text;
-                    s.trainerCatagory = ddlCatagory.SelectedItem.Text;
-                    s.contactNo = txtContactNo.Text;
-                    s.address = txtAddress.Text;
-                    s.associateBranch = ddlAssociateBranch.SelectedItem.Text;
-                    s.JoinDate = Convert.ToDateTime(txtTPWJoinDate.Text);
-                    s.discountCode = txtStaffDiscountCode.Text;
-                    s.commission = Convert.ToInt32(txtCommissionPercentage.Text);
-                    s.status = chkStatus.Checked;
-                    s.from1 = txtFrom1.Text;
-                    s.from2 = txtFrom2.Text;
-                    s.to1 = txtTo1.Text;
-                    s.to2 = txtTo2.Text;
-                    s.experience = txtExperience.Text;
-                    s.created = DateTime.Now;
+                    if (btnType == "Add")
+                    {
+                        Staff s = new Staff();
+                        StaffSalaryDeduction sd = new StaffSalaryDeduction();
+                        s.staffCatagory = ddlStaffCatagory.SelectedItem.Text;
+                        s.memberId = ddlStaffName.SelectedValue;
+                        s.staffName = ddlStaffName.SelectedItem.Text;
+                        s.trainerCatagory = ddlCatagory.SelectedItem.Text;
+                        s.contactNo = txtContactNo.Text;
+                        s.address = txtAddress.Text;
+                        s.associateBranch = ddlAssociateBranch.SelectedItem.Text;
+                        s.JoinDate = Convert.ToDateTime(txtTPWJoinDate.Text);
+                        s.discountCode = txtStaffDiscountCode.Text;
+                        s.commission = Convert.ToInt32(txtCommissionPercentage.Text);
+                        s.status = chkStatus.Checked;
+                        s.from1 = txtFrom1.Text;
+                        s.from2 = txtFrom2.Text;
+                        s.to1 = txtTo1.Text;
+                        s.to2 = txtTo2.Text;
+                        s.experience = txtExperience.Text;
+                        s.created = DateTime.Now;
 
-                    sd.memberId = ddlStaffName.SelectedValue;
-                    sd.count = 0;
-                    sd.createdDate = DateTime.Now;
-                    db.StaffSalaryDeductions.InsertOnSubmit(sd);
-                    db.Staffs.InsertOnSubmit(s);
-                    db.SubmitChanges();
+                        sd.memberId = ddlStaffName.SelectedValue;
+                        sd.count = 0;
+                        sd.createdDate = DateTime.Now;
+                        db.StaffSalaryDeductions.InsertOnSubmit(sd);
+                        db.Staffs.InsertOnSubmit(s);
+                        db.SubmitChanges();
 
-                    lblInfo.Text = "Successfully Inserted Data , now redirecting...";
-                    lblInfo.ForeColor = ColorTranslator.FromHtml("#037203");
-                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "redirectJS", "setTimeout(function() { window.location.replace('AddStaff.aspx') }, 500);", true);
+                        lblInfo.Text = "Successfully Inserted Data , now redirecting...";
+                        lblInfo.ForeColor = ColorTranslator.FromHtml("#037203");
+                        ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "redirectJS", "setTimeout(function() { window.location.replace('AddStaff.aspx') }, 500);", true);
+                    }
+                    else if (btnType == "Edit")
+                    {
+                        int id = Convert.ToInt32(hidSnNo.Value);
+                        var s = (from p in db.Staffs
+                                 where p.id == id
+                                 select p).SingleOrDefault();
+                        s.staffCatagory = ddlStaffCatagory.SelectedItem.Text;
+                        //s.memberId = ddlStaffName.SelectedValue;
+                        //s.staffName = ddlStaffName.SelectedItem.Text;
+                        s.trainerCatagory = ddlCatagory.SelectedItem.Text;
+                        //s.contactNo = txtContactNo.Text;
+                        //s.address = txtAddress.Text;
+                        s.associateBranch = ddlAssociateBranch.SelectedItem.Text;
+                        //s.JoinDate = Convert.ToDateTime(txtTPWJoinDate.Text);
+                        s.discountCode = txtStaffDiscountCode.Text;
+                        s.commission = Convert.ToInt32(txtCommissionPercentage.Text);
+                        s.status = chkStatus.Checked;
+                        s.from1 = txtFrom1.Text;
+                        s.from2 = txtFrom2.Text;
+                        s.to1 = txtTo1.Text;
+                        s.to2 = txtTo2.Text;
+                        s.experience = txtExperience.Text;
+                        s.modified = DateTime.Now;
+                        db.SubmitChanges();
+
+                        lblInfo.Text = "Successfully Inserted Data , now redirecting...";
+                        lblInfo.ForeColor = ColorTranslator.FromHtml("#037203");
+                        ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "redirectJS", "setTimeout(function() { window.location.replace('AddStaff.aspx') }, 500);", true);
+                    }
                 }
                 catch (Exception ex)
                 {

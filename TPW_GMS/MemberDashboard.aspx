@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MemberDashboard.aspx.cs" Inherits="TPW_GMS.MemberDashboard" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    
+    <asp:HiddenField ID="hidHeader" runat="server" Value="Staff Information" />
     <div id="app">
         <div class="box box-widget widget-user-2">
             <div class="box box-header">

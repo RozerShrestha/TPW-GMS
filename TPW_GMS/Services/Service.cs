@@ -36,13 +36,20 @@ namespace TPW_GMS.Services
             {
                 LoginUserInformation l = new LoginUserInformation();
                 LoginUserInfo uInfo = new LoginUserInfo();
-                var loginUser = HttpContext.Current.Session["userDb"].ToString();
-                List<string> splitUser = new List<string>(loginUser.Split(new string[] { "-" }, StringSplitOptions.None));
-                int roleId = getLoginUSerRole(loginUser);
-                uInfo.loginUser = loginUser;
-                uInfo.roleId = roleId.ToString();
-                uInfo.splitUser = splitUser[0];
-                return uInfo;
+                var loginUser =(String)HttpContext.Current.Session["userDb"];
+                if (loginUser != null)
+                {
+                    List<string> splitUser = new List<string>(loginUser.Split(new string[] { "-" }, StringSplitOptions.None));
+                    int roleId = getLoginUSerRole(loginUser);
+                    uInfo.loginUser = loginUser;
+                    uInfo.roleId = roleId.ToString();
+                    uInfo.splitUser = splitUser[0];
+                    return uInfo;
+                }
+                else
+                {
+                    return uInfo = null;
+                }
             }
             catch (Exception)
             {

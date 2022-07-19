@@ -572,6 +572,26 @@ namespace TPW_GMS.Controllers
                 return Ok(ex);
             }
         }
+        [Route("api/GetActiveHistoryMonth")]
+        [HttpGet]
+        public IHttpActionResult GetActiveHistoryMonth(string branch)
+        {
+            try
+            {
+                using (var conn = dbCon.CreateConnection())
+                {
+                    var result = conn.Query("ActiveHistoryMonth",
+                        param: new { branch }
+                        , commandType: System.Data.CommandType.StoredProcedure).ToList();
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Ok(ex);
+            }
+        }
 
         [Route("api/GetCommissionLog")]
         public IEnumerable<ComissionPaymentLog> GetCommissionLog()

@@ -146,7 +146,7 @@
                                   </div>
                                   <div class="col-sm-3">
                                       <span class="text-label">Membership payment type</span> <span class="asterik">*</span><asp:Label ID="lblPrePaymentType" runat="server"></asp:Label>
-                                      <asp:DropDownList ID="ddlMembershipPaymentType" runat="server" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlMembershipPaymentType_SelectedIndexChanged" data-toggle="tooltip" data-delay="{ show: 1000, hide: 10000}" data-placement="top" title="Note: Expired Date is automatically calculated" AutoPostBack="true">
+                                      <asp:DropDownList ID="ddlMembershipPaymentType" Enabled="false" runat="server" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlMembershipPaymentType_SelectedIndexChanged" data-toggle="tooltip" data-delay="{ show: 1000, hide: 10000}" data-placement="top" title="Note: Membership payment Type is enabled only if the Reason for Update is Renew" AutoPostBack="true">
                                           <asp:ListItem Text="Select"></asp:ListItem>
                                           <asp:ListItem Value="1" Text="1 Month"></asp:ListItem>
                                           <asp:ListItem Value="3" Text="3 Month"></asp:ListItem>
@@ -340,8 +340,48 @@
                                                                 <asp:Label ID="lblCreated" runat="server"></asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
+                                                         <asp:BoundField HeaderText="Action Taker" DataField="actionTaker" />
                                                     </Columns>
                                                     <%--<PagerStyle HorizontalAlign = "Right" CssClass = "GridPager" />--%>
+                                                </asp:GridView>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 header">
+                                        <label data-toggle="collapse" style="cursor:pointer;" data-target="#demo3">Version History</label>
+                                  </div>
+                                    <div class="col-sm-12">
+                                        <div class="table table-responsive">
+                                            <div id="demo3" class="<%=state %>">
+                                                <asp:GridView ID="gridVersionHistory" runat="server" AutoGenerateColumns="false" OnRowDataBound="gridVersionHistory_RowDataBound" CssClass="table table-bordered">
+                                                    <Columns>
+                                                        <asp:TemplateField HeaderText="Sn." HeaderStyle-Width="10px">
+                                                            <ItemTemplate>
+                                                                <%#Container.DataItemIndex+1 %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Renew Date">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblRenewDate" runat="server"></asp:Label>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                         <asp:TemplateField HeaderText="Expired Date">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblExpiredDate" runat="server"></asp:Label>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:BoundField HeaderText="Catagory" DataField="memberCatagory" />
+                                                        <asp:BoundField HeaderText="Payment Type" DataField="memberpaymentType" />
+                                                        <asp:BoundField HeaderText="Member Option" DataField="memberOption" />
+                                                         <asp:TemplateField HeaderText="Created">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblCreated" runat="server"></asp:Label>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:BoundField HeaderText="Remark" DataField="remark" />
+                                                        <asp:BoundField HeaderText="Branch" DataField="createdBy" />
+                                                         <asp:BoundField HeaderText="Action Taker" DataField="actionTaker" />
+                                                    </Columns>
                                                 </asp:GridView>
                                             </div>
                                         </div>
@@ -418,15 +458,19 @@
                                     <div class="col-sm-2">
                                         <%--<asp:CheckBox ID="chkIsRenewExtended" CssClass="checkbox-inline" Checked="true" Text="Is Renewed" runat="server" />--%>
                                         <span class="text-label">Reason for Update</span><span class="asterik">*</span>
-                                        <asp:DropDownList ID="ddlRenewExtendNormal" runat="server" CssClass="form-control input-sm">
+                                        <asp:DropDownList ID="ddlRenewExtendNormal" runat="server" CssClass="form-control input-sm" AutoPostBack="true" OnSelectedIndexChanged="ddlRenewExtendNormal_SelectedIndexChanged">
                                             <asp:ListItem Value="0" Text="--Select--" Selected="True"></asp:ListItem>
                                            <asp:ListItem Value="1" Text="Normal Changes"></asp:ListItem>
                                            <asp:ListItem Value="2" Text="Renew"></asp:ListItem>
                                        </asp:DropDownList>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                       Remark:
                                       <asp:TextBox ID="txtRemark" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                  </div>
+                                    <div class="col-sm-2">
+                                      Action Taker<span class="asterik">*</span>
+                                      <asp:DropDownList ID="ddlActionTaker" runat="server" CssClass="form-control input-sm"></asp:DropDownList>
                                   </div>
                                   <div class="col-sm-12">
                                        <asp:Button ID="btnPriceCalculate" runat="server" Text="Calculate" CssClass="btn btn-danger" OnClick="btnPriceCalculate_Click" />

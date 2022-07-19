@@ -310,7 +310,7 @@
                                       <asp:TextBox ID="txtRemark" runat="server" CssClass="form-control input-sm"></asp:TextBox>
                                   </div>
                                   <div class="col-sm-2">
-                                      Action Taker
+                                      Action Taker<span class="asterik">*</span><br />
                                       <asp:DropDownList ID="ddlActionTaker" runat="server" CssClass="form-control input-sm"></asp:DropDownList>
                                   </div>
                                   <div class="col-sm-12">

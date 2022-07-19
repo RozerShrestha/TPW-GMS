@@ -17,6 +17,7 @@ using System.Drawing.Drawing2D;
 using QRCoder;
 using System.Net.Mime;
 using TPW_GMS.Services;
+using Newtonsoft.Json;
 
 namespace TPW_GMS
 {
@@ -46,7 +47,6 @@ namespace TPW_GMS
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
             InitialCheck();
             Page.MaintainScrollPositionOnPostBack = true;
             ScriptManager.RegisterStartupScript(this, Page.GetType(), "DropdownColor1", "activeInactiveBGChange()", true);
@@ -56,6 +56,7 @@ namespace TPW_GMS
                 loadAdmissionFee();
                 SetInitialRowBodyMesurement();
                 loadInfo();
+                LoadActiontaker();
                 try
                 {
                     if (loginUser.Contains("admin"))
@@ -90,6 +91,32 @@ namespace TPW_GMS
                 roleId = l.roleId;
                 loginUser = l.loginUser;
                 splitUser = l.splitUser;
+            }
+        }
+        private void LoadActiontaker()
+        {
+            using (TPWDataContext db = new TPWDataContext())
+            {
+                if (loginUser.Contains("admin"))
+                {
+                    var actionTakers = (from ex in db.Staffs
+                                        where ex.associateBranch == loginUser && ex.staffCatagory == "Operation Manager"
+                                        select ex.staffName).ToList();
+                    ddlActionTaker.DataSource = actionTakers;
+                    ddlActionTaker.DataBind();
+                    ddlActionTaker.Items.Insert(0, new ListItem("--Select--", "0"));
+                }
+                else
+                {
+                    var actionTakers = (from ex in db.Staffs
+                                        where ex.associateBranch == loginUser && ex.staffCatagory == "Gym Admin"
+                                        select ex.staffName).ToList();
+                    ddlActionTaker.DataSource = actionTakers;
+                    ddlActionTaker.DataBind();
+                    ddlActionTaker.Items.Insert(0, new ListItem("--Select--", "0"));
+                }
+
+
             }
         }
         protected void loadAdmissionFee()
@@ -688,6 +715,10 @@ namespace TPW_GMS
             {
                 return "Please Select Payment Method";
             }
+            else if (ddlActionTaker.SelectedIndex == 0)
+            {
+                return "Please Select Your Name in Action Taker";
+            }
             else if (ddlPaymentMethod.SelectedItem.Text == "Cheque")
             {
                 return (txtBankName.Text != "" && txtChequeNumber.Text != "") ? "" : "Bank Name and Cheque Number is Required"; 
@@ -813,6 +844,7 @@ namespace TPW_GMS
                 try
                 {
                     MemberInformation m = new MemberInformation();
+                    MemberInformationLog mLog = new MemberInformationLog();
                     MemberLogin ml = new MemberLogin();
                     PaymentInfo p = new PaymentInfo();
                     StartStop s = new StartStop();
@@ -884,9 +916,11 @@ namespace TPW_GMS
                     m.universalMembershipLimit = ddlMemberOption.SelectedValue == "1" ? 12 : ddlMemberOption.SelectedValue == "3" ? 365 : ddlMemberOption.SelectedValue == "2" ? 12 : ddlMemberOption.SelectedValue == "5" ? 365 : ddlMemberOption.SelectedValue == "6" ? 365 : ddlMemberOption.SelectedValue == "7" ? 365 : ddlMemberOption.SelectedValue == "8" ? 0 : 0;
                     m.remark = txtRemark.Text;
                     m.createdDate = DateTime.Now;
-
+                    m.actionTaker = ddlActionTaker.SelectedItem.Text;
                     m.createdBy = txtBranch.Text;
                     db.MemberInformations.InsertOnSubmit(m);
+                    mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m));
+                    db.MemberInformationLogs.InsertOnSubmit(mLog);
 
                     #endregion
 
@@ -979,6 +1013,7 @@ namespace TPW_GMS
                     r.receiptNo = txtStatic.Text + "-" + txtReceiptNo.Text;
                     r.paymentMethod = ddlPaymentMethod.SelectedItem.Text;
                     r.created = DateTime.Now;
+                    r.actionTaker = ddlActionTaker.SelectedItem.Text;
                     r.renewExtend = "newAdmitted";
                     db.Reports.InsertOnSubmit(r);
                     #endregion
@@ -1366,5 +1401,6 @@ namespace TPW_GMS
                 txtChequeNumber.Text = "";
             }
         }
+        
     }
 }
