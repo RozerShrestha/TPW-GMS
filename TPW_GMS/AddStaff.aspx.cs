@@ -267,7 +267,9 @@ namespace TPW_GMS
             {
                 int id = Convert.ToInt32(Request.QueryString["ID"]);
                 var item = db.Staffs.Where(p => p.id == id).SingleOrDefault();
+                var item1 = db.StaffSalaryDeductions.Where(p => p.memberId == item.memberId).SingleOrDefault();
                 db.Staffs.DeleteOnSubmit(item);
+                db.StaffSalaryDeductions.DeleteOnSubmit(item1);
                 db.SubmitChanges();
             }
             catch (Exception)
