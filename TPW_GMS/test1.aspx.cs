@@ -179,7 +179,7 @@ namespace TPW_GMS
         protected void Button3_Click(object sender, EventArgs e)
         {
             int count1 = 1;
-            int count2 = 1;
+            //int count2 = 1;
             using (TPWDataContext db = new TPWDataContext())
             {
 

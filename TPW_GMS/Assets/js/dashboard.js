@@ -80,7 +80,7 @@ function loadChart() {
                     am += response[i].No_of_member;
                     avm += response[i].Avg;
 
-                    let infoAvg = `<li><a id="avg_${response[i].branchName}" href="#">${response[i].branch}
+                    let infoAvg = `<li><a id="avg_${response[i].branchName}" data-toggle="modal"  data-target="#activeHistoryMonthModal" onclick=ActiveHistoryMonth('${response[i].branch}') href="#">${response[i].branch}
                                             <span class="pull-right badge bg-red}">${response[i].Avg}</span>
                                         </a>
                                     </li>`
@@ -95,7 +95,7 @@ function loadChart() {
                     am += response[i].No_of_member;
                     avm += response[i].Avg;
 
-                    let infoAvg = `<li><a id="avg_${response[i].branchName}" href="#">${response[i].branch}
+                    let infoAvg = `<li><a id="avg_${response[i].branchName}" data-toggle="modal"  data-target="#activeHistoryMonthModal" onclick=ActiveHistoryMonth('${response[i].branch}') href="#">${response[i].branch}
                                             <span class="pull-right badge bg-red}">${response[i].Avg}</span>
                                         </a>
                                     </li>`
@@ -556,6 +556,56 @@ function ActiveMemberList(branch) {
                     }
                 }
             },
+        ]
+    })
+}
+function ActiveHistoryMonth(branch) {
+    var existingTbl = $('#activeHistoryMonth').DataTable();
+    if (existingTbl) {
+        existingTbl.destroy();
+    }
+    var table = $('#activeHistoryMonth').DataTable({
+        fixedHeader: {
+            header: true,
+            headerOffset: 50,
+        },
+        autoWidth: true,
+        language: {
+            sLoadingRecords: '<span style="width:100%;"><img src="Assets/Images/ajax-loader.gif"></span>'
+        },
+        lengthMenu: [[5, 25, 50, -1], [5, 25, 50, "All"]],
+        ajax: {
+            url: `api/GetActiveHistoryMonth?branch=${branch}`,
+            dataType: "JSON",
+            dataSrc: "",
+            headers: {
+                'Authorization': 'Bearer ' + window.localStorage.getItem('auth_token')
+            },
+        },
+        columns: [
+            {
+                'data': 'id',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            {
+                "data": "date",
+                "render": function (data) {
+                    try {
+                        var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
+                        let objEng = NepaliFunctions.ConvertToDateObject(dat, "YYYY/MM/DD");
+                        let objNep = NepaliFunctions.AD2BS(objEng);
+                        let dt = NepaliFunctions.ConvertDateFormat(objNep, "YYYY/MM/DD");
+
+                        return dt;
+                    } catch (e) {
+                        return '';
+                    }
+                }
+            },
+            { 'data': 'branch' },
+            { 'data': 'count' }
         ]
     })
 }

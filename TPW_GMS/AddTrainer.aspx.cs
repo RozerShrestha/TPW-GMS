@@ -18,7 +18,7 @@ namespace TPW_GMS
         protected void Page_Load(object sender, EventArgs e)
         {
             InitialCheck();
-            if (!Page.IsPostBack)
+            if (!IsPostBack)
             {
                 if (roleId == "1" || roleId=="2")
                 {

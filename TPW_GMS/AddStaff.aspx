@@ -116,7 +116,9 @@
                         </div>
                         <div class="col-sm-3">
                             Associate Branch<span class="asterik">*</span>
-                            <asp:TextBox ID="txtAssociateBranch" runat="server" ReadOnly="true" CssClass="form-control input-sm"></asp:TextBox>
+                            <%--<asp:TextBox ID="txtAssociateBranch" runat="server" ReadOnly="true" CssClass="form-control input-sm"></asp:TextBox>--%>
+                            <asp:DropDownList ID="ddlAssociateBranch" runat="server" CssClass="form-control input-sm"></asp:DropDownList>
+
                         </div>
                         <div class="col-sm-3">
                             TPW Join Date<span class="asterik">*</span>
@@ -167,8 +169,8 @@
                         </div>
                     </div>
                     <div class="row ml-1 mt-2">
-                        <asp:Button ID="btnAddStaff" runat="server" Enabled="true" Text="Submit" CssClass="btn btn-success" OnClick="btnAddStaff_Click" />
-                        <asp:Button ID="btnEditStaff" runat="server" Enabled="false" Text="Edit" CssClass="btn btn-danger ml-2" OnClick="btnEditStaff_Click" />
+                        <asp:Button ID="btnAddStaff" runat="server" Enabled="true" Text="Add" CssClass="btn btn-success" OnClick="btnAddEdit_Click" />
+                        <asp:Button ID="btnEditStaff" runat="server" Enabled="false" Text="Edit" CssClass="btn btn-danger ml-2" OnClick="btnAddEdit_Click" />
                         <asp:Label ID="lblInfo" Style="margin-left: 0px" runat="server"></asp:Label>
                     </div>
                 </div>

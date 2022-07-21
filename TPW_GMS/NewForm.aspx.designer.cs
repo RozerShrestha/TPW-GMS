@@ -510,6 +510,15 @@ namespace TPW_GMS
         protected global::System.Web.UI.WebControls.TextBox txtRemark;
 
         /// <summary>
+        /// ddlActionTaker control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlActionTaker;
+
+        /// <summary>
         /// btnPriceCalculate control.
         /// </summary>
         /// <remarks>

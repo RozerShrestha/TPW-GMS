@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -84,18 +85,21 @@ namespace TPW_GMS
         const string passphrase = "TPWP@ssw0rd123#";
         protected void Page_Load(object sender, EventArgs e)
         {
-            ScriptManager.RegisterStartupScript(this, Page.GetType(), "DropdownColor", "activeInactiveBGChange()", true);
-            InitialCheck();
-            txtMembershipBeginDate.Enabled = roleId == "1" ? true : false;
-            txtMembershipExpireDate.Enabled = roleId == "2" ? true : false;
-            if (roleId == "2") { ddlRenewExtendNormal.Items.Insert(2, new ListItem("Extend", "3")); }
+                ScriptManager.RegisterStartupScript(this, Page.GetType(), "DropdownColor", "activeInactiveBGChange()", true);
+                InitialCheck();
+                txtMembershipBeginDate.Enabled = roleId == "1" ? true : false;
+                txtMembershipExpireDate.Enabled = roleId == "2" ? true : false;
+                
 
-            loadInfo();
-            if (!IsPostBack)
-            {
-                txtChangeInStartStopDate.Enabled = roleId == "2" ? true : false;
-                loadData();
-            }
+                loadInfo();
+                if (!IsPostBack)
+                {
+                    if (roleId == "2") { ddlRenewExtendNormal.Items.Insert(2, new ListItem("Extend", "3")); }
+                    txtChangeInStartStopDate.Enabled = roleId == "2" ? true : false;
+                    LoadActiontaker();
+                    loadData();
+                    
+                }
         }
         public void InitialCheck()
         {
@@ -161,6 +165,30 @@ namespace TPW_GMS
                 txtDiscountCode.Enabled = disab;
             }
         }
+        private void LoadActiontaker()
+        {
+            using (TPWDataContext db = new TPWDataContext())
+            {
+                if (loginUser.Contains("admin"))
+                {
+                    var actionTakers = (from ex in db.Staffs
+                                        where ex.associateBranch == splitUser && ex.staffCatagory == "Operation Manager"
+                                        select ex.staffName).ToList();
+                    ddlActionTaker.DataSource = actionTakers;
+                    ddlActionTaker.DataBind();
+                    ddlActionTaker.Items.Insert(0, new ListItem("--Select--", "0"));
+                }
+                else
+                {
+                    var actionTakers = (from ex in db.Staffs
+                                        where ex.associateBranch == loginUser && ex.staffCatagory == "Gym Admin"
+                                        select ex.staffName).ToList();
+                    ddlActionTaker.DataSource = actionTakers;
+                    ddlActionTaker.DataBind();
+                    ddlActionTaker.Items.Insert(0, new ListItem("--Select--", "0"));
+                }
+            }
+        }
         protected void loadInfo()
         {
             var item = db.ExtraInformations.SingleOrDefault();
@@ -220,7 +248,25 @@ namespace TPW_GMS
         {
             image1.ImageUrl = "~/Assets/Images/sample.jpg?" + DateTime.Now.Ticks.ToString();
         }
-
+        protected void ddlRenewExtendNormal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlRenewExtendNormal.SelectedItem.Text == "Renew")
+            {
+                ddlMembershipPaymentType.Enabled = true;
+            }
+            else if(ddlRenewExtendNormal.SelectedItem.Text == "Normal Changes")
+            {
+                MemberInformation m1 = (from c in db.MemberInformations
+                                        where c.memberId == txtMemberId.Text
+                                        select c).SingleOrDefault();
+                var mbd = NepaliDateService.EngToNep(Convert.ToDateTime(m1.memberBeginDate));
+                txtMembershipBeginDate.Text = mbd.ToString();
+                var med = NepaliDateService.EngToNep(Convert.ToDateTime(m1.memberExpireDate));
+                txtMembershipExpireDate.Text = med.ToString();
+                ddlMembershipPaymentType.SelectedIndex = 0;
+                ddlMembershipPaymentType.Enabled = false;
+            }
+        }
         protected void btnUpload_Click(object sender, EventArgs e)
         {
             if (FileUpload1.HasFile)
@@ -652,6 +698,26 @@ namespace TPW_GMS
             {
                 return "Please Select Payment Method";
             }
+            else if (ddlActionTaker.SelectedIndex == 0)
+            {
+                return "Please Select Your Name in Action Taker";
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtMembershipDate.Text))
+            {
+                return "Membership Date is invalid";
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtMembershipBeginDate.Text))
+            {
+                return "Renew Date is invalid";
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtMembershipExpireDate.Text))
+            {
+                return "Expired Date is invalid";
+            }
+            else if (!NepaliDateService.ValidateNepDate(txtDateOfBirth.Text))
+            {
+                return "Date of Birth is invalid";
+            }
             //else if ((txtStatic.Text + "-" + txtReceiptNo.Text) == (previousReceiptNo))
             //{
             //    return "Receipt No is same as of Previous, Please enter the new Receipt No";
@@ -794,6 +860,7 @@ namespace TPW_GMS
                                      c.lockerNo,
                                      c.universalMembershipLimit,
                                      c.remark,
+                                     c.actionTaker,
                                      ml.username,
                                      ml.password,
                                      s.stopDate,
@@ -881,6 +948,7 @@ namespace TPW_GMS
                     txtStatic.Text= editQuery.receiptNo.Split('-')[0];
                 txtReceiptNo.Text = editQuery.receiptNo.Split('-').Length == 2 ? editQuery.receiptNo.Split('-')[1] : editQuery.receiptNo.Split('-')[0];
                 txtRemark.Text = editQuery.remark;
+                //ddlActionTaker.SelectedIndex = ddlActionTaker.Items.IndexOf(ddlActionTaker.Items.FindByText(editQuery.actionTaker));
                 ddlPaymentMethod.SelectedIndex = ddlPaymentMethod.Items.IndexOf(ddlPaymentMethod.Items.FindByText(editQuery.paymentMethod));
                 if (ddlPaymentMethod.SelectedItem.Text == "Cheque")
                 {
@@ -945,6 +1013,10 @@ namespace TPW_GMS
                 reportItems = reportItems.Where(c => c.memberId == id);
                 gridReport.DataSource = reportItems.ToList();
                 gridReport.DataBind();
+
+                var versionHistoryItems = db.MemberInformationLogs.Where(p => p.memberId == id);
+                gridVersionHistory.DataSource = versionHistoryItems.ToList();
+                gridVersionHistory.DataBind();
 
                 IQueryable<BodyMeasurement> items = db.BodyMeasurements;
                 items = items.Where(c => c.memberId == id);
@@ -1041,7 +1113,6 @@ namespace TPW_GMS
             //if both result is 0, i.e. renew and expiry date is not modified
             return status;
         }
-
         protected bool isReceiptNumberChanged(PaymentInfo p)
         {
             bool status = p.receiptNo == (txtStatic.Text + "-" + txtReceiptNo.Text) ? false : true;
@@ -1066,6 +1137,7 @@ namespace TPW_GMS
                                     select s).SingleOrDefault();
 
                     Report r1 = new Report();
+                    MemberInformationLog mLog = new MemberInformationLog();
 
                     ExtraInformation ex = (from c in db.ExtraInformations
                                            where c.extraInformationId == 1
@@ -1128,6 +1200,7 @@ namespace TPW_GMS
                     m1.haveBeenGymBeforeText = txtHowLong.Text;
                     m1.anyhealthIssue = txtAnyHealthIssue.Text;
                     m1.remark = txtRemark.Text;
+                    m1.actionTaker = ddlActionTaker.SelectedItem.Text;
                     //m1.locker = chkLocker.Checked;
                     //m1.lockerNo = txtLockerNumber.Text;
                     m1.modifiedDate = DateTime.Now;
@@ -1226,6 +1299,7 @@ namespace TPW_GMS
                         r1.paymentMethod = ddlPaymentMethod.SelectedItem.Text;
                         r1.created = DateTime.Now;
                         r1.renewExtend = "renewed";
+                        r1.actionTaker = ddlActionTaker.SelectedItem.Text;
                         db.Reports.InsertOnSubmit(r1);
                         #endregion
                         #region Member Information
@@ -1250,7 +1324,9 @@ namespace TPW_GMS
                         m1.ActiveInactive = "Active";
                        
                     }
-                    
+                    mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m1));
+                    mLog.createdDate = DateTime.Now;
+                    db.MemberInformationLogs.InsertOnSubmit(mLog);
                     db.SubmitChanges();
                     lblInformation.Visible = true;
                     string key = Request.QueryString["key"].ToString();
@@ -1503,7 +1579,7 @@ namespace TPW_GMS
         }
         protected void gridBodyMesurement_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.DataItem.ToString() == "TPW_GMS.Data.BodyMeasurement")
+            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.DataItem!=null)
             {
                 BodyMeasurement items = (BodyMeasurement)e.Row.DataItem;
 
@@ -1537,15 +1613,15 @@ namespace TPW_GMS
         {
             try
             {
-                if (e.Row.RowType == DataControlRowType.DataRow && e.Row.DataItem.ToString() == "TPW_GMS.Data.Report")
+                if (e.Row.RowType == DataControlRowType.DataRow && e.Row.DataItem!=null)
                 {
-                    Report items = (Report)e.Row.DataItem;
-                    var rd = NepaliDateService.EngToNep(Convert.ToDateTime(items.memberBeginDate));
-                    ((Label)e.Row.FindControl("lblRenewDate")).Text = rd.ToString();
-                    var ed = NepaliDateService.EngToNep(Convert.ToDateTime(items.memberExpireDate));
+                    Report item = (Report)e.Row.DataItem;
+                    string rd = item.memberBeginDate == null ? " " : NepaliDateService.EngToNep(Convert.ToDateTime(item.memberBeginDate)).ToString();
+                    ((Label)e.Row.FindControl("lblRenewDate")).Text = rd;
+                    string ed = item.memberBeginDate == null ? " " : NepaliDateService.EngToNep(Convert.ToDateTime(item.memberExpireDate)).ToString();
                     ((Label)e.Row.FindControl("lblExpiredDate")).Text = ed.ToString();
-                    var created = NepaliDateService.EngToNep(Convert.ToDateTime(items.created));
-                    ((Label)e.Row.FindControl("lblCreated")).Text = created.ToString();
+                    string created = item.memberBeginDate == null ? " " : NepaliDateService.EngToNep(Convert.ToDateTime(item.created)).ToString();
+                    ((Label)e.Row.FindControl("lblCreated")).Text = created.ToString()+" "+item.created.ToString().Split(' ')[1];
                 }
             }
             catch (Exception)
@@ -1553,6 +1629,26 @@ namespace TPW_GMS
 
             }
             
+        }
+        protected void gridVersionHistory_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if (e.Row.RowType == DataControlRowType.DataRow && e.Row.DataItem != null)
+                {
+                    MemberInformationLog items = (MemberInformationLog)e.Row.DataItem;
+                    var rd = NepaliDateService.EngToNep(Convert.ToDateTime(items.memberBeginDate));
+                    ((Label)e.Row.FindControl("lblRenewDate")).Text = rd.ToString();
+                    var ed = NepaliDateService.EngToNep(Convert.ToDateTime(items.memberExpireDate));
+                    ((Label)e.Row.FindControl("lblExpiredDate")).Text = ed.ToString();
+                    var created = NepaliDateService.EngToNep(Convert.ToDateTime(items.createdDate));
+                    ((Label)e.Row.FindControl("lblCreated")).Text = created.ToString() + " " + items.createdDate.ToString().Split(' ')[1];
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
         protected void gridBodyMesurement_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
