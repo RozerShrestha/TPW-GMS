@@ -250,7 +250,7 @@ namespace TPW_GMS
         }
         protected void ddlRenewExtendNormal_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlRenewExtendNormal.SelectedItem.Text == "Renew")
+            if (ddlRenewExtendNormal.SelectedItem.Text == "Renew" || ddlRenewExtendNormal.SelectedItem.Text == "Extend")
             {
                 ddlMembershipPaymentType.Enabled = true;
             }
@@ -717,6 +717,10 @@ namespace TPW_GMS
             else if (!NepaliDateService.ValidateNepDate(txtDateOfBirth.Text))
             {
                 return "Date of Birth is invalid";
+            }
+            else if (ddlMembershipPaymentType.SelectedIndex==0 && ddlRenewExtendNormal.SelectedItem.Text=="Renew")
+            {
+                return "Membership Payment Type is Required";
             }
             //else if ((txtStatic.Text + "-" + txtReceiptNo.Text) == (previousReceiptNo))
             //{
@@ -1579,7 +1583,7 @@ namespace TPW_GMS
         }
         protected void gridBodyMesurement_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.DataItem!=null)
+            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.DataItem.ToString() == "TPW_GMS.Data.BodyMeasurement")
             {
                 BodyMeasurement items = (BodyMeasurement)e.Row.DataItem;
 

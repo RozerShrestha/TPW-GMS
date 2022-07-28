@@ -573,7 +573,11 @@ function ActiveHistoryMonth(branch) {
         language: {
             sLoadingRecords: '<span style="width:100%;"><img src="Assets/Images/ajax-loader.gif"></span>'
         },
-        lengthMenu: [[5, 25, 50, -1], [5, 25, 50, "All"]],
+        lengthMenu: [[50, 25, 50, -1], [50, 25, 50, "All"]],
+        dom: 'Bfrtip',
+        buttons: [
+            'excelHtml5', 'csv'
+        ],
         ajax: {
             url: `api/GetActiveHistoryMonth?branch=${branch}`,
             dataType: "JSON",

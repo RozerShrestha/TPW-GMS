@@ -26,7 +26,7 @@ namespace TPW_GMS
             {
                 try
                 {
-                    string key = Request.QueryString["key"].ToString();
+                    string key = Request.QueryString["key"];
                     if (key == "edit")
                     {
                         btnAdd.Enabled = false;
@@ -82,7 +82,7 @@ namespace TPW_GMS
                     else
                     {
                         lblInfo.ForeColor = ColorTranslator.FromHtml("#ff0000");
-                        lblInfo.Text = "Error";
+                        lblInfo.Text = "Error sending Email";
                         imgLoading.Visible = false;
                     }
                 }
