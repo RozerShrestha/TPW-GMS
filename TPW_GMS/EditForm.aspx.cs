@@ -722,6 +722,11 @@ namespace TPW_GMS
             {
                 return "Membership Payment Type is Required";
             }
+            //
+            if (NepaliDateService.NepToEng(txtMembershipExpireDate.Text) < DateTime.Now && (ddlRenewExtendNormal.SelectedItem.Text=="Renew" || ddlRenewExtendNormal.SelectedItem.Text=="Extend"))
+            {
+                return "Expired Date should be greated than today, Please contact Operation Manager";
+            }
             //else if ((txtStatic.Text + "-" + txtReceiptNo.Text) == (previousReceiptNo))
             //{
             //    return "Receipt No is same as of Previous, Please enter the new Receipt No";
