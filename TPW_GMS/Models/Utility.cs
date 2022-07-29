@@ -9,7 +9,7 @@ namespace TPW_GMS.Models
     {
         public static String generateMemberId(String Root)
         {
-            return String.Format("{0}-{1}", Root, DateTime.Now.ToString("dd-HHmmssff"));
+            return String.Format("{0}-{1}", Root, DateTime.Now.ToString("yydd-HHmmssff"));
         }
     }
 }

@@ -398,12 +398,16 @@ namespace TPW_GMS.Services
                     }
                     
                     SmtpClient smtp = new SmtpClient();
-                    smtp.Host = extraInformation.smtpClient;
-                    smtp.EnableSsl = true;
+                    smtp.UseDefaultCredentials = false;
                     NetworkCredential NetworkCred = new NetworkCredential(senderEmail, extraInformation.password);
-                    smtp.UseDefaultCredentials = true;
+                    smtp.Port = Convert.ToInt32(extraInformation.port);
+                    smtp.Host = extraInformation.smtpClient;
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.EnableSsl = true;
+                    
+                    //smtp.UseDefaultCredentials = true;
                     smtp.Credentials = NetworkCred;
-                    smtp.Port =Convert.ToInt32(extraInformation.port);
+                    
                     smtp.Send(mm);
                     _logger.Info("##" + "Email send to: " + memberInformation.fullname + "with Email ID " + memberInformation.email + " Message: " + body);
                     return true;

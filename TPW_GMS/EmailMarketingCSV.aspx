@@ -76,6 +76,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-info">
+                        <div class="box-title">
+                            <asp:HiddenField ID="hidHeader" runat="server" Value="Email Marketing CSV" />
+                        </div>
                         <div class="box-body">
                             <div class="col-sm-2 col-md-2">
                                 Branch

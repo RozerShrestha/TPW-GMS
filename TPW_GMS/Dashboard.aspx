@@ -161,8 +161,8 @@
                                 <%--<div class="widget-user-image">
                                     <i class="fa fa-users iconplacement"></i>
                                 </div>--%>
-                                <div class="dashHeader">
-                                    Average<span id="activeAvgMemberhip" class="pull-right headerTotal"></span>
+                                <div class="dashHeader" data-toggle="tooltip" data-delay="{ show: 1000, hide: 10000}" data-placement="top" title="Note: Average Data is calculated 11 PM onwards and will reflect after day end">
+                                    Average !<span id="activeAvgMemberhip" class="pull-right headerTotal"></span>
                                 </div>
                             </div>
                             <div class="box-footer no-padding">
