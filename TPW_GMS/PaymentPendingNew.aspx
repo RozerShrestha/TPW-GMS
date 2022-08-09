@@ -178,7 +178,7 @@
                 var row = $(this);
                 if (row.find('input[type="checkbox"]').is(':checked')) {
                     let memberId = row.find("td").eq(1).html();
-                    sendEmail(memberId);
+                    setTimeout(function () { sendEmail(memberId); }, 5000);
                 }
             });
         }
