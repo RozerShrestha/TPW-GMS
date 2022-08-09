@@ -1337,11 +1337,11 @@ namespace TPW_GMS
                     db.SubmitChanges();
                     if (ddlRenewExtendNormal.SelectedItem.Text == "Renew")
                     {
-                        //new Task(() =>
-                        //{
-                        MailService.sendEmailRenewMember(m1.memberId);
-                        //}).Start();
-                    }
+                        new Task(() =>
+                        {
+                            MailService.sendEmailRenewMember(m1.memberId);
+                    }).Start();
+                }
                     lblInformation.Visible = true;
                     string key = Request.QueryString["key"].ToString();
 
