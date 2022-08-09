@@ -405,7 +405,7 @@ namespace TPW_GMS.Services
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.EnableSsl = true;
                     
-                    //smtp.UseDefaultCredentials = true;
+                    smtp.UseDefaultCredentials = false;
                     smtp.Credentials = NetworkCred;
                     
                     smtp.Send(mm);
