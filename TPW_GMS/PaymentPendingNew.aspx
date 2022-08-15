@@ -144,7 +144,6 @@
             });
         }
         function sendEmail(memberid) {
-            $("#imgLoading").css("display", "block");
             
             $.ajax({
                 url: `api/SendPendingEmail`,
@@ -158,12 +157,12 @@
                 },
                success: function (res) {
                    if (res) {
-                       alert(`Email Sent to ${memberid}`);
-                        $("#imgLoading").css("display", "none");
+                       //alert(`Email Sent to ${memberid}`);
+                        /*$("#imgLoading").css("display", "none");*/
                     }
                    else {
                        alert(`Email Not Sent to ${memberid}`);
-                        $("#imgLoading").css("display", "none");
+                        /*$("#imgLoading").css("display", "none");*/
                     }
                 },
                 error: function (er) {
@@ -172,15 +171,18 @@
             });
         }
         function bulkEmail() {
-            alert(`Email are in a Queue to send.Please do not close the browser.`);
+            alert(`Email are in a Queue to send. Do not Close this browser and to view the progress, go to Log`);
+            $("#imgLoading").css("display", "block");
             var memberids = "";
             $('#dtTable').find('tr').each(function () {
                 var row = $(this);
-                if (row.find('input[type="checkbox"]').is(':checked')) {
+                if (row.find('td:first-child input[type="checkbox"]').is(':checked')) {
                     let memberId = row.find("td").eq(1).html();
-                    setTimeout(function () { sendEmail(memberId); }, 5000);
+                    //setTimeout(function () { sendEmail(memberId); }, 5000);
+                    sendEmail(memberId);
                 }
             });
+            $("#imgLoading").css("display", "none");
         }
 
     </script>

@@ -1257,6 +1257,31 @@ namespace TPW_GMS
                 }
             }
         }
-        
+        protected void ddlPaymentMethod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlPaymentMethod.SelectedItem.Text == "Cheque")
+            {
+                pnlCheque.Visible = true;
+                pnlEBanking.Visible = false;
+                txtReferenceId.Text = "";
+            }
+            else if (ddlPaymentMethod.SelectedItem.Text == "E-Banking")
+            {
+                pnlEBanking.Visible = true;
+                pnlCheque.Visible = false;
+                txtBankName.Text = "";
+                txtChequeNumber.Text = "";
+            }
+            else
+            {
+                pnlCheque.Visible = false;
+                pnlEBanking.Visible = false;
+                txtReferenceId.Text = "";
+                txtBankName.Text = "";
+                txtChequeNumber.Text = "";
+            }
+        }
+
+
     }
 }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using TPW_GMS.Data;
 
@@ -21,40 +23,45 @@ namespace TPW_GMS.Services
         private static string senderEmail = MailService.EmailProvider();
         public static bool SendEmail(string memberId)
         {
-            var memberInfo = db.MemberInformations.Where(p => p.memberId == memberId).SingleOrDefault();
-            string txtSubject = "";
-            string message1 = "";
-            string message2 = "";
-            if (Convert.ToDateTime(memberInfo.memberExpireDate) < DateTime.Now)
+            using (TPWDataContext _db = new TPWDataContext())
             {
-                txtSubject = "Gym Subcription Expired";
-                message1 = "has Expired on ";
-                message2 = "Please Renew as soon as possible";
+                var memberInfo = _db.MemberInformations.Where(p => p.memberId == memberId).SingleOrDefault();
+                string txtSubject = "";
+                string message1 = "";
+                string message2 = "";
+                if (Convert.ToDateTime(memberInfo.memberExpireDate) < DateTime.Now)
+                {
+                    txtSubject = "Gym Subcription Expired";
+                    message1 = "has Expired on ";
+                    message2 = "Please Renew as soon as possible";
+                }
+                else
+                {
+                    txtSubject = "Gym Subcription is going to Expire";
+                    message1 = "will Expire on";
+                    message2 = "Please Renew Early";
+                }
+                //creating body format dynamically
+                string txtBody = "Dear " + memberInfo.fullname + "," + Environment.NewLine + Environment.NewLine +
+                "Your Subcription to the GYM for the package " + memberInfo.memberCatagory + " duration " + memberInfo.memberPaymentType + " " + message1 + memberInfo.memberExpireDate + ". " + message2 + Environment.NewLine +
+                "Thank you." + Environment.NewLine + Environment.NewLine +
+                "Regards," + Environment.NewLine +
+                "The Physique Workshop";
+                memberInfo.email = "rozer.shrestha611@gmail.com";
+                bool emailStatus = GeneralEmailFormat(isThereAttachment: false, html: false, memberInformation: memberInfo, subject: txtSubject, body: txtBody);
+                //Waits for 10 second after sending email
+                Thread.Sleep(10000);
+                if (emailStatus)
+                {
+                    //memberInfo.emailStatus = true;
+                    //db.SubmitChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
-            {
-                txtSubject = "Gym Subcription is going to Expire";
-                message1 = "will Expire on";
-                message2 = "Please Renew Early";
-            }
-            //creating body format dynamically
-            string txtBody = "Dear " + memberInfo.fullname + "," + Environment.NewLine + Environment.NewLine +
-            "Your Subcription to the GYM for the package " + memberInfo.memberCatagory + " duration " +memberInfo.memberPaymentType + " " + message1 + memberInfo.memberExpireDate + ". " + message2 + Environment.NewLine +
-            "Thank you." + Environment.NewLine + Environment.NewLine +
-            "Regards," + Environment.NewLine +
-            "The Physique Workshop";
-            //memberInfo.email = "rozer.shrestha611@gmail.com";
-            bool emailStatus = GeneralEmailFormat(isThereAttachment: false, html: false, memberInformation: memberInfo, subject: txtSubject, body: txtBody);
-            if (emailStatus)
-            {
-                memberInfo.emailStatus = true;
-                db.SubmitChanges();
-                return true;
-            }
-            else
-            {
-                return false;
-            }  
         }
         public static string SendEmailQR(string message, string memberId, string toEmail, string subject, string path)
         {
@@ -415,7 +422,6 @@ namespace TPW_GMS.Services
                     }
                     
                     SmtpClient smtp = new SmtpClient();
-                    smtp.UseDefaultCredentials = false;
                     NetworkCredential NetworkCred = new NetworkCredential(senderEmail, extraInformation.password);
                     smtp.Port = Convert.ToInt32(extraInformation.port);
                     smtp.Host = extraInformation.smtpClient;
@@ -424,13 +430,13 @@ namespace TPW_GMS.Services
                     smtp.UseDefaultCredentials = false;
                     smtp.Credentials = NetworkCred;
                     smtp.Send(mm);
-                    _logger.Info("##" + "Email send to: " + memberInformation.fullname + "with Email ID " + memberInformation.email + " Message: " + body);
+                    _logger.Info("##" + "Email send to: " + memberInformation.fullname + " with Email ID " + memberInformation.email + " Message: " + body);
                     return true;
                 }
             }
             catch (Exception ex)
-            {
-                _logger.Warn("##" + "Email Not Send to: " + memberInformation.fullname + "with Email ID " + memberInformation.email + " due to " + ex.Message);
+             {
+                _logger.Warn("##" + "Email Not Send to: " + memberInformation.fullname + " with Email ID " + memberInformation.email + " due to " + ex.Message);
                 return false;
             }
             
