@@ -193,20 +193,6 @@
       <Column Name="modifiedBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Login" Member="Logins">
-    <Type Name="Login">
-      <Column Name="loginId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="roleId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="branchId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="firstname" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="username" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="softwareExpireDate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="softwareExpireCheck" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="longitude" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
-      <Column Name="latitude" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.MacAddress" Member="MacAddresses">
     <Type Name="MacAddress">
       <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -574,6 +560,22 @@
       <Column Name="renewExtend" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.Login" Member="Logins">
+    <Type Name="Login">
+      <Column Name="loginId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="roleId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="branchId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="firstname" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="softwareExpireDate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="softwareExpireCheck" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="longitude" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="latitude" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="startBillNumber" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="currentBillNumber" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.MemberInformationLog" Member="MemberInformationLogs">
     <Type Name="MemberInformationLog">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -610,8 +612,14 @@
       <Column Name="locker" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="lockerNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="discountCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="discount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="paymentMethod" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="receiptNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PaymentAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="finalAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="paidAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="dueAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="dueClearAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ActiveInactive" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="isExpired" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="imageByte" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />

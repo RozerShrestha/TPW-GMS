@@ -80,7 +80,6 @@ namespace TPW_GMS
                 Page.MaintainScrollPositionOnPostBack = true;
             }
         }
-
         public void InitialCheck()
         {
             LoginUserInfo l = Services.Service.checkSession();
@@ -131,7 +130,6 @@ namespace TPW_GMS
         }
         protected void loadInfo()
         {
-
             //txtMemberId.Text = Utility.generateMemberId("TPW-"+txtBranch.Text);
             txtMemberId.Text = Utility.generateMemberId("TPW");
             image1.ImageUrl = "~/Assets/Images/sample.jpg?" + DateTime.Now.Ticks.ToString();
@@ -141,6 +139,7 @@ namespace TPW_GMS
                 var item = db.ExtraInformations.SingleOrDefault();
                 txtStatic.Text = item.currentNepaliDate + splitUser;
             }
+            txtReceiptNo.Text = Service.LoadReceiptNumber(splitUser);
         }
         protected void btnUpload_Click(object sender, EventArgs e)
         {
@@ -735,6 +734,10 @@ namespace TPW_GMS
             {
                 return "Date of Birth is invalid";
             }
+            else if (Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
+            {
+                return "Receipt Number Invalid";
+            }
             else
             {
                 return "";
@@ -853,6 +856,9 @@ namespace TPW_GMS
                     EmMarketing em = (from t in db.EmMarketings
                                       where t.email == txtEmail.Text
                                       select t).SingleOrDefault();
+                    var login = (from l in db.Logins
+                                   where l.username == splitUser
+                                   select l).SingleOrDefault();
 
                     #region Insert Member Login
                     ml.memberId = txtMemberId.Text;
@@ -915,8 +921,7 @@ namespace TPW_GMS
                     m.actionTaker = ddlActionTaker.SelectedItem.Text;
                     m.createdBy = txtBranch.Text;
                     db.MemberInformations.InsertOnSubmit(m);
-                    mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m));
-                    db.MemberInformationLogs.InsertOnSubmit(mLog);
+                   
 
                     #endregion
 
@@ -1036,6 +1041,21 @@ namespace TPW_GMS
                     {
                         em.flag = true;
                     }
+                    login.currentBillNumber = txtReceiptNo.Text;
+                    #region Version History
+                    mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m));
+                    mLog.discountCode = p.disocuntCode;
+                    mLog.paymentMethod = p.paymentMethod;
+                    mLog.receiptNo = txtStatic.Text + "-" + txtReceiptNo.Text;
+                    mLog.discount = p.discount;
+                    mLog.PaymentAmount = p.paymentAmount;
+                    mLog.finalAmount = p.finalAmount;
+                    mLog.paidAmount = p.paidAmount;
+                    mLog.dueAmount = p.dueAmount;
+                    mLog.dueClearAmount = p.dueClearAmount;
+                    db.MemberInformationLogs.InsertOnSubmit(mLog);
+
+                    #endregion
                     db.SubmitChanges();
                     GenerateQrImage(txtMemberId.Text);
                     lblInformation.Visible = true;
@@ -1281,7 +1301,5 @@ namespace TPW_GMS
                 txtChequeNumber.Text = "";
             }
         }
-
-
     }
 }

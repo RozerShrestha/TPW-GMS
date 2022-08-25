@@ -452,7 +452,7 @@
                                           <asp:TextBox ID="txtStatic" CssClass="form-control" ClientIDMode="Static" runat="server" disabled ></asp:TextBox>
                                       </div>
                                       <div class="col-md-8" style="padding-left: 0px; padding-right: 0px;">
-                                          <asp:TextBox ID="txtReceiptNo" CssClass=" form-control" ClientIDMode="Static" runat="server"></asp:TextBox>
+                                          <asp:TextBox ID="txtReceiptNo" CssClass=" form-control" ClientIDMode="Static" runat="server" disabled ></asp:TextBox>
                                       </div>
                                   </div>
                                     <div class="col-sm-2">
