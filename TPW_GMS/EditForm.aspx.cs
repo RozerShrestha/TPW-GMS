@@ -85,21 +85,22 @@ namespace TPW_GMS
         const string passphrase = "TPWP@ssw0rd123#";
         protected void Page_Load(object sender, EventArgs e)
         {
-                ScriptManager.RegisterStartupScript(this, Page.GetType(), "DropdownColor", "activeInactiveBGChange()", true);
-                InitialCheck();
-                txtMembershipBeginDate.Enabled = roleId == "1" ? true : false;
-                txtMembershipExpireDate.Enabled = roleId == "2" ? true : false;
-                
+            ScriptManager.RegisterStartupScript(this, Page.GetType(), "DropdownColor", "activeInactiveBGChange()", true);
+            InitialCheck();
+            txtMembershipBeginDate.Enabled = roleId == "1" ? true : false;
+            txtMembershipExpireDate.Enabled = roleId == "2" ? true : false;
+            
 
-                loadInfo();
-                if (!IsPostBack)
-                {
-                    if (roleId == "2") { ddlRenewExtendNormal.Items.Insert(2, new ListItem("Extend", "3")); }
-                    txtChangeInStartStopDate.Enabled = roleId == "2" ? true : false;
-                    LoadActiontaker();
-                    loadData();
+            loadInfo();
+            if (!IsPostBack)
+            {
+                btnclickStatus = 0;
+                if (roleId == "2") { ddlRenewExtendNormal.Items.Insert(2, new ListItem("Extend", "3")); }
+                txtChangeInStartStopDate.Enabled = roleId == "2" ? true : false;
+                LoadActiontaker();
+                loadData();
                     
-                }
+            }
         }
         public void InitialCheck()
         {
@@ -261,13 +262,27 @@ namespace TPW_GMS
             }
             else if(ddlRenewExtendNormal.SelectedItem.Text == "Normal Changes")
             {
-                MemberInformation m1 = (from c in db.MemberInformations
-                                        where c.memberId == txtMemberId.Text
-                                        select c).SingleOrDefault();
-                var mbd = NepaliDateService.EngToNep(Convert.ToDateTime(m1.memberBeginDate));
-                txtMembershipBeginDate.Text = mbd.ToString();
-                var med = NepaliDateService.EngToNep(Convert.ToDateTime(m1.memberExpireDate));
-                txtMembershipExpireDate.Text = med.ToString();
+                if (btnclickStatus != 1)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "errorModal", "$('#errorModal').modal();", true);
+                    lblPopupError.Text = "Expired Date Resets to the date stored in the database";
+
+                    MemberInformation m1 = (from c in db.MemberInformations
+                                            where c.memberId == txtMemberId.Text
+                                            select c).SingleOrDefault();
+                    var mbd = NepaliDateService.EngToNep(Convert.ToDateTime(m1.memberBeginDate));
+                    txtMembershipBeginDate.Text = mbd.ToString();
+                    var med = NepaliDateService.EngToNep(Convert.ToDateTime(m1.memberExpireDate));
+                    txtMembershipExpireDate.Text = med.ToString();
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "errorModal", "$('#errorModal').modal();", true);
+                    lblPopupError.Text = "Membership Unfreeze process: Please check Expired Date and confirm";
+                }
+                
+                
+
                 ddlMembershipPaymentType.SelectedIndex = 0;
                 ddlMembershipPaymentType.Enabled = false;
             }
@@ -727,7 +742,7 @@ namespace TPW_GMS
             {
                 return "Membership Payment Type is Required";
             }
-            else if (Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
+            else if (ddlRenewExtendNormal.SelectedItem.Text=="Renew" && !Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
             {
                 return "Receipt Number Invalid";
             }
@@ -1373,8 +1388,7 @@ namespace TPW_GMS
                 }
 
             }
-        }
-        
+        }   
         protected void timerId_Tick(object sender, EventArgs e)
         {
 

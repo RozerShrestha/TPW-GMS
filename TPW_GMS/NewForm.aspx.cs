@@ -734,7 +734,7 @@ namespace TPW_GMS
             {
                 return "Date of Birth is invalid";
             }
-            else if (Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
+            else if (!Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
             {
                 return "Receipt Number Invalid";
             }
@@ -921,8 +921,6 @@ namespace TPW_GMS
                     m.actionTaker = ddlActionTaker.SelectedItem.Text;
                     m.createdBy = txtBranch.Text;
                     db.MemberInformations.InsertOnSubmit(m);
-                   
-
                     #endregion
 
                     #region Insert Body Measurement
@@ -1041,7 +1039,9 @@ namespace TPW_GMS
                     {
                         em.flag = true;
                     }
+                    #region Update Login Information
                     login.currentBillNumber = txtReceiptNo.Text;
+                    #endregion
                     #region Version History
                     mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m));
                     mLog.discountCode = p.disocuntCode;
@@ -1077,6 +1077,7 @@ namespace TPW_GMS
                 }
             }
         }
+
         protected void timerId_Tick(object sender, EventArgs e)
         {
 
