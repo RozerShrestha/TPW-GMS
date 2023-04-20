@@ -85,21 +85,22 @@ namespace TPW_GMS
         const string passphrase = "TPWP@ssw0rd123#";
         protected void Page_Load(object sender, EventArgs e)
         {
-                ScriptManager.RegisterStartupScript(this, Page.GetType(), "DropdownColor", "activeInactiveBGChange()", true);
-                InitialCheck();
-                txtMembershipBeginDate.Enabled = roleId == "1" ? true : false;
-                txtMembershipExpireDate.Enabled = roleId == "2" ? true : false;
-                
+            ScriptManager.RegisterStartupScript(this, Page.GetType(), "DropdownColor", "activeInactiveBGChange()", true);
+            InitialCheck();
+            txtMembershipBeginDate.Enabled = roleId == "1" ? true : false;
+            txtMembershipExpireDate.Enabled = roleId == "2" ? true : false;
+            
 
-                loadInfo();
-                if (!IsPostBack)
-                {
-                    if (roleId == "2") { ddlRenewExtendNormal.Items.Insert(2, new ListItem("Extend", "3")); }
-                    txtChangeInStartStopDate.Enabled = roleId == "2" ? true : false;
-                    LoadActiontaker();
-                    loadData();
+            loadInfo();
+            if (!IsPostBack)
+            {
+                btnclickStatus = 0;
+                if (roleId == "2") { ddlRenewExtendNormal.Items.Insert(2, new ListItem("Extend", "3")); }
+                txtChangeInStartStopDate.Enabled = roleId == "2" ? true : false;
+                LoadActiontaker();
+                loadData();
                     
-                }
+            }
         }
         public void InitialCheck()
         {
@@ -250,19 +251,38 @@ namespace TPW_GMS
         }
         protected void ddlRenewExtendNormal_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlRenewExtendNormal.SelectedItem.Text == "Renew" || ddlRenewExtendNormal.SelectedItem.Text == "Extend")
+            if (ddlRenewExtendNormal.SelectedItem.Text == "Renew")
+            {
+                ddlMembershipPaymentType.Enabled = true;
+                txtReceiptNo.Text=Service.LoadReceiptNumber(splitUser);
+            }
+            else if (ddlRenewExtendNormal.SelectedItem.Text == "Extended")
             {
                 ddlMembershipPaymentType.Enabled = true;
             }
             else if(ddlRenewExtendNormal.SelectedItem.Text == "Normal Changes")
             {
-                MemberInformation m1 = (from c in db.MemberInformations
-                                        where c.memberId == txtMemberId.Text
-                                        select c).SingleOrDefault();
-                var mbd = NepaliDateService.EngToNep(Convert.ToDateTime(m1.memberBeginDate));
-                txtMembershipBeginDate.Text = mbd.ToString();
-                var med = NepaliDateService.EngToNep(Convert.ToDateTime(m1.memberExpireDate));
-                txtMembershipExpireDate.Text = med.ToString();
+                if (btnclickStatus != 1)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "errorModal", "$('#errorModal').modal();", true);
+                    lblPopupError.Text = "Expired Date Resets to the date stored in the database";
+
+                    MemberInformation m1 = (from c in db.MemberInformations
+                                            where c.memberId == txtMemberId.Text
+                                            select c).SingleOrDefault();
+                    var mbd = NepaliDateService.EngToNep(Convert.ToDateTime(m1.memberBeginDate));
+                    txtMembershipBeginDate.Text = mbd.ToString();
+                    var med = NepaliDateService.EngToNep(Convert.ToDateTime(m1.memberExpireDate));
+                    txtMembershipExpireDate.Text = med.ToString();
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "errorModal", "$('#errorModal').modal();", true);
+                    lblPopupError.Text = "Membership Unfreeze process: Please check Expired Date and confirm";
+                }
+                
+                
+
                 ddlMembershipPaymentType.SelectedIndex = 0;
                 ddlMembershipPaymentType.Enabled = false;
             }
@@ -722,6 +742,10 @@ namespace TPW_GMS
             {
                 return "Membership Payment Type is Required";
             }
+            else if (ddlRenewExtendNormal.SelectedItem.Text=="Renew" && !Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
+            {
+                return "Receipt Number Invalid";
+            }
             //
             if (NepaliDateService.NepToEng(txtMembershipExpireDate.Text) < DateTime.Now && (ddlRenewExtendNormal.SelectedItem.Text=="Renew" || ddlRenewExtendNormal.SelectedItem.Text=="Extend"))
             {
@@ -1151,6 +1175,9 @@ namespace TPW_GMS
                     ExtraInformation ex = (from c in db.ExtraInformations
                                            where c.extraInformationId == 1
                                            select c).SingleOrDefault();
+                    var login = (from l in db.Logins
+                                 where l.username == splitUser
+                                 select l).SingleOrDefault();
 
                     DateTime? dt = null;
                     Int32? num = null;
@@ -1317,9 +1344,7 @@ namespace TPW_GMS
                         m1.universalMembershipLimit = ddlMemberOption.SelectedValue == "1" ? 12 : ddlMemberOption.SelectedValue == "3" ? 365 : ddlMemberOption.SelectedValue == "2" ? 12 : ddlMemberOption.SelectedValue == "5" ? 365 : ddlMemberOption.SelectedValue == "6" ? 365 : ddlMemberOption.SelectedValue == "7" ? 365 : ddlMemberOption.SelectedValue == "8" ? 0 : 0;
                         #endregion
                         #region Send Email if Renewed
-                        //new Task(() => {
-                        //    sendEmail(txtMemberId.Text, txtuname.Text, txtBranch.Text, txtPwd.Text, ddlMemberOption.SelectedItem.Text, ddlCatagoryType.SelectedItem.Text, txtMembershipDate.Text, ddlMembershipPaymentType.SelectedItem.Text, txtMembershipBeginDate.Text, txtMembershipExpireDate.Text, txtEmail.Text, txtFirstName.Text + " " + txtLastName.Text, txtContactNo.Text, txtDateOfBirth.Text, txtAddress.Text, txtDiscountCode.Text, txtFinalAmount.Text, txtpaidAmount.Text, txtDueAmount.Text);
-                        //}).Start();
+                       
                         #endregion
                         #region Payment Info
                         p1.updatedDate = DateTime.Now;
@@ -1336,7 +1361,15 @@ namespace TPW_GMS
                     mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m1));
                     mLog.createdDate = DateTime.Now;
                     db.MemberInformationLogs.InsertOnSubmit(mLog);
+                    login.currentBillNumber = txtReceiptNo.Text;
                     db.SubmitChanges();
+                    if (ddlRenewExtendNormal.SelectedItem.Text == "Renew")
+                    {
+                        new Task(() =>
+                        {
+                            MailService.sendEmailRenewMember(m1.memberId);
+                    }).Start();
+                }
                     lblInformation.Visible = true;
                     string key = Request.QueryString["key"].ToString();
 
@@ -1355,54 +1388,7 @@ namespace TPW_GMS
                 }
 
             }
-        }
-        protected void sendEmail(string memberid, string username, string branch, string password, string membershipOption, string catagoryType, string membershipDate, string membershipPaymentType, string membershipBeginDate, string membershipExpireDate, string email, string fullname, string contactNo, string dateOfBirth, string address, string discountCode, string finalAmount, string paidAmount, string dueAmount)
-        {
-            try
-            {
-                var extraInfo = db.ExtraInformations;
-                var emailInfo = (from c in extraInfo
-                                 where c.extraInformationId == 1
-                                 select c).SingleOrDefault();
-                string txtEmail = emailInfo.email;
-                string pwd = emailInfo.password;
-                string txtSubject = "Membership Renewal";
-                string txtBody = "Dear " + fullname + "," + Environment.NewLine + Environment.NewLine +
-                    "Your GYM membership has been renewed as per following: " + Environment.NewLine +
-                    "Membership Option: " + membershipOption + Environment.NewLine +
-                    "Membership Catagory: " + catagoryType + Environment.NewLine +
-                    "Membership Payment Type: " + membershipPaymentType + Environment.NewLine +
-                    "Membership Renew Date: " + membershipBeginDate + Environment.NewLine +
-                    "Membership Expire Date: " + membershipExpireDate + Environment.NewLine +
-                    "Final Amount:" + " " + finalAmount + Environment.NewLine +
-                    "Paid Amount:" + " " + paidAmount + Environment.NewLine +
-                    "Due Amount:" + " " + dueAmount + Environment.NewLine + Environment.NewLine +
-
-                   "Thank you." + Environment.NewLine + Environment.NewLine +
-                    "Regards," + Environment.NewLine +
-                    "The Physique Workshop";
-                using (MailMessage mm = new MailMessage(txtEmail, email))
-                {
-                    mm.Subject = txtSubject;
-                    mm.Body = txtBody;
-                    mm.IsBodyHtml = false;
-                    SmtpClient smtp = new SmtpClient();
-                    smtp.Host = "smtp.gmail.com";
-                    smtp.EnableSsl = true;
-                    NetworkCredential NetworkCred = new NetworkCredential(txtEmail, pwd);
-                    smtp.UseDefaultCredentials = true;
-                    smtp.Credentials = NetworkCred;
-                    smtp.Port = 587;
-                    smtp.Send(mm);
-                    ClientScript.RegisterStartupScript(GetType(), "alert", "alert('Email sent.');", true);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("##" + "Edit Form-{0}", ex.Message);
-            }
-            db.Dispose();
-        }
+        }   
         protected void timerId_Tick(object sender, EventArgs e)
         {
 

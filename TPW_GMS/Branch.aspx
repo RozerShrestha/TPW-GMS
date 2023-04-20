@@ -45,6 +45,14 @@
                         Longitude
                         <asp:TextBox ID="txtLongitude" CssClass="form-control input-sm" placeholder="Longitude" runat="server"></asp:TextBox>
                     </div>
+                     <div class="col-sm-2">
+                        Start Bill Number
+                        <asp:TextBox ID="txtStartBillNumber" CssClass="form-control input-sm" placeholder="Start Bill Number" runat="server"></asp:TextBox>
+                    </div>
+                     <div class="col-sm-2">
+                        Current Bill Number
+                        <asp:TextBox ID="txtCurrentBillNumber" CssClass="form-control input-sm" placeholder="Current Bill Number" runat="server"></asp:TextBox>
+                    </div>
                     <div class="col-sm-12">
                         <asp:Button ID="btnNewBranch" runat="server" Text="Create New User" Style="margin-top: 15px" OnClick="btnNewBranch_Click" CssClass="btn btn-success" />
                         <asp:Label id="lblInfo" runat="server"></asp:Label>
@@ -80,6 +88,16 @@
                                     <asp:TemplateField HeaderText="Longitude">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtLongitude" runat="server" CssClass="form-control input-sm" Text='<%# Eval("longitude") %>'></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Start Bill Num">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtStartBillNumber" runat="server" CssClass="form-control input-sm" Text='<%# Eval("startBillNumber") %>'></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Current Bill Num">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtCurrentBillNumber" runat="server" CssClass="form-control input-sm" Text='<%# Eval("currentBillNumber") %>'></asp:TextBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField>

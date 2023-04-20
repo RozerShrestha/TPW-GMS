@@ -46,6 +46,7 @@ namespace TPW_GMS
         {
             var selectQuery = from l in db.Logins
                               join r in db.Roles on l.roleId equals r.roleId
+                              orderby l.roleId
                               select new
                               {
                                   l.loginId,
@@ -54,6 +55,8 @@ namespace TPW_GMS
                                   l.password,
                                   l.latitude,
                                   l.longitude,
+                                  l.startBillNumber,
+                                  l.currentBillNumber,
                                   r.role1
                               };
             GridUserMgmt.DataSource = selectQuery;
@@ -80,6 +83,8 @@ namespace TPW_GMS
                         selectQuery.password = ((TextBox)gr.FindControl("txtPassword")).Text;
                         selectQuery.latitude = ((TextBox)gr.FindControl("txtLatitude")).Text;
                         selectQuery.longitude = ((TextBox)gr.FindControl("txtLongitude")).Text;
+                        selectQuery.startBillNumber = ((TextBox)gr.FindControl("txtStartBillNumber")).Text;
+                        selectQuery.currentBillNumber = ((TextBox)gr.FindControl("txtCurrentBillNumber")).Text;
                         db.SubmitChanges();
                         lblMessage.Text = "Information has been successfully Updated.";
                     }
@@ -93,7 +98,7 @@ namespace TPW_GMS
                                    where p.loginId == tempId
                                    select p).SingleOrDefault();
 
-                if (selectQuery.username != "admin")
+                if (selectQuery.username != "admin" && selectQuery.username!="superadmin")
                 {
                     db.Logins.DeleteOnSubmit(selectQuery);
                     db.SubmitChanges();
@@ -114,6 +119,8 @@ namespace TPW_GMS
                 l.password = txtSignInPassword.Text;
                 l.longitude = txtLongitude.Text;
                 l.latitude = txtLatitude.Text;
+                l.startBillNumber =txtStartBillNumber.Text;
+                l.currentBillNumber = txtCurrentBillNumber.Text;
                 l.roleId = int.Parse(ddlUserRole.SelectedValue);
 
                 db.Logins.InsertOnSubmit(l);
@@ -137,6 +144,8 @@ namespace TPW_GMS
             txtSignInPassword.Text = "";
             txtLongitude.Text = "";
             txtLatitude.Text = "";
+            txtStartBillNumber.Text = "";
+            txtCurrentBillNumber.Text = "";
         }
     }
 }

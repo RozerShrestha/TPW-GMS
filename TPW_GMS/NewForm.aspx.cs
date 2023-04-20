@@ -80,7 +80,6 @@ namespace TPW_GMS
                 Page.MaintainScrollPositionOnPostBack = true;
             }
         }
-
         public void InitialCheck()
         {
             LoginUserInfo l = Services.Service.checkSession();
@@ -131,7 +130,6 @@ namespace TPW_GMS
         }
         protected void loadInfo()
         {
-
             //txtMemberId.Text = Utility.generateMemberId("TPW-"+txtBranch.Text);
             txtMemberId.Text = Utility.generateMemberId("TPW");
             image1.ImageUrl = "~/Assets/Images/sample.jpg?" + DateTime.Now.Ticks.ToString();
@@ -141,6 +139,7 @@ namespace TPW_GMS
                 var item = db.ExtraInformations.SingleOrDefault();
                 txtStatic.Text = item.currentNepaliDate + splitUser;
             }
+            txtReceiptNo.Text = Service.LoadReceiptNumber(splitUser);
         }
         protected void btnUpload_Click(object sender, EventArgs e)
         {
@@ -628,10 +627,6 @@ namespace TPW_GMS
                 }
             }
         }
-        protected void GetFeeInformation()
-        {
-
-        }
         protected string validateField()
         {
             if (ddlCatagoryType.SelectedIndex == 0)
@@ -738,6 +733,10 @@ namespace TPW_GMS
             else if (!NepaliDateService.ValidateNepDate(txtDateOfBirth.Text))
             {
                 return "Date of Birth is invalid";
+            }
+            else if (!Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
+            {
+                return "Receipt Number Invalid";
             }
             else
             {
@@ -857,6 +856,9 @@ namespace TPW_GMS
                     EmMarketing em = (from t in db.EmMarketings
                                       where t.email == txtEmail.Text
                                       select t).SingleOrDefault();
+                    var login = (from l in db.Logins
+                                   where l.username == splitUser
+                                   select l).SingleOrDefault();
 
                     #region Insert Member Login
                     ml.memberId = txtMemberId.Text;
@@ -919,9 +921,6 @@ namespace TPW_GMS
                     m.actionTaker = ddlActionTaker.SelectedItem.Text;
                     m.createdBy = txtBranch.Text;
                     db.MemberInformations.InsertOnSubmit(m);
-                    mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m));
-                    db.MemberInformationLogs.InsertOnSubmit(mLog);
-
                     #endregion
 
                     #region Insert Body Measurement
@@ -1040,6 +1039,23 @@ namespace TPW_GMS
                     {
                         em.flag = true;
                     }
+                    #region Update Login Information
+                    login.currentBillNumber = txtReceiptNo.Text;
+                    #endregion
+                    #region Version History
+                    mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m));
+                    mLog.discountCode = p.disocuntCode;
+                    mLog.paymentMethod = p.paymentMethod;
+                    mLog.receiptNo = txtStatic.Text + "-" + txtReceiptNo.Text;
+                    mLog.discount = p.discount;
+                    mLog.PaymentAmount = p.paymentAmount;
+                    mLog.finalAmount = p.finalAmount;
+                    mLog.paidAmount = p.paidAmount;
+                    mLog.dueAmount = p.dueAmount;
+                    mLog.dueClearAmount = p.dueClearAmount;
+                    db.MemberInformationLogs.InsertOnSubmit(mLog);
+
+                    #endregion
                     db.SubmitChanges();
                     GenerateQrImage(txtMemberId.Text);
                     lblInformation.Visible = true;
@@ -1061,6 +1077,7 @@ namespace TPW_GMS
                 }
             }
         }
+
         protected void timerId_Tick(object sender, EventArgs e)
         {
 
@@ -1241,122 +1258,6 @@ namespace TPW_GMS
                 }
             }
         }
-        protected void sendEmail(string memberid, string username, string branch, string password, string membershipOption, string catagoryType, string membershipDate, string membershipPaymentType, string membershipBeginDate, string membershipExpireDate, string email, string fullname, string contactNo, string dateOfBirth, string address, string discountCode, string finalAmount, string paidAmount, string dueAmount)
-        {
-            using (TPWDataContext db = new TPWDataContext())
-            {
-                try
-                {
-                    var extraInfo = db.ExtraInformations;
-                    var emailInfo = (from c in extraInfo
-                                     where c.extraInformationId == 1
-                                     select c).SingleOrDefault();
-                    var em = Services.MailService.EmailProvider();
-                    string pwd = emailInfo.password;
-                    string txtSubject = "New Membership";
-                    using (MailMessage mm = new MailMessage(em, email))
-                    {
-                        mm.Subject = txtSubject;
-                        //mm.Body = txtBody;
-                        mm.IsBodyHtml = true;
-                        mm.AlternateViews.Add(getEmbeddedImage(memberid, username, branch, password, membershipOption, catagoryType, membershipDate, membershipPaymentType, membershipBeginDate, membershipExpireDate, email, fullname, contactNo, dateOfBirth, address, discountCode, finalAmount, paidAmount, dueAmount));
-                        SmtpClient smtp = new SmtpClient();
-                        smtp.Host = "smtp.gmail.com";
-                        smtp.EnableSsl = true;
-                        NetworkCredential NetworkCred = new NetworkCredential(em, pwd);
-                        smtp.UseDefaultCredentials = true;
-                        smtp.Credentials = NetworkCred;
-                        smtp.Port = 587;
-                        smtp.Send(mm);
-                        ClientScript.RegisterStartupScript(GetType(), "alert", "alert('Email sent.');", true);
-                    }
-                    _logger.Info("##" + "New Form-{0} Mail send to new member",fullname );
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error("##" + "New Form-{0} {1}", fullname, ex.Message);
-                }
-            }
-        }
-        private AlternateView getEmbeddedImage(string memberid, string username, string branch, string password, string membershipOption, string catagoryType, string membershipDate, string membershipPaymentType, string membershipBeginDate, string membershipExpireDate, string email, string fullname, string contactNo, string dateOfBirth, string address, string discountCode, string finalAmount, string paidAmount, string dueAmount)
-        {
-            using (TPWDataContext db = new TPWDataContext())
-            {
-
-                var extraInfo = db.ExtraInformations;
-                var emailInfo = (from c in extraInfo
-                                 where c.extraInformationId == 1
-                                 select c).SingleOrDefault();
-                string txtEmail = emailInfo.email;
-                string pwd = emailInfo.password;
-                string filePath = Server.MapPath(@"~\Image\QRCode\" + memberid + ".jpeg");
-                LinkedResource res = new LinkedResource(filePath);
-                res.ContentId = Guid.NewGuid().ToString();
-                var htmlBody = @"<div>Dear " + fullname + ",</div><br />" +
-                                "<div>Welcome to TPW Family,</div>" +
-                                "<div>As the newest member of our family, we are here to take care of you in the fitness journey.</div>" +
-                                "<div>We understand that your special needs require specially designed programs and guidance for the vary special person that your are.</div>" +
-                                "<div>We are here to make sure that you always have a friend and that you are never alone in your fitness journey.</div>" +
-                                "<div>We are here with you in your beginning and we will cheer you on when you reach that finish line.</div>" +
-                                "<div>Just promise us that you will never hesitate to give us a nudge when you need someone in your transformation.</div>" +
-                                "<div>We'll be your friend, your teacher, your motivator and most importantly your cheerleaders.</div>" +
-                                "<div>We're happy to have to have you with us.</div>" +
-                                "<div></div>" +
-                                "<div></div><br />" +
-                                "<div>Please use below QR Code for daily Attendance Purpose</div>" +
-                                "<img src='cid:" + res.ContentId + @"' style='width:200px'/>" +
-                                "<span style='color: red'><b><i>You can check into any of the Branch of TPW</i></b></span>" +
-                                "<h3>Following are the Branch List:</h3>" +
-                                "<table>" +
-                                "<thead>" +
-                                "<tr style='background - color: #dcdcdc;'>" +
-                                "<td><b>Branch</b></td>" +
-                                "<td><b>Location</b></td>" +
-                                "<td><b>Contact</b></td>" +
-                                "</tr>" +
-                                "</thead>" +
-                                "<tbody>" +
-                                "<tr><td><b>Kamaladi<b></td><td>On Top of Jyoti Bikash Bank, Putalisadak to hatisar Road</td><td>01-4413485</td></tr>" +
-                                "<tr><td><b>Maitidevi<b></td><td>On Top of Nepal Banijya Bank, Near Seto pul Petrol Pump</td><td>01-4432716</td></tr>" +
-                                "<tr><td><b>Maharajgunj<b></td><td>On Top of SBI Bank Building, opposite to Australian Embassy</td><td>01-4017606</td></tr>" +
-                                "<tr><td><b>Kumaripati<b></td><td>On Top of Trimurti Gunasabhu Bhawan, Opposite to Korean Shop</td><td>01-5521190</td></tr>" +
-                                "<tr><td><b>Baneshwor<b></td><td>On Top of LG Showroom, Opposite to Shantinagar gate</td><td>01-4106800</td></tr>" +
-                                "</tbody>" +
-                                "</table><br>" +
-                                "<span><i>You can check in a total of 12 times every month to other branches</i></span><br>" +
-                                "<div>Following information is stored in our database as per the form.</div>" +
-                                "<table>" +
-                                "<tr><td>MemberId: </td><td>" + memberid + "</td></tr>" +
-                                //"<tr><td>UserName: </td><td>" + username + "</td></tr>" +
-                                //"<tr><td>Password: </td><td>" + password + "</td></tr>" +
-                                "<tr><td>Branch: </td><td>" + branch + "</td></tr>" +
-                                "<tr><td>Membership Option: </td><td>" + membershipOption + "</td></tr>" +
-                                "<tr><td>Membership Catagory: </td><td>" + catagoryType + "</td></tr>" +
-                                "<tr><td>Membership Date: </td><td>" + membershipDate + "</td></tr>" +
-                                "<tr><td>Membership Payment Type: </td><td>" + membershipPaymentType + "</td></tr>" +
-                                "<tr><td>Membership Renew Date: </td><td>" + membershipBeginDate + "</td></tr>" +
-                                "<tr><td>Membership Expire Date: </td><td>" + membershipExpireDate + "</td></tr>" +
-                                "<tr><td>Email: </td><td>" + email + "</td></tr>" +
-                                "<tr><td>Full Name: </td><td>" + fullname + "</td></tr>" +
-                                "<tr><td>Contact No: </td><td>" + contactNo + "</td></tr>" +
-                                "<tr><td>Date Of Brith: </td><td>" + dateOfBirth + "</td></tr>" +
-                                 "<tr><td>Address: </td><td>" + address + "</td></tr>" +
-                                "<tr><td>Discount Code: </td><td>" + discountCode + "</td></tr>" +
-                                "<tr><td>Final Amount: </td><td>" + finalAmount + "</td></tr>" +
-                                "<tr><td>Paid Amount: </td><td>" + paidAmount + "</td></tr>" +
-                                "<tr><td>Due Amount: </td><td>" + dueAmount + "</td></tr>" +
-                                " </table><br />" +
-                                "<div>you can request for the change in the information if there is any mistake. </div<" +
-                                "<div>Thank you.</div>" +
-                                "<div>Regards,</div>" +
-                                "<div>The Physique Workshop</div>";
-
-                AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
-                alternateView.LinkedResources.Add(res);
-                _logger.Info("##" + "New Form-{0} Mail send to new member", Session["userDb"].ToString());
-                return alternateView;
-            }
-        }
         public void GenerateQrImage(string qrText)
         {
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
@@ -1383,9 +1284,9 @@ namespace TPW_GMS
             {
                 pnlCheque.Visible = true;
                 pnlEBanking.Visible = false;
-                txtReferenceId.Text="";
+                txtReferenceId.Text = "";
             }
-            else if(ddlPaymentMethod.SelectedItem.Text == "E-Banking")
+            else if (ddlPaymentMethod.SelectedItem.Text == "E-Banking")
             {
                 pnlEBanking.Visible = true;
                 pnlCheque.Visible = false;
@@ -1401,6 +1302,5 @@ namespace TPW_GMS
                 txtChequeNumber.Text = "";
             }
         }
-        
     }
 }

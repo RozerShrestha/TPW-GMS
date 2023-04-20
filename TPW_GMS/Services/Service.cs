@@ -255,7 +255,31 @@ namespace TPW_GMS.Services
                 }
             }
         }
-
+        public static bool CheckReceiptNumberValidity(string receiptNumber, string splitUser)
+        {
+            using (TPWDataContext db1 = new TPWDataContext())
+            {
+                int receiptNum = Convert.ToInt32(receiptNumber);
+                var item = db1.Logins.Where(p => p.username == splitUser).SingleOrDefault();
+                if (receiptNum - 1 == Convert.ToInt32(item.currentBillNumber))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        public static string LoadReceiptNumber(string splitUser)
+        {
+            using (TPWDataContext db1 = new TPWDataContext())
+            {
+                var itemBranch = db1.Logins.Where(p => p.username == splitUser).SingleOrDefault();
+                var receiptNum = (Convert.ToInt32(itemBranch.currentBillNumber) + 1).ToString("D3");
+                return receiptNum;
+            }
+        } 
     }
 
 }

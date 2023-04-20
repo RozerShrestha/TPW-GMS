@@ -1,19 +1,20 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GuestList.aspx.cs" Inherits="TPW_GMS.GuestList" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-     <script type="text/javascript">
-         $(document).ready(function () {
-             
-         });  
-         function pageLoad(sender, args) {
-             $(".nep").nepaliDatePicker({
-                 ndpYear: true,
-                 ndpMonth: true,
-                 ndpYearCount: 30,
-                 onChange: dateDiff,
-                 dateFormat: "YYYY/MM/DD"
-             });
-             loadData();
-         }
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+        function pageLoad(sender, args) {
+            $(".nep").nepaliDatePicker({
+                ndpYear: true,
+                ndpMonth: true,
+                ndpYearCount: 30,
+                onChange: dateDiff,
+                dateFormat: "YYYY/MM/DD"
+            });
+            loadData();
+        }
         function loadData() {
             var existingTbl = $('#GuestTable').DataTable();
             if (existingTbl) {
@@ -102,25 +103,49 @@
                         data: "id",
                         className: "center",
                         render: function (data, type, full, meta) {
-                            
-                            return '<a href="GuestList.aspx?id=' + data + "&" + "key=edit" + '" class="editAsset"><img src="Assets/Icon/edit.png" class="iconEdit" /></a> &nbsp;&nbsp;&nbsp; <a href="GuestList.aspx?id=' + data + "&" + "key=delete" + '" class="editor_remove"><img src="Assets/Icon/delete.png" class="iconDelete" /></a>';
+                            return `<a href="GuestList.aspx?id=' + data + "&" + "key=edit" + '" class="editAsset"><img src="Assets/Icon/edit.png" class="iconEdit" /></a> &nbsp;&nbsp;&nbsp; <a href="GuestList.aspx?id=' + data + "&" + "key=delete" + '" class="editor_remove"><img src="Assets/Icon/delete.png" class="iconDelete" /></a>     &nbsp;&nbsp;&nbsp; <a href="#" type="button" class="iconView" onclick="sendEmail('${full.name}','${full.email}')"><span></span><img src="Assets/Icon/email.png" class="iconView" /></a> `;
                         }
                     }
                 ]
             });
         }
-         function dateDiff() {
-             let from = $("#txtFromDate").val();
-             let to = $("#txtToDate").val()
-             let fromObj = NepaliFunctions.ConvertToDateObject(from, "YYYY/MM/DD");
-             let toObj = NepaliFunctions.ConvertToDateObject(to, "YYYY/MM/DD");
-             let dateDiff = NepaliFunctions.BsDatesDiff(fromObj, toObj);
-             $("#txtCount").val(dateDiff);
-             //return dateDiff;
-         }
-        
-        </script>
-     <asp:UpdatePanel runat="server">
+        function dateDiff() {
+            let from = $("#txtFromDate").val();
+            let to = $("#txtToDate").val()
+            let fromObj = NepaliFunctions.ConvertToDateObject(from, "YYYY/MM/DD");
+            let toObj = NepaliFunctions.ConvertToDateObject(to, "YYYY/MM/DD");
+            let dateDiff = NepaliFunctions.BsDatesDiff(fromObj, toObj);
+            $("#txtCount").val(dateDiff);
+            //return dateDiff;
+        }
+
+        function sendEmail(name, email) {
+            $("#imgLoading2").css("display", "block");
+            $.ajax({
+                url: `api/SendGuestEmail?name=${name}&email=${email}`,
+                type: 'GET',
+                async: true,
+                headers: {
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('auth_token')
+                },
+                success: function (res) {
+                    $("#imgLoading2").css("display", "none");
+                    if (res) {
+                        alert(res);
+                    }
+                    else {
+                        alert(`Email Not Sent to`);
+                    }
+                },
+                error: function (er) {
+                    alert(er.responseJSON.Message);
+                    $("#imgLoading2").css("display", "none");
+                }
+            });
+        }
+
+    </script>
+    <asp:UpdatePanel runat="server">
         <ContentTemplate>
             <asp:Panel ID="pnlEmailMarketing" runat="server">
                 <div class="row">
@@ -133,11 +158,11 @@
                             <div class="col-xs-12">
                                 <div class="col-sm-2">
                                     Guest Name<span class="asterik">*</span>
-                                <asp:TextBox ID="txtName" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                    <asp:TextBox ID="txtName" runat="server" CssClass="form-control input-sm"></asp:TextBox>
                                 </div>
                                 <div class="col-sm-2">
                                     Email<span class="asterik">*</span>
-                                <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" CssClass="form-control input-sm"></asp:TextBox>
+                                    <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" CssClass="form-control input-sm"></asp:TextBox>
                                 </div>
                                 <div class="col-sm-2">
                                     Mobile Number
@@ -160,7 +185,7 @@
                                     <asp:Button ID="btnAdd" runat="server" Enabled="true" Text="Submit" CssClass="btn btn-sm btn-success" OnClick="btnAdd_Click" />
                                     <asp:Button ID="btnEdit" runat="server" Enabled="false" Text="Edit" CssClass="btn btn-sm btn-danger btn-a" OnClick="btnEdit_Click" />
                                     <asp:Label ID="lblInfo" Style="margin-left: 4px" runat="server"></asp:Label>
-                                    <asp:Image ID="imgLoading" Visible="false" runat="server" ImageUrl="~/Assets/Images/ajax-loader.gif" style="width: 226px;" />
+                                    <asp:Image ID="imgLoading" Visible="false" runat="server" ImageUrl="~/Assets/Images/ajax-loader.gif" Style="width: 226px;" />
                                     <%--<img id="imgLoading" src="Assets/Images/ajax-loader.gif" style="width: 226px; display:none;" />--%>
                                 </div>
                             </div>
@@ -170,26 +195,31 @@
             </asp:Panel>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box box-solid">
-                <div class="box-body">
-                    <div class="table-responsive">
-                        <table id="GuestTable" style="font-size: 12px" class="table table-bordered table-hover">
-                            <thead>
-                                <tr class="header">
-                                    <th>Sn.</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Mobile</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                    <th>Count</th>
-                                    <th>Att Count</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                        </table>
+    <div class="box-body">
+        <div class="row">
+            <img id="imgLoading2" src="Assets/Images/ajax-loader.gif" style="margin-top: 14px; width: 226px; display: none" />
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-solid">
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table id="GuestTable" style="font-size: 12px" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr class="header">
+                                        <th>Sn.</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Count</th>
+                                        <th>Att Count</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -208,7 +238,7 @@
                     <%--<asp:Label ID="Label1" runat="server" ForeColor="Red" />--%>
                 </div>
                 <div class="modal-footer">
-                    <asp:Button id="btnConfirmDelete" runat="server" Text="Yes" OnClick="btnConfirmDelete_Click" class="btn btn-danger btn-sm" />
+                    <asp:Button ID="btnConfirmDelete" runat="server" Text="Yes" OnClick="btnConfirmDelete_Click" class="btn btn-danger btn-sm" />
                     <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">No</button>
                 </div>
             </div>

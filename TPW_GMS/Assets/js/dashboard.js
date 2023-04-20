@@ -60,7 +60,7 @@ function loadChart() {
 
         }
     });
-    //Active Members
+    //Active Members and Average
     $.ajax({
         url: 'api/GetActiveMembership',
         headers: {

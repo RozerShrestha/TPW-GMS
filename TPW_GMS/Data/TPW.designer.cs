@@ -81,9 +81,6 @@ namespace TPW_GMS.Data
     partial void InsertLockerMg(LockerMg instance);
     partial void UpdateLockerMg(LockerMg instance);
     partial void DeleteLockerMg(LockerMg instance);
-    partial void InsertLogin(Login instance);
-    partial void UpdateLogin(Login instance);
-    partial void DeleteLogin(Login instance);
     partial void InsertMarketingAttendance(MarketingAttendance instance);
     partial void UpdateMarketingAttendance(MarketingAttendance instance);
     partial void DeleteMarketingAttendance(MarketingAttendance instance);
@@ -144,6 +141,9 @@ namespace TPW_GMS.Data
     partial void InsertPaymentInfo(PaymentInfo instance);
     partial void UpdatePaymentInfo(PaymentInfo instance);
     partial void DeletePaymentInfo(PaymentInfo instance);
+    partial void InsertLogin(Login instance);
+    partial void UpdateLogin(Login instance);
+    partial void DeleteLogin(Login instance);
     partial void InsertMemberInformationLog(MemberInformationLog instance);
     partial void UpdateMemberInformationLog(MemberInformationLog instance);
     partial void DeleteMemberInformationLog(MemberInformationLog instance);
@@ -320,14 +320,6 @@ namespace TPW_GMS.Data
 			get
 			{
 				return this.GetTable<LockerMg>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Login> Logins
-		{
-			get
-			{
-				return this.GetTable<Login>();
 			}
 		}
 		
@@ -512,6 +504,14 @@ namespace TPW_GMS.Data
 			get
 			{
 				return this.GetTable<PaymentInfo>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Login> Logins
+		{
+			get
+			{
+				return this.GetTable<Login>();
 			}
 		}
 		
@@ -4046,284 +4046,6 @@ namespace TPW_GMS.Data
 					this._modifiedBy = value;
 					this.SendPropertyChanged("modifiedBy");
 					this.OnmodifiedByChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Login")]
-	public partial class Login : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _loginId;
-		
-		private System.Nullable<int> _roleId;
-		
-		private System.Nullable<int> _branchId;
-		
-		private string _firstname;
-		
-		private string _username;
-		
-		private string _password;
-		
-		private string _softwareExpireDate;
-		
-		private string _softwareExpireCheck;
-		
-		private string _longitude;
-		
-		private string _latitude;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnloginIdChanging(int value);
-    partial void OnloginIdChanged();
-    partial void OnroleIdChanging(System.Nullable<int> value);
-    partial void OnroleIdChanged();
-    partial void OnbranchIdChanging(System.Nullable<int> value);
-    partial void OnbranchIdChanged();
-    partial void OnfirstnameChanging(string value);
-    partial void OnfirstnameChanged();
-    partial void OnusernameChanging(string value);
-    partial void OnusernameChanged();
-    partial void OnpasswordChanging(string value);
-    partial void OnpasswordChanged();
-    partial void OnsoftwareExpireDateChanging(string value);
-    partial void OnsoftwareExpireDateChanged();
-    partial void OnsoftwareExpireCheckChanging(string value);
-    partial void OnsoftwareExpireCheckChanged();
-    partial void OnlongitudeChanging(string value);
-    partial void OnlongitudeChanged();
-    partial void OnlatitudeChanging(string value);
-    partial void OnlatitudeChanged();
-    #endregion
-		
-		public Login()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loginId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int loginId
-		{
-			get
-			{
-				return this._loginId;
-			}
-			set
-			{
-				if ((this._loginId != value))
-				{
-					this.OnloginIdChanging(value);
-					this.SendPropertyChanging();
-					this._loginId = value;
-					this.SendPropertyChanged("loginId");
-					this.OnloginIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_roleId", DbType="Int")]
-		public System.Nullable<int> roleId
-		{
-			get
-			{
-				return this._roleId;
-			}
-			set
-			{
-				if ((this._roleId != value))
-				{
-					this.OnroleIdChanging(value);
-					this.SendPropertyChanging();
-					this._roleId = value;
-					this.SendPropertyChanged("roleId");
-					this.OnroleIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_branchId", DbType="Int")]
-		public System.Nullable<int> branchId
-		{
-			get
-			{
-				return this._branchId;
-			}
-			set
-			{
-				if ((this._branchId != value))
-				{
-					this.OnbranchIdChanging(value);
-					this.SendPropertyChanging();
-					this._branchId = value;
-					this.SendPropertyChanged("branchId");
-					this.OnbranchIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_firstname", DbType="VarChar(50)")]
-		public string firstname
-		{
-			get
-			{
-				return this._firstname;
-			}
-			set
-			{
-				if ((this._firstname != value))
-				{
-					this.OnfirstnameChanging(value);
-					this.SendPropertyChanging();
-					this._firstname = value;
-					this.SendPropertyChanged("firstname");
-					this.OnfirstnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_username", DbType="VarChar(50)")]
-		public string username
-		{
-			get
-			{
-				return this._username;
-			}
-			set
-			{
-				if ((this._username != value))
-				{
-					this.OnusernameChanging(value);
-					this.SendPropertyChanging();
-					this._username = value;
-					this.SendPropertyChanged("username");
-					this.OnusernameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="VarChar(50)")]
-		public string password
-		{
-			get
-			{
-				return this._password;
-			}
-			set
-			{
-				if ((this._password != value))
-				{
-					this.OnpasswordChanging(value);
-					this.SendPropertyChanging();
-					this._password = value;
-					this.SendPropertyChanged("password");
-					this.OnpasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_softwareExpireDate", DbType="VarChar(50)")]
-		public string softwareExpireDate
-		{
-			get
-			{
-				return this._softwareExpireDate;
-			}
-			set
-			{
-				if ((this._softwareExpireDate != value))
-				{
-					this.OnsoftwareExpireDateChanging(value);
-					this.SendPropertyChanging();
-					this._softwareExpireDate = value;
-					this.SendPropertyChanged("softwareExpireDate");
-					this.OnsoftwareExpireDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_softwareExpireCheck", DbType="VarChar(50)")]
-		public string softwareExpireCheck
-		{
-			get
-			{
-				return this._softwareExpireCheck;
-			}
-			set
-			{
-				if ((this._softwareExpireCheck != value))
-				{
-					this.OnsoftwareExpireCheckChanging(value);
-					this.SendPropertyChanging();
-					this._softwareExpireCheck = value;
-					this.SendPropertyChanged("softwareExpireCheck");
-					this.OnsoftwareExpireCheckChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_longitude", DbType="VarChar(100)")]
-		public string longitude
-		{
-			get
-			{
-				return this._longitude;
-			}
-			set
-			{
-				if ((this._longitude != value))
-				{
-					this.OnlongitudeChanging(value);
-					this.SendPropertyChanging();
-					this._longitude = value;
-					this.SendPropertyChanged("longitude");
-					this.OnlongitudeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_latitude", DbType="VarChar(100)")]
-		public string latitude
-		{
-			get
-			{
-				return this._latitude;
-			}
-			set
-			{
-				if ((this._latitude != value))
-				{
-					this.OnlatitudeChanging(value);
-					this.SendPropertyChanging();
-					this._latitude = value;
-					this.SendPropertyChanged("latitude");
-					this.OnlatitudeChanged();
 				}
 			}
 		}
@@ -11682,6 +11404,332 @@ namespace TPW_GMS.Data
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Login")]
+	public partial class Login : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _loginId;
+		
+		private System.Nullable<int> _roleId;
+		
+		private System.Nullable<int> _branchId;
+		
+		private string _firstname;
+		
+		private string _username;
+		
+		private string _password;
+		
+		private string _softwareExpireDate;
+		
+		private string _softwareExpireCheck;
+		
+		private string _longitude;
+		
+		private string _latitude;
+		
+		private string _startBillNumber;
+		
+		private string _currentBillNumber;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnloginIdChanging(int value);
+    partial void OnloginIdChanged();
+    partial void OnroleIdChanging(System.Nullable<int> value);
+    partial void OnroleIdChanged();
+    partial void OnbranchIdChanging(System.Nullable<int> value);
+    partial void OnbranchIdChanged();
+    partial void OnfirstnameChanging(string value);
+    partial void OnfirstnameChanged();
+    partial void OnusernameChanging(string value);
+    partial void OnusernameChanged();
+    partial void OnpasswordChanging(string value);
+    partial void OnpasswordChanged();
+    partial void OnsoftwareExpireDateChanging(string value);
+    partial void OnsoftwareExpireDateChanged();
+    partial void OnsoftwareExpireCheckChanging(string value);
+    partial void OnsoftwareExpireCheckChanged();
+    partial void OnlongitudeChanging(string value);
+    partial void OnlongitudeChanged();
+    partial void OnlatitudeChanging(string value);
+    partial void OnlatitudeChanged();
+    partial void OnstartBillNumberChanging(string value);
+    partial void OnstartBillNumberChanged();
+    partial void OncurrentBillNumberChanging(string value);
+    partial void OncurrentBillNumberChanged();
+    #endregion
+		
+		public Login()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loginId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int loginId
+		{
+			get
+			{
+				return this._loginId;
+			}
+			set
+			{
+				if ((this._loginId != value))
+				{
+					this.OnloginIdChanging(value);
+					this.SendPropertyChanging();
+					this._loginId = value;
+					this.SendPropertyChanged("loginId");
+					this.OnloginIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_roleId", DbType="Int")]
+		public System.Nullable<int> roleId
+		{
+			get
+			{
+				return this._roleId;
+			}
+			set
+			{
+				if ((this._roleId != value))
+				{
+					this.OnroleIdChanging(value);
+					this.SendPropertyChanging();
+					this._roleId = value;
+					this.SendPropertyChanged("roleId");
+					this.OnroleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_branchId", DbType="Int")]
+		public System.Nullable<int> branchId
+		{
+			get
+			{
+				return this._branchId;
+			}
+			set
+			{
+				if ((this._branchId != value))
+				{
+					this.OnbranchIdChanging(value);
+					this.SendPropertyChanging();
+					this._branchId = value;
+					this.SendPropertyChanged("branchId");
+					this.OnbranchIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_firstname", DbType="VarChar(50)")]
+		public string firstname
+		{
+			get
+			{
+				return this._firstname;
+			}
+			set
+			{
+				if ((this._firstname != value))
+				{
+					this.OnfirstnameChanging(value);
+					this.SendPropertyChanging();
+					this._firstname = value;
+					this.SendPropertyChanged("firstname");
+					this.OnfirstnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_username", DbType="VarChar(50)")]
+		public string username
+		{
+			get
+			{
+				return this._username;
+			}
+			set
+			{
+				if ((this._username != value))
+				{
+					this.OnusernameChanging(value);
+					this.SendPropertyChanging();
+					this._username = value;
+					this.SendPropertyChanged("username");
+					this.OnusernameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="VarChar(50)")]
+		public string password
+		{
+			get
+			{
+				return this._password;
+			}
+			set
+			{
+				if ((this._password != value))
+				{
+					this.OnpasswordChanging(value);
+					this.SendPropertyChanging();
+					this._password = value;
+					this.SendPropertyChanged("password");
+					this.OnpasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_softwareExpireDate", DbType="VarChar(50)")]
+		public string softwareExpireDate
+		{
+			get
+			{
+				return this._softwareExpireDate;
+			}
+			set
+			{
+				if ((this._softwareExpireDate != value))
+				{
+					this.OnsoftwareExpireDateChanging(value);
+					this.SendPropertyChanging();
+					this._softwareExpireDate = value;
+					this.SendPropertyChanged("softwareExpireDate");
+					this.OnsoftwareExpireDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_softwareExpireCheck", DbType="VarChar(50)")]
+		public string softwareExpireCheck
+		{
+			get
+			{
+				return this._softwareExpireCheck;
+			}
+			set
+			{
+				if ((this._softwareExpireCheck != value))
+				{
+					this.OnsoftwareExpireCheckChanging(value);
+					this.SendPropertyChanging();
+					this._softwareExpireCheck = value;
+					this.SendPropertyChanged("softwareExpireCheck");
+					this.OnsoftwareExpireCheckChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_longitude", DbType="VarChar(100)")]
+		public string longitude
+		{
+			get
+			{
+				return this._longitude;
+			}
+			set
+			{
+				if ((this._longitude != value))
+				{
+					this.OnlongitudeChanging(value);
+					this.SendPropertyChanging();
+					this._longitude = value;
+					this.SendPropertyChanged("longitude");
+					this.OnlongitudeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_latitude", DbType="VarChar(100)")]
+		public string latitude
+		{
+			get
+			{
+				return this._latitude;
+			}
+			set
+			{
+				if ((this._latitude != value))
+				{
+					this.OnlatitudeChanging(value);
+					this.SendPropertyChanging();
+					this._latitude = value;
+					this.SendPropertyChanged("latitude");
+					this.OnlatitudeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_startBillNumber", DbType="VarChar(10)")]
+		public string startBillNumber
+		{
+			get
+			{
+				return this._startBillNumber;
+			}
+			set
+			{
+				if ((this._startBillNumber != value))
+				{
+					this.OnstartBillNumberChanging(value);
+					this.SendPropertyChanging();
+					this._startBillNumber = value;
+					this.SendPropertyChanged("startBillNumber");
+					this.OnstartBillNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_currentBillNumber", DbType="VarChar(10)")]
+		public string currentBillNumber
+		{
+			get
+			{
+				return this._currentBillNumber;
+			}
+			set
+			{
+				if ((this._currentBillNumber != value))
+				{
+					this.OncurrentBillNumberChanging(value);
+					this.SendPropertyChanging();
+					this._currentBillNumber = value;
+					this.SendPropertyChanged("currentBillNumber");
+					this.OncurrentBillNumberChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MemberInformationLog")]
 	public partial class MemberInformationLog : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -11756,9 +11804,21 @@ namespace TPW_GMS.Data
 		
 		private string _discountCode;
 		
+		private System.Nullable<int> _discount;
+		
 		private string _paymentMethod;
 		
 		private string _receiptNo;
+		
+		private System.Nullable<int> _PaymentAmount;
+		
+		private System.Nullable<int> _finalAmount;
+		
+		private System.Nullable<int> _paidAmount;
+		
+		private System.Nullable<int> _dueAmount;
+		
+		private System.Nullable<int> _dueClearAmount;
 		
 		private string _ActiveInactive;
 		
@@ -11856,10 +11916,22 @@ namespace TPW_GMS.Data
     partial void OnlockerNoChanged();
     partial void OndiscountCodeChanging(string value);
     partial void OndiscountCodeChanged();
+    partial void OndiscountChanging(System.Nullable<int> value);
+    partial void OndiscountChanged();
     partial void OnpaymentMethodChanging(string value);
     partial void OnpaymentMethodChanged();
     partial void OnreceiptNoChanging(string value);
     partial void OnreceiptNoChanged();
+    partial void OnPaymentAmountChanging(System.Nullable<int> value);
+    partial void OnPaymentAmountChanged();
+    partial void OnfinalAmountChanging(System.Nullable<int> value);
+    partial void OnfinalAmountChanged();
+    partial void OnpaidAmountChanging(System.Nullable<int> value);
+    partial void OnpaidAmountChanged();
+    partial void OndueAmountChanging(System.Nullable<int> value);
+    partial void OndueAmountChanged();
+    partial void OndueClearAmountChanging(System.Nullable<int> value);
+    partial void OndueClearAmountChanged();
     partial void OnActiveInactiveChanging(string value);
     partial void OnActiveInactiveChanged();
     partial void OnisExpiredChanging(System.Nullable<bool> value);
@@ -12571,6 +12643,26 @@ namespace TPW_GMS.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_discount", DbType="Int")]
+		public System.Nullable<int> discount
+		{
+			get
+			{
+				return this._discount;
+			}
+			set
+			{
+				if ((this._discount != value))
+				{
+					this.OndiscountChanging(value);
+					this.SendPropertyChanging();
+					this._discount = value;
+					this.SendPropertyChanged("discount");
+					this.OndiscountChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_paymentMethod", DbType="VarChar(50)")]
 		public string paymentMethod
 		{
@@ -12607,6 +12699,106 @@ namespace TPW_GMS.Data
 					this._receiptNo = value;
 					this.SendPropertyChanged("receiptNo");
 					this.OnreceiptNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentAmount", DbType="Int")]
+		public System.Nullable<int> PaymentAmount
+		{
+			get
+			{
+				return this._PaymentAmount;
+			}
+			set
+			{
+				if ((this._PaymentAmount != value))
+				{
+					this.OnPaymentAmountChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentAmount = value;
+					this.SendPropertyChanged("PaymentAmount");
+					this.OnPaymentAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_finalAmount", DbType="Int")]
+		public System.Nullable<int> finalAmount
+		{
+			get
+			{
+				return this._finalAmount;
+			}
+			set
+			{
+				if ((this._finalAmount != value))
+				{
+					this.OnfinalAmountChanging(value);
+					this.SendPropertyChanging();
+					this._finalAmount = value;
+					this.SendPropertyChanged("finalAmount");
+					this.OnfinalAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_paidAmount", DbType="Int")]
+		public System.Nullable<int> paidAmount
+		{
+			get
+			{
+				return this._paidAmount;
+			}
+			set
+			{
+				if ((this._paidAmount != value))
+				{
+					this.OnpaidAmountChanging(value);
+					this.SendPropertyChanging();
+					this._paidAmount = value;
+					this.SendPropertyChanged("paidAmount");
+					this.OnpaidAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dueAmount", DbType="Int")]
+		public System.Nullable<int> dueAmount
+		{
+			get
+			{
+				return this._dueAmount;
+			}
+			set
+			{
+				if ((this._dueAmount != value))
+				{
+					this.OndueAmountChanging(value);
+					this.SendPropertyChanging();
+					this._dueAmount = value;
+					this.SendPropertyChanged("dueAmount");
+					this.OndueAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dueClearAmount", DbType="Int")]
+		public System.Nullable<int> dueClearAmount
+		{
+			get
+			{
+				return this._dueClearAmount;
+			}
+			set
+			{
+				if ((this._dueClearAmount != value))
+				{
+					this.OndueClearAmountChanging(value);
+					this.SendPropertyChanging();
+					this._dueClearAmount = value;
+					this.SendPropertyChanged("dueClearAmount");
+					this.OndueClearAmountChanged();
 				}
 			}
 		}

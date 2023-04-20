@@ -487,7 +487,8 @@ namespace TPW_GMS.Controllers
                                  finalAmount = Convert.ToInt32(p.finalAmount),
                                  ActiveInActive = m.ActiveInactive,
                                  dateOfBirth = m.dateOfBirth,
-                                 address = m.address
+                                 address = m.address,
+                                 email=m.email
 
                              }).ToList();
                 return query;
@@ -513,7 +514,8 @@ namespace TPW_GMS.Controllers
                                  receiptNo = p.receiptNo,
                                  dueAmount = (p.dueAmount == null) ? 0 : Convert.ToInt32(p.dueAmount),
                                  finalAmount = Convert.ToInt32(p.finalAmount),
-                                 ActiveInActive = m.ActiveInactive
+                                 ActiveInActive = m.ActiveInactive,
+                                 email = m.email
                              }).ToList();
                 return query;
             }
