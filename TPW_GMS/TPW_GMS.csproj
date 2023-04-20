@@ -245,6 +245,7 @@
     <Content Include="AddTrainer.aspx" />
     <Content Include="AdmittedAndRenewed.aspx" />
     <Content Include="AllMember.aspx" />
+    <Content Include="AllMemberDev.aspx" />
     <Content Include="AskQuestion.aspx" />
     <Content Include="Assets\20-01-31-10-53-42.mp4" />
     <Content Include="Assets\axios\dist\axios.js" />
@@ -2720,6 +2721,13 @@
     </Compile>
     <Compile Include="AllMember.aspx.designer.cs">
       <DependentUpon>AllMember.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AllMemberDev.aspx.cs">
+      <DependentUpon>AllMemberDev.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AllMemberDev.aspx.designer.cs">
+      <DependentUpon>AllMemberDev.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

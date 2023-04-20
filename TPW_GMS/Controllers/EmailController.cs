@@ -44,6 +44,20 @@ namespace TPW_GMS.Controllers
             return Ok(response);
         }
 
+        [Route("api/SendGuestEmail")]
+        [HttpGet]
+        public IHttpActionResult SendGuestEmail(string name, string email)
+        {
+            var emailResponse = MailService.sendEmailToGuest(name, email);
+            if(string.IsNullOrEmpty(emailResponse)) {
+                return Ok($"Email with QR for the guest has been send to: {name}");
+            }
+            else
+            {
+                return BadRequest(emailResponse);
+            }
+        }
+
         [Route("api/SendBulkEmail")]
         [HttpPost]
         public IHttpActionResult SendBulkEmail(Email em)
