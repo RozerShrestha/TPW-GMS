@@ -41,10 +41,9 @@
                                         <asp:Label ID="lblFileUploadErrorMessage" runat="server" Text=""></asp:Label>
                                     </div>
                                     <div class="col-sm-2">
-                                       <%-- <% if (qrshow)
-                                            { %>--%>
-                                        <qrcode :value="qrId" :options="{ width: 200 }"></qrcode>
-                                        <%--<%} %>--%>
+                                      
+                                        <%--<qrcode :value="qrId" :options="{ width: 200 }"></qrcode>--%>
+                                        
                                     </div>
                                     <div class="col-sm-2">
                                         Status
