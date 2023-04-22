@@ -68,7 +68,7 @@ namespace TPW_GMS
                     var jsonInfo = JsonConvert.SerializeObject(em);
                     lblInfo.Text = "Please wait, Sending Email....";
                     imgLoading.Visible = true;
-                    GenerateQrImage(jsonInfo);
+                    GenerateQrImage(em.email);
                     var emailSend = MailService.sendEmailToGuest(em.name,em.email);
                     if (emailSend == "")
                     {
@@ -252,7 +252,7 @@ namespace TPW_GMS
         public void GenerateQrImage(string qrText)
         {
             var qrTextEncrypted = Service.EncryptData(qrText);
-            var em = JsonConvert.DeserializeObject<Guest>(qrText);
+            //var em = JsonConvert.DeserializeObject<Guest>(qrText);
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrTextEncrypted, QRCodeGenerator.ECCLevel.Q);
             System.Web.UI.WebControls.Image imgBarCode = new System.Web.UI.WebControls.Image();
@@ -266,7 +266,7 @@ namespace TPW_GMS
                     bitMap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                     byte[] byteImage = ms.ToArray();
                     System.Drawing.Image img = System.Drawing.Image.FromStream(ms);
-                    img.Save(Server.MapPath(@"~\Image\Guests\") + em.email + ".jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                    img.Save(Server.MapPath(@"~\Image\Guests\") + qrText + ".jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
                     imgBarCode.ImageUrl = "data:image/png;base64," + Convert.ToBase64String(byteImage);
                 }
             }

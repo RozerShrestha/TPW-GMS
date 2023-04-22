@@ -20,5 +20,6 @@ namespace TPW_GMS.Models
         public int attendanceCount { get; set; }
         public bool isValid { get; set; }
         public string message { get; set; }
+        public bool isExpired { get; set; } = false;
     }
 }

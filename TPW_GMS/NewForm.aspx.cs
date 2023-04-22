@@ -139,7 +139,7 @@ namespace TPW_GMS
                 var item = db.ExtraInformations.SingleOrDefault();
                 txtStatic.Text = item.currentNepaliDate + splitUser;
             }
-            txtReceiptNo.Text = Service.LoadReceiptNumber(splitUser);
+            //txtReceiptNo.Text = Service.LoadReceiptNumber(splitUser);
         }
         protected void btnUpload_Click(object sender, EventArgs e)
         {
@@ -734,10 +734,10 @@ namespace TPW_GMS
             {
                 return "Date of Birth is invalid";
             }
-            else if (!Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
-            {
-                return "Receipt Number Invalid";
-            }
+            //else if (!Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
+            //{
+            //    return "Receipt Number Invalid";
+            //}
             else
             {
                 return "";
@@ -856,9 +856,9 @@ namespace TPW_GMS
                     EmMarketing em = (from t in db.EmMarketings
                                       where t.email == txtEmail.Text
                                       select t).SingleOrDefault();
-                    var login = (from l in db.Logins
-                                   where l.username == splitUser
-                                   select l).SingleOrDefault();
+                    //var login = (from l in db.Logins
+                    //               where l.username == splitUser
+                    //               select l).SingleOrDefault();
 
                     #region Insert Member Login
                     ml.memberId = txtMemberId.Text;
@@ -1040,7 +1040,6 @@ namespace TPW_GMS
                         em.flag = true;
                     }
                     #region Update Login Information
-                    login.currentBillNumber = txtReceiptNo.Text;
                     #endregion
                     #region Version History
                     mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m));
