@@ -41,10 +41,9 @@
                                         <asp:Label ID="lblFileUploadErrorMessage" runat="server" Text=""></asp:Label>
                                     </div>
                                     <div class="col-sm-2">
-                                       <%-- <% if (qrshow)
-                                            { %>--%>
-                                        <qrcode :value="qrId" :options="{ width: 200 }"></qrcode>
-                                        <%--<%} %>--%>
+                                      
+                                        <%--<qrcode :value="qrId" :options="{ width: 200 }"></qrcode>--%>
+                                        
                                     </div>
                                     <div class="col-sm-2">
                                         Status
@@ -446,13 +445,13 @@
                                         </asp:Panel>
                                   </div>
                                     <div class=" form-row col-sm-3">
-                                      Receipt No<span class="asterik" style="font-weight:100">*(latest receipt no, please see in payment history)</span><br />
+                                      Receipt No<span class="asterik" style="font-weight:100"> *</span><br />
                                       <%--<asp:TextBox ID="txtReceiptNo" runat="server" CssClass="form-control input-sm"></asp:TextBox>--%>
                                       <div class="col-md-4" style="padding-left: 0px; padding-right: 0px;">
                                           <asp:TextBox ID="txtStatic" CssClass="form-control" ClientIDMode="Static" runat="server" disabled ></asp:TextBox>
                                       </div>
                                       <div class="col-md-8" style="padding-left: 0px; padding-right: 0px;">
-                                          <asp:TextBox ID="txtReceiptNo" CssClass=" form-control" ClientIDMode="Static" runat="server" disabled ></asp:TextBox>
+                                          <asp:TextBox ID="txtReceiptNo" CssClass=" form-control" ClientIDMode="Static" runat="server"  data-toggle="tooltip" data-delay="{ show: 1000, hide: 10000}" data-placement="top" title="Note: latest receipt no, please see in payment history" ></asp:TextBox>
                                       </div>
                                   </div>
                                     <div class="col-sm-2">

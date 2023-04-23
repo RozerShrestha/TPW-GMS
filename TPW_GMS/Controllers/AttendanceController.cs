@@ -189,6 +189,10 @@ namespace TPW_GMS.Controllers
                                     attCount = 1;
                                 }
                             }
+                            else if (query.memberExpireDate < DateTime.Today)
+                            {
+                                ar.isExpired = true;
+                            }
 
 
                             ar.firstName = query.firstName;
@@ -274,40 +278,40 @@ namespace TPW_GMS.Controllers
             //for Guest attendance
             else
             {
-                var emJsonData = Service.DecryptString(memberId);
+                var guestEmail = Service.DecryptString(memberId);
                 var yesterday = DateTime.Now.AddDays(-1).Date;
-                var emObj = JsonConvert.DeserializeObject<Guest>(emJsonData);
+                //var emObj = JsonConvert.DeserializeObject<Guest>(guestEmail);
                 //Response r = new Response();
                 using (TPWDataContext db = new TPWDataContext())
                 {
-                    var item = db.Guests.Where(p => p.email == emObj.email).SingleOrDefault();
-                    var isAttendanceDone = db.GuestAttandances.Any(p => p.email == emObj.email && Convert.ToDateTime(p.checkin).Date > yesterday);
-                    ar.firstName = item.name;
+                    var guestRecord = db.Guests.Where(p => p.email == guestEmail).SingleOrDefault();
+                    var isAttendanceDone = db.GuestAttandances.Any(p => p.email == guestEmail && Convert.ToDateTime(p.checkin).Date > yesterday);
+                    ar.firstName = guestRecord.name;
                     ar.membershipOption = "Guest";
-                    ar.membershipBeginDate = item.fromDate.ToString();
-                    ar.membershipExpireDate = item.toDate.ToString();
+                    ar.membershipBeginDate = guestRecord.fromDate.ToString();
+                    ar.membershipExpireDate = guestRecord.toDate.ToString();
                     if (!isAttendanceDone)
                     {
                         //in case of from and to date
-                        if (item.fromDate != null)
+                        if (guestRecord.fromDate != null)
                         {
-                            if (DateTime.Now <= item.toDate)
+                            if (DateTime.Now <= guestRecord.toDate)
                             {
-                                if (item.attCount < item.count)
+                                if (guestRecord.attCount < guestRecord.count)
                                 {
                                     try
                                     {
                                         GuestAttandance m = new GuestAttandance()
                                         {
-                                            guestId = emObj.id,
-                                            name = emObj.name,
-                                            email = emObj.email,
+                                            guestId = guestRecord.id,
+                                            name = guestRecord.name,
+                                            email = guestRecord.email,
                                             checkinBranch = loginBranch,
                                             checkin = DateTime.Now,
                                             checkout = DateTime.Now.AddHours(2)
                                         };
                                         db.GuestAttandances.InsertOnSubmit(m);
-                                        item.attCount += 1;
+                                        guestRecord.attCount += 1;
                                         db.SubmitChanges();
 
                                         ar.message = "Guest Attendance Successful";
@@ -334,27 +338,27 @@ namespace TPW_GMS.Controllers
                         //in case of count only
                         else
                         {
-                            if (item.attCount < item.count)
+                            if (guestRecord.attCount < guestRecord.count)
                             {
                                 try
                                 {
                                     GuestAttandance m = new GuestAttandance()
                                     {
-                                        guestId = emObj.id,
-                                        name = emObj.name,
-                                        email = emObj.email,
+                                        guestId = guestRecord.id,
+                                        name = guestRecord.name,
+                                        email = guestRecord.email,
                                         checkinBranch = loginBranch,
                                         checkin = DateTime.Now,
                                         checkout = DateTime.Now.AddHours(2)
                                     };
                                     db.GuestAttandances.InsertOnSubmit(m);
-                                    item.attCount += 1;
+                                    guestRecord.attCount += 1;
                                     db.SubmitChanges();
 
-                                    ar.firstName = item.name;
+                                    ar.firstName = guestRecord.name;
                                     ar.membershipOption = "Guest";
-                                    ar.membershipBeginDate = item.fromDate.ToString();
-                                    ar.membershipExpireDate = item.toDate.ToString();
+                                    ar.membershipBeginDate = guestRecord.fromDate.ToString();
+                                    ar.membershipExpireDate = guestRecord.toDate.ToString();
                                     ar.message = "Guest Login";
                                     ar.isValid = true;
                                 }

@@ -426,6 +426,7 @@
             finalMessage += result.universalMembershipLimit == 0 ? "Universal Limit: 0 \n" : "";
             finalMessage += result.attendanceCount != 0 ? "Checkin: Already Checked In \n" : "";
             finalMessage += result.membershipStatus == "InActive" ? "Membership Status: Inactive \n" : "";
+            finalMessage += result.isExpired ? "Membership is Expired \n":"";
             finalMessage += result.isValid == false ? "Valid: False \n" : "";
             finalMessage += result.pendingPayment != "" && result.pendingPayment!=null ? result.pendingPayment : "";
             finalMessage += result.membershipOption == "OffHour" && result.isValid == false ? "Membership option: OFFHOUR (CheckIn time is 10-4)\n" : "";
@@ -441,7 +442,7 @@
                 $('#errorModal').modal('show');
             }
             else if (result.membershipStatus == "InActive") {
-                $("#spnNote1").html("<i style='color: red'>Note:Membership Status is INACTIVE</i><br /> Click Activate Button to Activate the Membership");
+                $("#spnNote1").html(`<i style='color: red'>Note:Membership Status is ${result.isExpired?'Expired and':''} INACTIVE</i > <br /> Click Activate Button to Activate the Membership`);
                 $('#txtReceiptNo').hide();
                 $('#ContentPlaceHolder1_btnSubmitModal').hide();
                 $('#ContentPlaceHolder1_btnActivate').attr('disabled', false);

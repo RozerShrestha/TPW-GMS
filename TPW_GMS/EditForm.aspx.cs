@@ -178,6 +178,7 @@ namespace TPW_GMS
                     ddlActionTaker.DataSource = actionTakers;
                     ddlActionTaker.DataBind();
                     ddlActionTaker.Items.Insert(0, new ListItem("--Select--", "0"));
+                    ddlActionTaker.Items.Insert(1, new ListItem("admin", "1"));
                 }
                 else
                 {
@@ -194,6 +195,11 @@ namespace TPW_GMS
         {
             var item = db.ExtraInformations.SingleOrDefault();
             txtStatic.Text = item.currentNepaliDate + splitUser;
+
+            if (loginUser == "admin")
+            {
+                ddlRenewExtendNormal.Items.Remove(ddlRenewExtendNormal.Items.FindByText("Renew"));
+            }
         }
         protected void loadDropdownValue()
         {
@@ -254,7 +260,7 @@ namespace TPW_GMS
             if (ddlRenewExtendNormal.SelectedItem.Text == "Renew")
             {
                 ddlMembershipPaymentType.Enabled = true;
-                txtReceiptNo.Text=Service.LoadReceiptNumber(splitUser);
+                //txtReceiptNo.Text=Service.LoadReceiptNumber(splitUser);
             }
             else if (ddlRenewExtendNormal.SelectedItem.Text == "Extended")
             {
@@ -627,8 +633,9 @@ namespace TPW_GMS
                     txtFinalAmount.Text = finalAmount.ToString(); /*paymentInfo.finalAmount.ToString();*/
                     txtDueAmount.Text = da==0?da.ToString(): (Convert.ToInt32(txtFinalAmount.Text) - Convert.ToInt32(txtpaidAmount.Text) - Convert.ToInt32(txtDueClearAmount.Text)).ToString();
                 }
-                
-                btnEdit.Enabled = roleId == "1" || roleId == "4" ? false : true;
+
+                //btnEdit.Enabled = roleId == "1" || roleId == "4" ? false : true;
+                btnEdit.Enabled = true;
                 lblInformation.Text = "";
             }
             catch (Exception ex)
@@ -742,10 +749,10 @@ namespace TPW_GMS
             {
                 return "Membership Payment Type is Required";
             }
-            else if (ddlRenewExtendNormal.SelectedItem.Text=="Renew" && !Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
-            {
-                return "Receipt Number Invalid";
-            }
+            //else if (ddlRenewExtendNormal.SelectedItem.Text=="Renew" && !Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
+            //{
+            //    return "Receipt Number Invalid";
+            //}
             //
             if (NepaliDateService.NepToEng(txtMembershipExpireDate.Text) < DateTime.Now && (ddlRenewExtendNormal.SelectedItem.Text=="Renew" || ddlRenewExtendNormal.SelectedItem.Text=="Extend"))
             {
@@ -1175,9 +1182,9 @@ namespace TPW_GMS
                     ExtraInformation ex = (from c in db.ExtraInformations
                                            where c.extraInformationId == 1
                                            select c).SingleOrDefault();
-                    var login = (from l in db.Logins
-                                 where l.username == splitUser
-                                 select l).SingleOrDefault();
+                    //var login = (from l in db.Logins
+                    //             where l.username == splitUser
+                    //             select l).SingleOrDefault();
 
                     DateTime? dt = null;
                     Int32? num = null;
@@ -1291,7 +1298,10 @@ namespace TPW_GMS
                     {
                         p1.referenceId = txtReferenceId.Text;
                     }
-                    p1.receiptNo = txtStatic.Text + "-" + txtReceiptNo.Text;
+                    if (loginUser != "admin")
+                    {
+                        p1.receiptNo = txtStatic.Text + "-" + txtReceiptNo.Text;
+                    }
                     p1.updatedDate = DateTime.Now;
                     p1.due = false;
                     p1.renewExtend = "normalChanges";
@@ -1361,7 +1371,7 @@ namespace TPW_GMS
                     mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m1));
                     mLog.createdDate = DateTime.Now;
                     db.MemberInformationLogs.InsertOnSubmit(mLog);
-                    login.currentBillNumber = txtReceiptNo.Text;
+                    //login.currentBillNumber = txtReceiptNo.Text;
                     db.SubmitChanges();
                     if (ddlRenewExtendNormal.SelectedItem.Text == "Renew")
                     {
