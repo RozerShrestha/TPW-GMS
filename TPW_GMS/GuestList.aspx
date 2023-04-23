@@ -103,7 +103,7 @@
                         data: "id",
                         className: "center",
                         render: function (data, type, full, meta) {
-                            return `<a href="GuestList.aspx?id=' + data + "&" + "key=edit" + '" class="editAsset"><img src="Assets/Icon/edit.png" class="iconEdit" /></a> &nbsp;&nbsp;&nbsp; <a href="GuestList.aspx?id=' + data + "&" + "key=delete" + '" class="editor_remove"><img src="Assets/Icon/delete.png" class="iconDelete" /></a>     &nbsp;&nbsp;&nbsp; <a href="#" type="button" class="iconView" onclick="sendEmail('${full.name}','${full.email}')"><span></span><img src="Assets/Icon/email.png" class="iconView" /></a> `;
+                            return `<a href="GuestList.aspx?id=${data}&key=edit" class="editAsset"><img src="Assets/Icon/edit.png" class="iconEdit" /></a>&nbsp;&nbsp;&nbsp; <a href="#" type="button" class="iconView" onclick="sendEmail('${full.name}','${full.email}')"><span></span><img src="Assets/Icon/email.png" class="iconView" /></a> `;
                         }
                     }
                 ]
