@@ -178,6 +178,7 @@ namespace TPW_GMS
                     ddlActionTaker.DataSource = actionTakers;
                     ddlActionTaker.DataBind();
                     ddlActionTaker.Items.Insert(0, new ListItem("--Select--", "0"));
+                    ddlActionTaker.Items.Insert(1, new ListItem("admin", "1"));
                 }
                 else
                 {
@@ -194,6 +195,11 @@ namespace TPW_GMS
         {
             var item = db.ExtraInformations.SingleOrDefault();
             txtStatic.Text = item.currentNepaliDate + splitUser;
+
+            if (loginUser == "admin")
+            {
+                ddlRenewExtendNormal.Items.Remove(ddlRenewExtendNormal.Items.FindByText("Renew"));
+            }
         }
         protected void loadDropdownValue()
         {
@@ -627,8 +633,9 @@ namespace TPW_GMS
                     txtFinalAmount.Text = finalAmount.ToString(); /*paymentInfo.finalAmount.ToString();*/
                     txtDueAmount.Text = da==0?da.ToString(): (Convert.ToInt32(txtFinalAmount.Text) - Convert.ToInt32(txtpaidAmount.Text) - Convert.ToInt32(txtDueClearAmount.Text)).ToString();
                 }
-                
-                btnEdit.Enabled = roleId == "1" || roleId == "4" ? false : true;
+
+                //btnEdit.Enabled = roleId == "1" || roleId == "4" ? false : true;
+                btnEdit.Enabled = true;
                 lblInformation.Text = "";
             }
             catch (Exception ex)
@@ -1291,7 +1298,10 @@ namespace TPW_GMS
                     {
                         p1.referenceId = txtReferenceId.Text;
                     }
-                    p1.receiptNo = txtStatic.Text + "-" + txtReceiptNo.Text;
+                    if (loginUser != "admin")
+                    {
+                        p1.receiptNo = txtStatic.Text + "-" + txtReceiptNo.Text;
+                    }
                     p1.updatedDate = DateTime.Now;
                     p1.due = false;
                     p1.renewExtend = "normalChanges";
