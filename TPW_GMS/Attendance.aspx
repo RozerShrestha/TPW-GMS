@@ -27,15 +27,15 @@
                             <table class="table table-bordered" border="1" style="margin-left: 0px; margin-top: -6px;">
                                 <tbody>
                                     <tr>
-                                        <td colspan="2">
+                                        <td colspan="6">
                                             <asp:TextBox ID="qrCodeScan" CssClass="form-control" runat="server" autofocus></asp:TextBox>
                                         </td>
 
                                     </tr>
                                     <tr>
-                                        <td><b>Membership Option:</b>
+                                        <td colspan="2"><b>Membership Option:</b>
                                         </td>
-                                        <td>
+                                        <td colspan="4">
                                             <input type="text" id="txtMembershipOption" disabled class="form-control input-sm" />
                                         </td>
                                     </tr>
@@ -47,7 +47,7 @@
                                             <input type="text" id="txtOffHourAmount" placeholder="charge" class="form-control input-sm" />
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <%--<tr>
                                         <td><b>First Name:</b></td>
                                         <td>
                                             <input type="text" id="txtFirstName" disabled class="form-control input-sm" />
@@ -57,36 +57,54 @@
                                         <td><b>Last Name:</b></td>
                                         <td>
                                             <input type="text" id="txtLastName" disabled class="form-control input-sm" /></td>
-                                    </tr>
+                                    </tr>--%>
                                     <tr>
-                                        <td><b>Branch:</b></td>
-                                        <td>
-                                            <input type="text" id="txtBranch" runat="server" disabled class="form-control input-sm" />
+                                        <td colspan="2"><b>Full Name:</b></td>
+                                        <td colspan="4">
+                                            <input type="text" id="txtFullName" disabled class="form-control input-sm" />
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td colspan="2"><b>Branch:</b></td>
+                                        <td colspan="4">
+                                            <input type="text" id="txtBranch" runat="server" disabled class="form-control input-sm" />
+                                        </td>
+                                    </tr>
+                                   <%-- <tr>
                                         <td><b>Universal Membership Limit:</b></td>
                                         <td>
                                             <input type="text" id="txtUniversalMembershipLimit" disabled class="form-control input-sm" />
                                         </td>
-                                    </tr>
+                                    </tr>--%>
                                     <tr>
-                                        <td><b>Membership Date:</b></td>
-                                        <td>
+                                        <td colspan="2"><b>Membership Date:</b></td>
+                                        <td colspan="4">
                                             <input type="text" id="txtMembershipDate" disabled class="form-control input-sm dateControl" /></td>
                                     </tr>
                                     <tr>
-                                        <td><b>Renew Date:</b></td>
+                                        <td colspan="2"><b>Renew Date:</b></td>
+                                        <td>Membership</td>
                                         <td>
-                                            <input type="text" id="txtRenewDate" disabled class="form-control input-sm" /></td>
+                                            <input type="text" id="txtMembershipRenewDate" disabled class="form-control input-sm" />
+                                        </td>
+                                        <td>Locker</td>
+                                        <td>
+                                            <input type="text" id="txtLockerRenewDate" disabled class="form-control input-sm" />
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Expire Date:</b></td>
+                                        <td colspan="2"><b>Expire Date:</b></td>
+                                         <td>Membership</td>
                                         <td>
-                                            <input type="text" id="txtExpireDate" disabled class="form-control input-sm" /></td>
+                                            <input type="text" id="txtMembershipExpireDate" disabled class="form-control input-sm" />
+                                        </td>
+                                        <td>Locker</td>
+                                        <td>
+                                            <input type="text" id="txtLockerExpireDate" disabled class="form-control input-sm" />
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><b>Message:</b>
+                                        <td colspan="6"><b>Message:</b>
                                             <textarea name="txtMessage" id="txtMessage" style="height: 120px; font-size:14px; color: red" disabled class="form-control input-sm"></textarea>
                                         </td>
                                     </tr>
@@ -415,24 +433,36 @@
             var today = new Date(new Date().toLocaleDateString());
             var exp = new Date(new Date(result.membershipExpireDate).toLocaleDateString());
             $('#txtMembershipOption').val(result.membershipOption);
-            $('#txtFirstName').val(result.firstName);
-            $('#txtLastName').val(result.lastName);
+            //$('#txtFirstName').val(result.firstName);
+            //$('#txtLastName').val(result.lastName);
+            $('#txtFullName').val(result.fullName);
             $('#ContentPlaceHolder1_txtBranch').val(result.branch);
             $('#txtUniversalMembershipLimit').val(result.universalMembershipLimit);
             $('#txtMembershipDate').val(result.membershipDate);
-            $('#txtRenewDate').val(result.membershipBeginDate);
-            $('#txtExpireDate').val(result.membershipExpireDate);
+            $('#txtMembershipRenewDate').val(result.membershipBeginDate);
+            $('#txtMembershipExpireDate').val(result.membershipExpireDate);
+            $('#txtLockerRenewDate').val(result.lockerRenewDate);
+            $('#txtLockerExpireDate').val(result.lockerExpiredDate);
 
             finalMessage += result.universalMembershipLimit == 0 ? "Universal Limit: 0 \n" : "";
             finalMessage += result.attendanceCount != 0 ? "Checkin: Already Checked In \n" : "";
             finalMessage += result.membershipStatus == "InActive" ? "Membership Status: Inactive \n" : "";
-            finalMessage += result.isExpired ? "Membership is Expired \n":"";
+            finalMessage += result.isMembershipExpired ? "Membership is Expired \n" : "";
+            finalMessage += result.isLockerExpired ? "Locker is Expired \n" : "";
             finalMessage += result.isValid == false ? "Valid: False \n" : "";
             finalMessage += result.pendingPayment != "" && result.pendingPayment!=null ? result.pendingPayment : "";
             finalMessage += result.membershipOption == "OffHour" && result.isValid == false ? "Membership option: OFFHOUR (CheckIn time is 10-4)\n" : "";
             finalMessage += today > exp && result.membershipOption != "Email Marketing Client" ? "Membership Expired" : "";
             finalMessage += result.message;
             $('#txtMessage').val(finalMessage);
+            if (result.isMembershipExpired) {
+                $("#txtMembershipExpireDate").css("border", "3px solid");
+                $("#txtMembershipExpireDate").css("color", "red")
+            }
+            if (result.isLockerExpired) {
+                $("#txtLockerExpireDate").css("border", "3px solid");
+                $("#txtLockerExpireDate").css("color", "red")
+            }
             if (result.membershipOption == "OffHour" && result.isValid == false && result.membershipStatus == "Active") {
                 $("#spnNote1").html("<i style='color: red'>Note:OFFHOUR Membership CheckIn time is only from 10 AM to 4 PM</i><br /><i style='color: green'>Do you want to Pay an Extra Charge of Rs 100? </i>");
                 $('#errorModal').modal('show');
@@ -442,7 +472,7 @@
                 $('#errorModal').modal('show');
             }
             else if (result.membershipStatus == "InActive") {
-                $("#spnNote1").html(`<i style='color: red'>Note:Membership Status is ${result.isExpired?'Expired and':''} INACTIVE</i > <br /> Click Activate Button to Activate the Membership`);
+                $("#spnNote1").html(`<i style='color: red'>Note:Membership Status is ${result.isMembershipExpired?'Expired and':''} INACTIVE</i > <br /> Click Activate Button to Activate the Membership`);
                 $('#txtReceiptNo').hide();
                 $('#ContentPlaceHolder1_btnSubmitModal').hide();
                 $('#ContentPlaceHolder1_btnActivate').attr('disabled', false);

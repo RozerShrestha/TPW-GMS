@@ -9,7 +9,7 @@ using TPW_GMS.Models;
 
 namespace TPW_GMS
 {
-    public partial class MemberExpiredReport : System.Web.UI.Page
+    public partial class LockerExpiredReport : System.Web.UI.Page
     {
         string roleId, loginUser, splitUser;
         protected void Page_Load(object sender, EventArgs e)
@@ -17,14 +17,7 @@ namespace TPW_GMS
             InitialCheck();
             if (!IsPostBack)
             {
-                //if (roleId == "1" || roleId=="2" || roleId=="4")
-                //{
-                    loadBranch();
-                //}
-                //else
-                //{
-                //    Response.Redirect("AccessDenied.aspx");
-                //}
+                loadBranch();
             }
         }
         public void InitialCheck()
@@ -41,14 +34,6 @@ namespace TPW_GMS
         }
         protected void loadBranch()
         {
-            //using (var db = new TPWDataContext()) {
-            //    var branchName = from p in db.Logins
-            //                     where !p.username.Contains("admin")
-            //                     select p.username;
-            //    branch.DataSource = branchName;
-            //    branch.DataBind();
-            //    branch.Items.Insert(0, new ListItem("ALL", "ALL"));
-            //}
             using (var db = new TPWDataContext())
             {
                 if (roleId == "1" || roleId == "4")

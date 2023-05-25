@@ -174,25 +174,6 @@
       <Column Name="status" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.LockerMg" Member="LockerMgs">
-    <Type Name="LockerMg">
-      <Column Name="lockerId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="lockerNumber" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="renewDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="duration" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="amount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="paymentMethod" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="expireDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="receiptNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="created" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="modified" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="createdBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="modifiedBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.MacAddress" Member="MacAddresses">
     <Type Name="MacAddress">
       <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -632,6 +613,27 @@
       <Column Name="createdBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="modifiedBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="actionTaker" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LockerMg" Member="LockerMgs">
+    <Type Name="LockerMg">
+      <Column Name="lockerId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="branch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="memberId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="lockerNumber" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="renewDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="duration" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="amount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="paymentMethod" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="expireDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="flag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="receiptNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="created" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="modified" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="createdBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="modifiedBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="callStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="callRemark" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

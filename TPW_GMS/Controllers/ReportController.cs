@@ -180,6 +180,30 @@ namespace TPW_GMS.Controllers
             }
             return Ok(itemList);
         }
+
+        [Route("api/GetLockerExpiry/")]
+        [HttpPost]
+        public IHttpActionResult GetLockerExpiry(ReportParam r)
+        {
+            var d1 = DateTime.Now.AddMonths(-1);
+            List<LockerMg> itemList = new List<LockerMg>();
+            if (r.branch == "ALL")
+                itemList = db.LockerMgs.ToList();
+            else
+                itemList = db.LockerMgs.Where(k => k.branch == r.branch).ToList();
+
+            if (r.reportType == "0")
+            {
+                itemList = itemList.Where(p => p.expireDate <= d1).ToList();
+                itemList = itemList.OrderBy(d => d.expireDate).ToList();
+            }
+            else if (r.reportType == "1")
+            {
+                itemList = itemList.Where(p => p.expireDate >= d1 && p.expireDate <= DateTime.Now).ToList();
+                itemList = itemList.OrderBy(d => d.expireDate).ToList();
+            }
+            return Ok(itemList);
+        }
     }
 
 }

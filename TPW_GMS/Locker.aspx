@@ -31,12 +31,25 @@
                     </div>
                 </div>
             <%--Locker Box--%>
+           
             <div class="row">
                 <div class="box box-default" v-for="(item, index) in branchWiseList" :key="index" >
                     <div class="box-title">
-                        <div class="col-sm-12">
-                            <h3>{{item.branchName}}</h3>
-                        </div> 
+                        <div class="col-xs-12">
+                            <div class="col-sm-2">
+                                <h3>{{item.branchName}}</h3>
+                            </div>
+                            <div class="col-sm-2">
+                                Locker Filter
+                                <select name="cars_id" @change="lockerFilterChange($event)" class="form-control input-sm">
+                                    <option>All</option>
+                                    <option value="Expired">Expired</option>
+                                    <option value="Not Expired">Not Expired</option>
+                                    <option value="Unassigned">Unassigned</option>
+                                </select>
+                            </div>
+                        </div>
+                      
                     </div>
                     <div class="box-body">
                             <div class="col-sm-3" style="padding-top:10px" v-for="(item, index) in item.lockers" :key="index" >
@@ -45,6 +58,7 @@
                                     <ul id="totalMemberShipCount" class="nav nav-stacked compress">
                                         <li><a href="#"><b>Member Id</b><span class="pull-right">{{item.memberId}}</span></a></li>
                                         <li><a href="#"><b>Locker Assigned</b><span class="pull-right">{{item.fullName}}</span></a></li>
+                                        <li><a href="#"><b>Mobile Number</b><span class="pull-right">{{item.mobileNumber}}</span></a></li>
                                         <li><a href="#"><b>Renew Date</b><span class="pull-right">{{item.renewDate}}</span></a></li>
                                         <li><a href="#"><b>Duration</b><span class="pull-right">{{item.duration}}</span></a></li>
                                         <li><a href="#"><b>Expire Date</b><span class="pull-right">{{item.expireDate}}</span></a></li>
@@ -423,7 +437,7 @@
                     }).then(response => {
                         if (response.status == 200) {
 
-                            this.branchWiseList = branch == 'admin' || branch=='superadmin' ? response.data : response.data.filter(p => p.branchName == branch);
+                            this.branchWiseList = branch == 'admin' || branch == 'superadmin' ? response.data : response.data.filter(p => p.branchName == branch);
                         }
                         else {
                             console.log("Error");
@@ -441,6 +455,70 @@
                     this.locExpireDate = this.ADToBS(expiryDateEng);
                     this.getLockerCharge();
                 },
+                lockerFilterChange(e) {
+                    this.login = $('#lblUserLogin').text().split('-')[0];
+                    axios({
+                        url: 'api/GetBranchWiseLocker',
+                        method: 'get',
+                        dataType: "JSON",
+                        headers: {
+                            'Authorization': 'Bearer ' + window.localStorage.getItem('auth_token')
+                        },
+                    }).then(response => {
+                        if (response.status == 200) {
+
+                            this.branchWiseList = this.login == 'admin' || this.login == 'superadmin' ? response.data : response.data.filter(p => p.branchName == this.login);
+
+                            if (this.login == 'admin' || this.login == 'superadmin') {
+                                if (e.target.value == "Expired") {
+                                    this.branchWiseList.forEach(function (item) {
+                                        item.lockers = item.lockers.filter(function (item) { return item.isExpired == true });
+                                    })
+                                    /*this.branchWiseList[0].lockers = this.branchWiseList[0].lockers.filter(function (item) { return item.isExpired == true });*/
+                                }
+                                else if (e.target.value == "Not Expired") {
+                                    this.branchWiseList.forEach(function (item) {
+                                        item.lockers = item.lockers.filter(function (item) { return item.isExpired == false });
+                                    })
+                                    /*this.branchWiseList[0].lockers = this.branchWiseList[0].lockers.filter(function (item) { return item.isExpired == false });*/
+                                }
+                                else if (e.target.value == "Unassigned") {
+                                    this.branchWiseList.forEach(function (item) {
+                                        item.lockers = item.lockers.filter(function (item) { return item.isExpired == null });
+                                    })
+                                    /*this.branchWiseList[0].lockers = this.branchWiseList[0].lockers.filter(function (item) { return item.isExpired == null });*/
+                                }
+                                else {
+                                    this.branchWiseList.forEach(function (item) {
+                                        item.lockers = item.lockers.filter(function (item) { return item });
+                                    })
+                                    /*this.branchWiseList[0].lockers = this.branchWiseList[0].lockers.filter(function (item) { return item });*/
+                                }
+                            }
+                            else {
+                                if (e.target.value == "Expired") {
+                                    this.branchWiseList[0].lockers = this.branchWiseList[0].lockers.filter(function (item) { return item.isExpired == true });
+                                }
+                                else if (e.target.value == "Not Expired") {
+                                    this.branchWiseList[0].lockers = this.branchWiseList[0].lockers.filter(function (item) { return item.isExpired == false });
+                                }
+                                else if (e.target.value == "Unassigned") {
+                                    this.branchWiseList[0].lockers = this.branchWiseList[0].lockers.filter(function (item) { return item.isExpired == null });
+                                }
+                                else {
+                                    this.branchWiseList[0].lockers = this.branchWiseList[0].lockers.filter(function (item) { return item });
+                                }
+                            }
+                        }
+                        else {
+                            console.log("Error");
+                        }
+
+                    }).catch(function (error) {
+                        alert(error)
+                    })
+                    
+                }
             },
             mounted() {
                 var vm = this

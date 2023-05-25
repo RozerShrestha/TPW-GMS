@@ -62,7 +62,7 @@
         <elementListCompartment Id="c65a020d-28c9-4a77-bd57-5406f2e4916c" absoluteBounds="3.765, 10.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="5a35c98a-5ab6-4edd-9b28-1ccd9162cc28" absoluteBounds="9.75, 4.75, 2, 1.7708968098958327">
+    <classShape Id="5a35c98a-5ab6-4edd-9b28-1ccd9162cc28" absoluteBounds="9.75, 4.75, 2, 1.7708968098958326">
       <DataClassMoniker Name="/TPWDataContext/DiscountPercentage" />
       <nestedChildShapes>
         <elementListCompartment Id="ea2f5bd6-bbf7-4e12-8666-2a546114dfec" absoluteBounds="9.765, 5.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
@@ -102,12 +102,6 @@
       <DataClassMoniker Name="/TPWDataContext/JoinTPW" />
       <nestedChildShapes>
         <elementListCompartment Id="8312d4a3-bc33-4613-8dcb-ead811f8452e" absoluteBounds="12.765, 10.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="91398c4c-6980-4c41-a84c-df56a6658a75" absoluteBounds="12.75, 13.75, 2, 3.6939111328124987">
-      <DataClassMoniker Name="/TPWDataContext/LockerMg" />
-      <nestedChildShapes>
-        <elementListCompartment Id="99a59709-1d05-440a-8d5a-5cd28b0e9660" absoluteBounds="12.765, 14.21, 1.9700000000000002, 3.1339111328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="03f91a77-bd1a-4ddb-a3ba-da87ef95884f" absoluteBounds="15.75, 0.75, 2, 1.3862939453125003">
@@ -258,6 +252,12 @@
       <DataClassMoniker Name="/TPWDataContext/MemberInformationLog" />
       <nestedChildShapes>
         <elementListCompartment Id="6316a29b-8884-4996-9a6d-30d7264c8746" absoluteBounds="24.265, 2.585, 1.9700000000000002, 10.6336669921875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9b2ccd80-144d-451b-b21e-e3c934b6a9a5" absoluteBounds="12.625, 13.875, 2, 4.0785139973958326">
+      <DataClassMoniker Name="/TPWDataContext/LockerMg" />
+      <nestedChildShapes>
+        <elementListCompartment Id="29a14c35-9a99-4b3e-b5dd-db31dd92cdff" absoluteBounds="12.64, 14.335, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

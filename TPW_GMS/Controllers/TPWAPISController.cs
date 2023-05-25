@@ -836,6 +836,7 @@ namespace TPW_GMS.Controllers
             {
                 if (memberId == "null")
                 {
+                    //this query is designed to make sure multiple locker are assigned to single customer
                     var members = (from m in db.MemberInformations
                                    join l in db.LockerMgs on m.memberId equals l.memberId
                                    into joined
@@ -843,6 +844,10 @@ namespace TPW_GMS.Controllers
                                    where m.branch.Equals(branch) && j.memberId == null
                                    orderby m.fullname
                                    select m.fullname).ToList();
+                    //var members = (from m in db.MemberInformations
+                    //               where m.branch.Equals(branch)
+                    //               orderby m.fullname
+                    //               select m.fullname).ToList();
                     return Ok(members);
                 }
                 else
@@ -938,6 +943,7 @@ namespace TPW_GMS.Controllers
                                             {
                                                 memberId = l.memberId,
                                                 fullName = j.fullname,
+                                                mobileNumber=j.contactNo,
                                                 branch = l.branch,
                                                 lockerNumber = l.lockerNumber,
                                                 renewDate = l.renewDate == null ? "" : l.renewDate.ToString(),
@@ -1074,6 +1080,28 @@ namespace TPW_GMS.Controllers
                    
                 }
                
+            }
+        }
+        [Route("api/UpdateLockerInformation")]
+        [HttpPost]
+        public IHttpActionResult UpdateLockerInformation(MemberInformation m)
+        {
+            using (var db = new TPWDataContext())
+            {
+                try
+                {
+                    var item = db.LockerMgs.Where(p => p.memberId == m.memberId).FirstOrDefault();
+                    item.callStatus = m.callStatus;
+                    item.callRemark = m.callRemark;
+                    db.SubmitChanges();
+                    return Ok("Update Successfully");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+
+                }
+
             }
         }
 

@@ -82,16 +82,22 @@ namespace TPW_GMS.Controllers
                             }
                         }
 
-                        if (type == "activate")
-                        {
-                            var mitem = db.MemberInformations.Where(ma => ma.memberId == trimMemberId).SingleOrDefault();
-                            mitem.ActiveInactive = "Active";
-                            db.SubmitChanges();
-                        }
+                        //var query = (from p in db.MemberInformations
+                        //             where p.memberId == trimMemberId
+                        //             select p).SingleOrDefault();
+
 
                         var query = (from p in db.MemberInformations
+                                     join l in db.LockerMgs
+                                     on p.memberId equals l.memberId
+                                     into MemberInfoLockerGroup
+                                     from loc in MemberInfoLockerGroup.DefaultIfEmpty()
                                      where p.memberId == trimMemberId
-                                     select p).SingleOrDefault();
+                                     select new
+                                     {
+                                         p,
+                                         loc
+                                     }).SingleOrDefault();
 
                         var yesterdays = DateTime.Now.AddDays(-1).Date;
                         var todays = DateTime.Now;
@@ -113,7 +119,7 @@ namespace TPW_GMS.Controllers
 
                         if (query != null)
                         {
-                            if (query.ActiveInactive == "Active")
+                            if (query.p.ActiveInactive == "Active")
                             {
                                 foreach (var item in sellItemQuery)
                                 {
@@ -130,10 +136,10 @@ namespace TPW_GMS.Controllers
 
                                 //check if the member is from same branch or different
                                 //member from same branch
-                                if (query.branch.Equals(loginBranch))
+                                if (query.p.branch.Equals(loginBranch))
                                 {
                                     //in case of offhour
-                                    if (query.memberOption == "OffHour")
+                                    if (query.p.memberOption == "OffHour")
                                     {
                                         isValid = hr >= 10 && hr <= 16 ? true : false;
                                     }
@@ -147,11 +153,11 @@ namespace TPW_GMS.Controllers
                                 else
                                 {
                                     applicationUniversal = true;
-                                    isValid = query.universalMembershipLimit == 0 ? false : true;
+                                    isValid = query.p.universalMembershipLimit == 0 ? false : true;
                                     if (isValid)
                                     {
                                         //in case of offhour
-                                        if (query.memberOption == "Offhour")
+                                        if (query.p.memberOption == "Offhour")
                                         {
                                             isValid = hr >= 10 && hr <= 16 ? true : false;
                                         }
@@ -171,11 +177,11 @@ namespace TPW_GMS.Controllers
                                         m.memberId = trimMemberId;
                                         m.checkin = DateTime.Now;
                                         m.checkout = DateTime.Now.AddHours(2);
-                                        m.branch = query.branch;
+                                        m.branch = query.p.branch;
                                         m.checkinBranch = loginBranch;
                                         db.MemberAttandances.InsertOnSubmit(m);
                                         if (applicationUniversal)
-                                            query.universalMembershipLimit -= 1;
+                                            query.p.universalMembershipLimit -= 1;
 
                                         db.SubmitChanges();
                                         db.Dispose();
@@ -189,22 +195,32 @@ namespace TPW_GMS.Controllers
                                     attCount = 1;
                                 }
                             }
-                            else if (query.memberExpireDate < DateTime.Today)
+                            if (query.p.memberExpireDate < DateTime.Today)
                             {
-                                ar.isExpired = true;
+                                ar.isMembershipExpired = true;
                             }
+                           
 
 
-                            ar.firstName = query.firstName;
-                            ar.lastName = query.lastName;
-                            ar.branch = query.branch;
-                            ar.universalMembershipLimit = query.universalMembershipLimit;
-                            ar.membershipDate = NepaliDateService.EngToNep(Convert.ToDateTime(query.memberDate)).ToString();
-                            ar.membershipBeginDate = NepaliDateService.EngToNep(Convert.ToDateTime(query.memberBeginDate)).ToString();
-                            ar.membershipExpireDate = NepaliDateService.EngToNep(Convert.ToDateTime(query.memberExpireDate)).ToString();
+                            ar.firstName = query.p.firstName;
+                            ar.lastName = query.p.lastName;
+                            ar.fullName = $"{query.p.firstName} {query.p.lastName}"; 
+                            ar.branch = query.p.branch;
+                            ar.universalMembershipLimit = query.p.universalMembershipLimit;
+                            ar.membershipDate = NepaliDateService.EngToNep(Convert.ToDateTime(query.p.memberDate)).ToString();
+                            ar.membershipBeginDate = NepaliDateService.EngToNep(Convert.ToDateTime(query.p.memberBeginDate)).ToString();
+                            ar.membershipExpireDate = NepaliDateService.EngToNep(Convert.ToDateTime(query.p.memberExpireDate)).ToString();
+                            if (query.loc != null)
+                            {
+                                ar.lockerRenewDate = NepaliDateService.EngToNep(Convert.ToDateTime(query.loc.renewDate)).ToString();
+                                ar.lockerExpiredDate = NepaliDateService.EngToNep(Convert.ToDateTime(query.loc.expireDate)).ToString();
+                                ar.isLockerExpired = query.loc.expireDate<DateTime.Today?true:false;
+                            }
+                            
+
                             ar.pendingPayment = pendingPayment;
-                            ar.membershipOption = query.memberOption;
-                            ar.membershipStatus = query.ActiveInactive;
+                            ar.membershipOption = query.p.memberOption;
+                            ar.membershipStatus = query.p.ActiveInactive;
                             ar.attendanceCount = attCount;
                             ar.isValid = isValid;
                             return Ok(ar);

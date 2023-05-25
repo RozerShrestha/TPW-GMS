@@ -53,12 +53,12 @@ namespace TPW_GMS
         //}
         protected void btnGenerateDate_Click(object sender, EventArgs e)
         {
-            if (ddlMembershipPaymentType.SelectedItem.Text == "Select")
-            {
-                ddlMembershipPaymentType.Style.Add(HtmlTextWriterStyle.BorderColor, "red");
-                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Please select Payment Type first');", true);
-            }
-            else if (txtGenerateDate.Text == "")
+            //if (ddlMembershipPaymentType.SelectedItem.Text == "Select")
+            //{
+            //    ddlMembershipPaymentType.Style.Add(HtmlTextWriterStyle.BorderColor, "red");
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Please select Payment Type first');", true);
+            //}
+            if (txtGenerateDate.Text == "")
             {
                 txtGenerateDate.Style.Add(HtmlTextWriterStyle.BorderColor, "red");
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Highlighted field sould not be empty');", true);

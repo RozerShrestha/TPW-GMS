@@ -2089,6 +2089,7 @@
     <Content Include="ImageUploadTest.html" />
     <Content Include="JoinTPWNow.aspx" />
     <Content Include="Locker.aspx" />
+    <Content Include="LockerExpiredReport.aspx" />
     <Content Include="Log.aspx" />
     <Content Include="LoginMember.aspx" />
     <Content Include="MemberDashboard.aspx" />
@@ -2891,6 +2892,13 @@
     </Compile>
     <Compile Include="Locker.aspx.designer.cs">
       <DependentUpon>Locker.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LockerExpiredReport.aspx.cs">
+      <DependentUpon>LockerExpiredReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LockerExpiredReport.aspx.designer.cs">
+      <DependentUpon>LockerExpiredReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Log.aspx.cs">
       <DependentUpon>Log.aspx</DependentUpon>

@@ -9,7 +9,6 @@ namespace TPW_GMS.Services
     public class NepaliDateService
     {
         private static IDictionary<int, int[]> bs;
-
         private static IDictionary<int, string> months;
         public NepaliDateService()
         {
@@ -242,7 +241,6 @@ namespace TPW_GMS.Services
             }
             return true;
         }
-
         public static bool IsYearRangeNep(int yy)
         {
             if (yy < 2000 || yy > 2089)
@@ -252,7 +250,6 @@ namespace TPW_GMS.Services
             }
             return true;
         }
-
         public static NepDate EngToNep(DateTime dateTime)
         {
             return EngToNep(dateTime.Year, dateTime.Month, dateTime.Day);
@@ -443,7 +440,6 @@ namespace TPW_GMS.Services
             };
             return n;
         }
-
         public static bool ValidateNepDate(string dateTime)
         {
             var dt = DateFormat(dateTime);

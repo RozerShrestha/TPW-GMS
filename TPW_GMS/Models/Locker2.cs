@@ -10,6 +10,7 @@ namespace TPW_GMS.Models
     {
         public string memberId { get; set; }
         public string fullName { get; set; }
+        public string mobileNumber { get; set; }
         public string branch { get; set; }
         public int? lockerNumber { get; set; }
 
