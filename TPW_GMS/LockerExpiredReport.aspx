@@ -49,13 +49,15 @@
                     },
                 },
                 columns: [
-                    { 'data': 'branch' },
-                    { 'data': 'memberId' },
-                    { 'data': 'lockerNumber' },
-                    { 'data': 'duration' },
-                    { 'data': 'amount' },
+                    { 'data': 'l.branch' },
+                    { 'data': 'l.memberId' },
+                    { 'data': 'm.fullname' },
+                    { 'data': 'm.contactNo' },
+                    { 'data': 'l.lockerNumber' },
+                    { 'data': 'l.duration' },
+                    { 'data': 'l.amount' },
                     {
-                        "data": "renewDate",
+                        "data": "l.renewDate",
                         "render": function (data) {
                             try {
                                 var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
@@ -70,7 +72,7 @@
                         }
                     },
                     {
-                        "data": "expireDate",
+                        "data": "l.expireDate",
                         "render": function (data) {
                             try {
                                 var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
@@ -84,10 +86,10 @@
                             }
                         }
                     },
-                    { 'data': 'paymentMethod' },
-                    { 'data': 'receiptNo' },
+                    { 'data': 'l.paymentMethod' },
+                    { 'data': 'l.receiptNo' },
                     {
-                        "data": "created",
+                        "data": "l.created",
                         "render": function (data) {
                             try {
                                 var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
@@ -102,7 +104,7 @@
                         }
                     },
                     {
-                        "data": "modified",
+                        "data": "l.modified",
                         "render": function (data) {
                             try {
                                 var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
@@ -123,10 +125,10 @@
                     }
                 ],
                 rowCallback: function (row, data) {
-                    if (data["callStatus"] == "Called") {
+                    if (data.l["callStatus"] == "Called") {
                         $(row).addClass('success')
                     }
-                    else if (data["callStatus"] == "Called but didn't received") {
+                    else if (data.l["callStatus"] == "Called but didn't received") {
                         $(row).addClass('danger')
                     }
 
@@ -135,9 +137,9 @@
 
             $(document).on('click', '#dtTable a.editor_View', function () {
                 var data = table.row($(this).closest('tr')).data();
-                $('#txtMemberId').val(data['memberId']);
-                $('#ddlCallStatus').val(data['callStatus']);
-                $('#txtRemark').val(data['callRemark']);
+                $('#txtMemberId').val(data.l['memberId']);
+                $('#ddlCallStatus').val(data.l['callStatus']);
+                $('#txtRemark').val(data.l['callRemark']);
 
                 $('#modalRegister').modal("show");
             });
@@ -199,15 +201,17 @@
                                 <tr class="border-bottom-0 tr-header header">
                                     <th>Branch</th>
                                     <th>Member Id</th>
-                                    <th>Locker Number</th>
+                                    <th>Full Name</th>
+                                    <th>Mobile</th>
+                                    <th>Locker No</th>
                                     <th>Duration</th>
                                     <th>Amount</th>
-                                    <th>Renew Date</th>
-                                    <th>Expired Date</th>
-                                    <th>Payment Method</th>
-                                    <th>Receipt No</th>
-                                    <th>Created At</th>
-                                    <th>Modified At</th>
+                                    <th>Renewed</th>
+                                    <th>Expired</th>
+                                    <th>Payment</th>
+                                    <th>Receipt</th>
+                                    <th>Created</th>
+                                    <th>Modified</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

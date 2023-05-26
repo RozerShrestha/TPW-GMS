@@ -186,21 +186,37 @@ namespace TPW_GMS.Controllers
         public IHttpActionResult GetLockerExpiry(ReportParam r)
         {
             var d1 = DateTime.Now.AddMonths(-1);
-            List<LockerMg> itemList = new List<LockerMg>();
+            List<dynamic> itemList = new List<dynamic>();
             if (r.branch == "ALL")
-                itemList = db.LockerMgs.ToList();
+                //itemList = db.LockerMgs.ToList();
+                itemList = (from l in db.LockerMgs
+                            join m in db.MemberInformations
+                            on l.memberId equals m.memberId
+                            select new
+                            {
+                                l,
+                                m
+                            }).ToList<dynamic>();
             else
-                itemList = db.LockerMgs.Where(k => k.branch == r.branch).ToList();
+                itemList = (from l in db.LockerMgs
+                            join m in db.MemberInformations
+                            on l.memberId equals m.memberId
+                            where l.branch== r.branch
+                            select new
+                            {
+                                l,
+                                m
+                            }).ToList<dynamic>();
 
             if (r.reportType == "0")
             {
-                itemList = itemList.Where(p => p.expireDate <= d1).ToList();
-                itemList = itemList.OrderBy(d => d.expireDate).ToList();
+                itemList = itemList.Where(p => p.l.expireDate <= d1).ToList();
+                itemList = itemList.OrderBy(d => d.l.expireDate).ToList();
             }
             else if (r.reportType == "1")
             {
-                itemList = itemList.Where(p => p.expireDate >= d1 && p.expireDate <= DateTime.Now).ToList();
-                itemList = itemList.OrderBy(d => d.expireDate).ToList();
+                itemList = itemList.Where(p => p.l.expireDate >= d1 && p.l.expireDate <= DateTime.Now).ToList();
+                itemList = itemList.OrderBy(d => d.l.expireDate).ToList();
             }
             return Ok(itemList);
         }
