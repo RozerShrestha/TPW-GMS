@@ -15,7 +15,7 @@
     <asp:UpdatePanel ID="upnlAttendance" runat="server">
         <ContentTemplate>
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="box box-info">
                         <div class="box-header header">
                             <span style="margin-left: 2px; font-size: 16px"><b>TPW-Attendance Record</b></span>
@@ -83,23 +83,23 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2"><b>Renew Date:</b></td>
-                                        <td>Membership</td>
                                         <td>
+                                            Membership
                                             <input type="text" id="txtMembershipRenewDate" disabled class="form-control input-sm" />
                                         </td>
-                                        <td>Locker</td>
                                         <td>
+                                            Locker
                                             <input type="text" id="txtLockerRenewDate" disabled class="form-control input-sm" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><b>Expire Date:</b></td>
-                                         <td>Membership</td>
                                         <td>
+                                            Membership
                                             <input type="text" id="txtMembershipExpireDate" disabled class="form-control input-sm" />
                                         </td>
-                                        <td>Locker</td>
                                         <td>
+                                            Locker
                                             <input type="text" id="txtLockerExpireDate" disabled class="form-control input-sm" />
                                         </td>
                                     </tr>
@@ -113,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-6">
                     <div class="box box-info">
                         <div class="box-body">
                             <h4>Member Attendance Record</h4>
