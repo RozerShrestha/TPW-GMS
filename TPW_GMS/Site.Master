@@ -414,7 +414,7 @@
                                 <li class="showAdmin"><a href="AdmittedAndRenewed.aspx"><i class="fa fa-circle-o"></i>AdmittedAndRenewed Report</a></li>
                                 <li class="showAdmin"><a href="DailyReport.aspx"><i class="fa fa-circle-o"></i>Daily Report</a></li>
                                 <li><a href="MemberExpiredReport.aspx"><i class="fa fa-circle-o"></i>Member Expired Report</a></li>
-                                <li><a href="LockerExpiredReport.aspx"><i class="fa fa-circle-o"></i>Locker Expired Report</a></li>
+                                <li><a href="LockerExpiredReport.aspx"><i class="fa fa-circle-o"></i>Locker Report</a></li>
                             </ul>
                         </li>
                         <%--<li><a href="JoinTPWNow.aspx"><i><img src="Assets/Icon/joinTPW.png" class="iconDashboard" /></i> <span>Join TPW Now</span></a></li>--%>

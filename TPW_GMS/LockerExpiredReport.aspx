@@ -49,6 +49,12 @@
                     },
                 },
                 columns: [
+                    {
+                        'data': 'id',
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
                     { 'data': 'l.branch' },
                     { 'data': 'l.memberId' },
                     { 'data': 'm.fullname' },
@@ -172,7 +178,7 @@
 
         //data - target="#modalRegister"
     </script>
-    <asp:HiddenField ID="hidHeader" runat="server" Value="Locker Expiry Report" />
+    <asp:HiddenField ID="hidHeader" runat="server" Value="Locker Report" />
     <div class="box box-info">
         <div class="box-body">
             <div class="col-xs-12">
@@ -185,8 +191,10 @@
                     <div class="col-sm-2">
                         <strong>Months</strong>
                         <asp:DropDownList ID="reportType" ClientIDMode="Static" runat="server" CssClass="form-control input-sm">
-                            <asp:ListItem Value="0" Text="Over a Month"></asp:ListItem>
-                            <asp:ListItem Value="1" Text="Within a Month"></asp:ListItem>
+                            <asp:ListItem Value="0" Text="All"></asp:ListItem>
+                            <asp:ListItem Value="1" Text="Active"></asp:ListItem>
+                            <asp:ListItem Value="2" Text="Expired"></asp:ListItem>
+                            <asp:ListItem Value="3" Text="Expires within 7 Days"></asp:ListItem>
                         </asp:DropDownList>
                     </div>
                     <div class="col-sm-2">
@@ -199,6 +207,7 @@
                         <table id="dtTable" class="table table-striped table-bordered table-sm" style="width: 100%">
                             <thead>
                                 <tr class="border-bottom-0 tr-header header">
+                                    <th>Sn.</th>
                                     <th>Branch</th>
                                     <th>Member Id</th>
                                     <th>Full Name</th>

@@ -185,11 +185,12 @@ namespace TPW_GMS.Controllers
         [HttpPost]
         public IHttpActionResult GetLockerExpiry(ReportParam r)
         {
-            var d1 = DateTime.Now.AddMonths(-1);
-            List<dynamic> itemList = new List<dynamic>();
+            var dateOneMonth = DateTime.Now.AddMonths(-1);
+            var dateSevenDays = DateTime.Now.AddDays(-7);
+            List<dynamic> lockerItem = new List<dynamic>();
             if (r.branch == "ALL")
-                //itemList = db.LockerMgs.ToList();
-                itemList = (from l in db.LockerMgs
+                //lockerItem = db.LockerMgs.ToList();
+                lockerItem = (from l in db.LockerMgs
                             join m in db.MemberInformations
                             on l.memberId equals m.memberId
                             select new
@@ -198,27 +199,33 @@ namespace TPW_GMS.Controllers
                                 m
                             }).ToList<dynamic>();
             else
-                itemList = (from l in db.LockerMgs
+                lockerItem = (from l in db.LockerMgs
                             join m in db.MemberInformations
                             on l.memberId equals m.memberId
-                            where l.branch== r.branch
+                            where l.branch == r.branch
                             select new
                             {
                                 l,
                                 m
                             }).ToList<dynamic>();
-
-            if (r.reportType == "0")
+            //if reportType is Active
+            if (r.reportType == "1")
             {
-                itemList = itemList.Where(p => p.l.expireDate <= d1).ToList();
-                itemList = itemList.OrderBy(d => d.l.expireDate).ToList();
+                lockerItem = lockerItem.Where(p => p.l.expireDate >= DateTime.Now).ToList();
             }
-            else if (r.reportType == "1")
+            //if reportType is Expired
+            if (r.reportType == "2")
             {
-                itemList = itemList.Where(p => p.l.expireDate >= d1 && p.l.expireDate <= DateTime.Now).ToList();
-                itemList = itemList.OrderBy(d => d.l.expireDate).ToList();
+                lockerItem = lockerItem.Where(p => p.l.expireDate < DateTime.Now).ToList();
+                lockerItem = lockerItem.OrderBy(d => d.l.expireDate).ToList();
             }
-            return Ok(itemList);
+            //if reportType is Expired within 7 days
+            else if (r.reportType == "3")
+            {
+                lockerItem = lockerItem.Where(p => p.l.expireDate >= dateSevenDays && p.l.expireDate <= DateTime.Now).ToList();
+                lockerItem = lockerItem.OrderBy(d => d.l.expireDate).ToList();
+            }
+            return Ok(lockerItem);
         }
     }
 
