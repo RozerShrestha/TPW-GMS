@@ -186,7 +186,7 @@ namespace TPW_GMS.Controllers
         public IHttpActionResult GetLockerExpiry(ReportParam r)
         {
             var dateOneMonth = DateTime.Now.AddMonths(-1);
-            var dateSevenDays = DateTime.Now.AddDays(-7);
+            var dateSevenDays = DateTime.Now.AddDays(7);
             List<dynamic> lockerItem = new List<dynamic>();
             if (r.branch == "ALL")
                 //lockerItem = db.LockerMgs.ToList();
@@ -222,7 +222,7 @@ namespace TPW_GMS.Controllers
             //if reportType is Expired within 7 days
             else if (r.reportType == "3")
             {
-                lockerItem = lockerItem.Where(p => p.l.expireDate >= dateSevenDays && p.l.expireDate <= DateTime.Now).ToList();
+                lockerItem = lockerItem.Where(p => p.l.expireDate >= DateTime.Now && p.l.expireDate <= dateSevenDays ).ToList();
                 lockerItem = lockerItem.OrderBy(d => d.l.expireDate).ToList();
             }
             return Ok(lockerItem);
