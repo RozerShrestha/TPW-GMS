@@ -125,6 +125,15 @@
                         }
                     },
                     {
+                        "data": "l.expireDate",
+                        "render": function (data) {
+                            let todayDate = new Date();
+                            let rowDate = new Date(data);
+                            let status = rowDate >= todayDate ? "Active" : rowDate < todayDate ? "Expired" : rowDate == null ? "Unassigned" : "Unknown";
+                            return status == "Active" ? `<p class="text-success">${status}</p>` : status == "Expired" ? `<p class="text-danger">${status}</p>` : status == "Unassigned" ? `<p class="text-warning">${status}</p>` : `<p class="text-muted">${status}</p>`;
+                        }
+                    },
+                    {
                         'data': null,
                         'className': 'center',
                         defaultContent: '<a href="#" class="editor_View">View</a>'
@@ -221,6 +230,7 @@
                                     <th>Receipt</th>
                                     <th>Created</th>
                                     <th>Modified</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
