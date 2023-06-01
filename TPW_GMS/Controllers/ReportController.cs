@@ -188,26 +188,59 @@ namespace TPW_GMS.Controllers
             var dateOneMonth = DateTime.Now.AddMonths(-1);
             var dateSevenDays = DateTime.Now.AddDays(7);
             List<dynamic> lockerItem = new List<dynamic>();
+
+            //var query = (from l in db.LockerMgs
+            //             join m in db.MemberInformations
+            //             on l.memberId equals m.memberId
+            //             into MemberInfoLockerGroup
+            //             from mem in MemberInfoLockerGroup.DefaultIfEmpty()
+            //             select new
+            //             {
+            //                 l,
+            //                 mem 
+            //             }).ToList<dynamic>();
+
             if (r.branch == "ALL")
                 //lockerItem = db.LockerMgs.ToList();
+                //lockerItem = (from l in db.LockerMgs
+                //            join m in db.MemberInformations
+                //            on l.memberId equals m.memberId
+                //            select new
+                //            {
+                //                l,
+                //                m
+                //            }).ToList<dynamic>();
                 lockerItem = (from l in db.LockerMgs
-                            join m in db.MemberInformations
-                            on l.memberId equals m.memberId
-                            select new
-                            {
-                                l,
-                                m
-                            }).ToList<dynamic>();
+                             join mem in db.MemberInformations
+                             on l.memberId equals mem.memberId
+                             into MemberInfoLockerGroup
+                             from m in MemberInfoLockerGroup.DefaultIfEmpty()
+                             select new
+                             {
+                                 l,
+                                 m
+                             }).ToList<dynamic>();
             else
+                //lockerItem = (from l in db.LockerMgs
+                //            join m in db.MemberInformations
+                //            on l.memberId equals m.memberId
+                //            where l.branch == r.branch
+                //            select new
+                //            {
+                //                l,
+                //                m
+                //            }).ToList<dynamic>();
                 lockerItem = (from l in db.LockerMgs
-                            join m in db.MemberInformations
-                            on l.memberId equals m.memberId
-                            where l.branch == r.branch
-                            select new
-                            {
-                                l,
-                                m
-                            }).ToList<dynamic>();
+                              join mem in db.MemberInformations
+                              on l.memberId equals mem.memberId
+                              into MemberInfoLockerGroup
+                              from m in MemberInfoLockerGroup.DefaultIfEmpty()
+                              where l.branch == r.branch
+                              select new
+                              {
+                                  l,
+                                  m
+                              }).ToList<dynamic>();
             //if reportType is Active
             if (r.reportType == "1")
             {
@@ -217,14 +250,14 @@ namespace TPW_GMS.Controllers
             if (r.reportType == "2")
             {
                 lockerItem = lockerItem.Where(p => p.l.expireDate < DateTime.Now).ToList();
-                lockerItem = lockerItem.OrderBy(d => d.l.expireDate).ToList();
             }
             //if reportType is Expired within 7 days
             else if (r.reportType == "3")
             {
                 lockerItem = lockerItem.Where(p => p.l.expireDate >= DateTime.Now && p.l.expireDate <= dateSevenDays ).ToList();
-                lockerItem = lockerItem.OrderBy(d => d.l.expireDate).ToList();
+               
             }
+            lockerItem = lockerItem.OrderBy(d => d.l.lockerNumber).ToList();
             return Ok(lockerItem);
         }
     }

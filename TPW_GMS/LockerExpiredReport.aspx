@@ -56,12 +56,33 @@
                         }
                     },
                     { 'data': 'l.branch' },
-                    { 'data': 'l.memberId' },
-                    { 'data': 'm.fullname' },
-                    { 'data': 'm.contactNo' },
+                    {
+                        'data': 'l.memberId',
+                        "render": function (data) {
+                            return data == null ? "" : data;
+                        }
+                    },
+                    {
+                        'data': 'm.fullname',
+                        "render": function (data) {
+                            return data == null ? "" : data;
+                        } },
+                    {
+                        'data': 'm.contactNo',
+                        "render": function (data) {
+                            return data == null ? "" : data;
+                        } },
                     { 'data': 'l.lockerNumber' },
-                    { 'data': 'l.duration' },
-                    { 'data': 'l.amount' },
+                    {
+                        'data': 'l.duration',
+                        "render": function (data) {
+                            return data == null ? "" : data;
+                        } },
+                    {
+                        'data': 'l.amount',
+                        "render": function (data) {
+                            return data == null ? "" : data;
+                        } },
                     {
                         "data": "l.renewDate",
                         "render": function (data) {
@@ -93,7 +114,11 @@
                         }
                     },
                     { 'data': 'l.paymentMethod' },
-                    { 'data': 'l.receiptNo' },
+                    {
+                        'data': 'l.receiptNo',
+                        "render": function (data) {
+                            return data == null ? "" : data;
+                        } },
                     {
                         "data": "l.created",
                         "render": function (data) {
@@ -129,8 +154,8 @@
                         "render": function (data) {
                             let todayDate = new Date();
                             let rowDate = new Date(data);
-                            let status = rowDate >= todayDate ? "Active" : rowDate < todayDate ? "Expired" : rowDate == null ? "Unassigned" : "Unknown";
-                            return status == "Active" ? `<p class="text-success">${status}</p>` : status == "Expired" ? `<p class="text-danger">${status}</p>` : status == "Unassigned" ? `<p class="text-warning">${status}</p>` : `<p class="text-muted">${status}</p>`;
+                            let status = data == null ? "Unassigned":rowDate >= todayDate ? "Active" : rowDate < todayDate ? "Expired" : "Unknown";
+                            return status == "Active" ? `<p class="text-success">${status}</p>` : status == "Expired" ? `<p class="text-danger">${status}</p>` : status == "Unassigned" ? `<p class="text-primary">${status}</p>` : `<p class="text-muted">${status}</p>`;
                         }
                     },
                     {
