@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using TPW_GMS.Repository;
 using Dapper;
 using System.Diagnostics;
+using System.Web.UI.WebControls;
 
 namespace TPW_GMS.Controllers
 {
@@ -520,6 +521,118 @@ namespace TPW_GMS.Controllers
                 return query;
             }
         }
+
+        [Route("api/GetAllMemberFilter")]
+        [HttpPost]
+        public PagedResponse<MemberInformation1> GetAllMemberFilter([FromBody] PaginationFilter filter, string branch)
+        {
+            List<MemberInformation1> pageData;
+            if (branch == "admin" || branch == "superadmin")
+            {
+                pageData = (from m in db.MemberInformations
+                            join p in db.PaymentInfos
+                            on m.memberId equals p.memberId
+                            where m.memberId.Contains(filter.FieldSearch) ||
+                                  m.fullname.Contains(filter.FieldSearch) ||
+                                  m.memberOption.Contains(filter.FieldSearch) ||
+                                  m.branch.Contains(filter.FieldSearch) ||
+                                  m.shift.Contains(filter.FieldSearch) ||
+                                  m.memberCatagory.Contains(filter.FieldSearch) ||
+                                  m.memberPaymentType.Contains(filter.FieldSearch) ||
+                                  m.memberDate.ToString().Contains(filter.FieldSearch) ||
+                                  m.memberBeginDate.ToString().Contains(filter.FieldSearch) ||
+                                  m.memberExpireDate.ToString().Contains(filter.FieldSearch) ||
+                                  m.contactNo.Contains(filter.FieldSearch) ||
+                                  p.receiptNo.Contains(filter.FieldSearch) ||
+                                  p.dueAmount.ToString().Contains(filter.FieldSearch) ||
+                                  p.finalAmount.ToString().Contains(filter.FieldSearch) ||
+                                  m.ActiveInactive.Contains(filter.FieldSearch) ||
+                                  m.dateOfBirth.ToString().Contains(filter.FieldSearch) ||
+                                  m.address.Contains(filter.FieldSearch) ||
+                                  m.email.ToString().Contains(filter.FieldSearch)
+                            select new MemberInformation1
+                            {
+                                memberId = m.memberId,
+                                fullname = m.fullname,
+                                memberOption = m.memberOption,
+                                branch = m.branch,
+                                shift = m.shift,
+                                memberCatagory = m.memberCatagory,
+                                memberPaymentType = m.memberPaymentType,
+                                memberDate = m.memberDate,
+                                memberBeginDate = m.memberBeginDate,
+                                memberExpireDate = m.memberExpireDate,
+                                contactNo = m.contactNo,
+                                receiptNo = p.receiptNo,
+                                dueAmount = (p.dueAmount == null) ? 0 : Convert.ToInt32(p.dueAmount),
+                                finalAmount = Convert.ToInt32(p.finalAmount),
+                                ActiveInActive = m.ActiveInactive,
+                                dateOfBirth = m.dateOfBirth,
+                                address = m.address,
+                                email = m.email
+
+                            })
+                                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                                .Take(filter.PageSize)
+                                .ToList();
+            }
+            else
+            {
+                pageData = (from m in db.MemberInformations
+                            join p in db.PaymentInfos
+                            on m.memberId equals p.memberId
+                            where m.branch.Equals(branch)
+                            where m.memberId.Contains(filter.FieldSearch) ||
+                                  m.fullname.Contains(filter.FieldSearch) ||
+                                  m.memberOption.Contains(filter.FieldSearch) ||
+                                  m.branch.Contains(filter.FieldSearch) ||
+                                  m.shift.Contains(filter.FieldSearch) ||
+                                  m.memberCatagory.Contains(filter.FieldSearch) ||
+                                  m.memberPaymentType.Contains(filter.FieldSearch) ||
+                                  m.memberDate.ToString().Contains(filter.FieldSearch) ||
+                                  m.memberBeginDate.ToString().Contains(filter.FieldSearch) ||
+                                  m.memberExpireDate.ToString().Contains(filter.FieldSearch) ||
+                                  m.contactNo.Contains(filter.FieldSearch) ||
+                                  p.receiptNo.Contains(filter.FieldSearch) ||
+                                  p.dueAmount.ToString().Contains(filter.FieldSearch) ||
+                                  p.finalAmount.ToString().Contains(filter.FieldSearch) ||
+                                  m.ActiveInactive.Contains(filter.FieldSearch) ||
+                                  m.dateOfBirth.ToString().Contains(filter.FieldSearch) ||
+                                  m.address.Contains(filter.FieldSearch) ||
+                                  m.email.ToString().Contains(filter.FieldSearch)
+                            select new MemberInformation1
+                            {
+                                memberId = m.memberId,
+                                fullname = m.fullname,
+                                memberOption = m.memberOption,
+                                branch = m.branch,
+                                shift = m.shift,
+                                memberCatagory = m.memberCatagory,
+                                memberPaymentType = m.memberPaymentType,
+                                memberDate = m.memberDate,
+                                memberBeginDate = m.memberBeginDate,
+                                memberExpireDate = m.memberExpireDate,
+                                contactNo = m.contactNo,
+                                receiptNo = p.receiptNo,
+                                dueAmount = (p.dueAmount == null) ? 0 : Convert.ToInt32(p.dueAmount),
+                                finalAmount = Convert.ToInt32(p.finalAmount),
+                                ActiveInActive = m.ActiveInactive,
+                                dateOfBirth = m.dateOfBirth,
+                                address = m.address,
+                                email = m.email
+
+                            })
+                                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                                .Take(filter.PageSize)
+                                .ToList();
+            }
+            var totalRecords = pageData.Count();
+            var ceiling = ((double)totalRecords / (double)filter.PageSize);
+            var totalPages = (int)Math.Ceiling(ceiling);
+            var result = new PagedResponse<MemberInformation1>(filter.PageNumber, filter.PageSize, totalPages,totalRecords, pageData);
+            return result;
+        }
+
 
         [Route("api/GetAllExpenditures")]
         public IEnumerable<Expenditure> GetAllExpenditures()
