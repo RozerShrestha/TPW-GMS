@@ -603,6 +603,7 @@ namespace TPW_GMS
                 var paymentInfo = db.PaymentInfos.Where(b => b.memberId == txtMemberId.Text.ToString()).SingleOrDefault();
                 var paymentHistory = db.Reports.Where(p => p.memberId == txtMemberId.Text.ToString()).ToList();
                 var receiptNumberForm = txtStatic.Text + "-" + txtReceiptNo.Text;
+                var receiptNumberChanged = false;
 
                 string discountCode = txtDiscountCode.Text;
                 if (discountCode.Contains('%'))
@@ -616,7 +617,8 @@ namespace TPW_GMS
                         txtDiscountReason.Text = "Offer " + "Discount Amount: " + (paymentAmount * discountCampion).ToString();
                     }
                 }
-                isRenew = receiptNumberForm == paymentInfo.receiptNo ? false : true;
+                isRenew = ddlRenewExtendNormal.SelectedItem.Text == "Renew" ? true : false;
+                receiptNumberChanged = receiptNumberForm == paymentInfo.receiptNo ? false : true;
                 da = paymentInfo.dueAmount;
                 discount = txtDiscount.Text == "" ? 0 : Convert.ToInt32(txtDiscount.Text);
 
@@ -625,6 +627,15 @@ namespace TPW_GMS
                 
                 if (isRenew)
                 {
+                    if (!receiptNumberChanged)
+                    {
+                        lblInformation.Text = "Receipt Number not changed, Please update receipt number";
+                    }
+                    else
+                    {
+                        lblInformation.Text = "";
+                    }
+
                     txtFinalAmount.Text = finalAmount.ToString();
                     txtDueAmount.Text = (Convert.ToInt32(txtFinalAmount.Text) - Convert.ToInt32(txtpaidAmount.Text)-Convert.ToInt32(txtDueClearAmount.Text)).ToString();
                 }
@@ -636,7 +647,7 @@ namespace TPW_GMS
 
                 //btnEdit.Enabled = roleId == "1" || roleId == "4" ? false : true;
                 btnEdit.Enabled = true;
-                lblInformation.Text = "";
+                //lblInformation.Text = "";
             }
             catch (Exception ex)
             {
@@ -748,6 +759,10 @@ namespace TPW_GMS
             else if (ddlMembershipPaymentType.SelectedIndex==0 && ddlRenewExtendNormal.SelectedItem.Text=="Renew")
             {
                 return "Membership Payment Type is Required";
+            }
+            else if (string.IsNullOrEmpty(txtRemark.Text))
+            {
+                return "Remark is required";
             }
             //else if (ddlRenewExtendNormal.SelectedItem.Text=="Renew" && !Service.CheckReceiptNumberValidity(txtReceiptNo.Text, splitUser))
             //{
@@ -1369,6 +1384,7 @@ namespace TPW_GMS
                        
                     }
                     mLog = JsonConvert.DeserializeObject<MemberInformationLog>(JsonConvert.SerializeObject(m1));
+                    mLog.renewExtend=p1.renewExtend;
                     mLog.createdDate = DateTime.Now;
                     db.MemberInformationLogs.InsertOnSubmit(mLog);
                     //login.currentBillNumber = txtReceiptNo.Text;

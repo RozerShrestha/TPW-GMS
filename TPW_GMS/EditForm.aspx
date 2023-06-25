@@ -474,7 +474,7 @@
                                   <div class="col-sm-12">
                                        <asp:Button ID="btnPriceCalculate" runat="server" Text="Calculate" CssClass="btn btn-danger" OnClick="btnPriceCalculate_Click" />
                                       <asp:Button ID="btnEdit" runat="server" Text="Edit" Enabled="false" CssClass="btn btn-success" Width="85px" OnClick="btnSubmit_Click" />
-                                      <asp:Label ID="lblInformation" runat="server"></asp:Label>      
+                                      <asp:Label ID="lblInformation" CssClass="text-danger" runat="server"></asp:Label>      
                                   </div>
                                 </div>
                             </div>
