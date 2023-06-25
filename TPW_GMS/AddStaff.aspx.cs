@@ -20,7 +20,7 @@ namespace TPW_GMS
             InitialCheck();
             if (!IsPostBack)
             {
-                if (roleId == "1" || roleId == "2" || roleId=="4")
+                if (roleId == "1" ||  roleId=="4")
                 {
                     loadBranch();
                     try

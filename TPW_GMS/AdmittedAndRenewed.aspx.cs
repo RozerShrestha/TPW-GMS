@@ -18,7 +18,7 @@ namespace TPW_GMS
             InitialCheck();
             if (!IsPostBack)
             {
-                if (roleId == "1" || roleId=="4")
+                if (roleId == "1" || roleId=="2" || roleId=="4")
                 {
                     loadBranch();
                     //endDate.Text = DateTime.Now.ToString("yyyy/MM/dd");
@@ -43,13 +43,34 @@ namespace TPW_GMS
         }
         protected void loadBranch()
         {
-            var branchName = from p in db.Logins
-                             where !p.username.Contains("admin")
-                             select p.username;
-            branch.DataSource = branchName;
-            branch.DataBind();
-            branch.Items.Insert(0, new ListItem("ALL", "ALL"));
-            db.Dispose();
+            //var branchName = from p in db.Logins
+            //                 where !p.username.Contains("admin")
+            //                 select p.username;
+            //branch.DataSource = branchName;
+            //branch.DataBind();
+            //branch.Items.Insert(0, new ListItem("ALL", "ALL"));
+            //db.Dispose();
+            using (var db = new TPWDataContext())
+            {
+                if (roleId == "1" || roleId == "4")
+                {
+
+                    var branchName = from p in db.Logins
+                                     where !p.username.Contains("admin")
+                                     select p.username;
+                    branch.DataSource = branchName;
+                    branch.DataBind();
+                    branch.Items.Insert(0, new ListItem("--Select--", "0"));
+                }
+                else
+                {
+                    var branchName = from p in db.Logins
+                                     where p.username.Contains(splitUser) && !p.username.Contains("admin")
+                                     select p.username;
+                    branch.DataSource = branchName;
+                    branch.DataBind();
+                }
+            }
         }
     }
 }

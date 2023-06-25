@@ -2965,6 +2965,7 @@
     <Compile Include="Models\MemberLoginCredential.cs" />
     <Compile Include="Models\MemberSecurity.cs" />
     <Compile Include="Models\multipleDropdownDataModel.cs" />
+    <Compile Include="Models\PaginationFilter.cs" />
     <Compile Include="Models\ProfileImageUpload.cs" />
     <Compile Include="Models\ReportParam.cs" />
     <Compile Include="Models\Response.cs" />
