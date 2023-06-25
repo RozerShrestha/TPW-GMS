@@ -19,9 +19,6 @@
         }
 </style>
 <script>
-    function findElement(ele, charArr) {
-
-    }
     $(document).ready(function () {
         //var ages = [];
         var table = $('#memberInformationTable').DataTable({
@@ -104,11 +101,16 @@
                 className: "center",
                 targets: [-1], render: function (data, type, full, meta) {
                     if ('<%=hidUserLogin.Value.ToString()%>' == 'superadmin' || '<%=hidUserLogin.Value.ToString()%>' == 'admin') {
-                        return '<a href="EditForm.aspx?id=' + data.memberId + "&" + "key=edit" + '" class="editAsset" target="_blank"><img src="Assets/Icon/edit.png" class="iconEdit"  /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a href="EditForm.aspx?id=' + data.memberId + "&" + "key=view" + '" class="editAsset" target="_blank"><img src="Assets/Icon/view.png" class="iconView" /></a> &nbsp;&nbsp;&nbsp;&nbsp;<a href="AllMember.aspx?id=' + data.memberId + "&" + "key=delete" + '" class="editor_remove"><img src="Assets/Icon/delete.png" class="iconDelete" /></a>';
+                        return `<a href="EditForm.aspx?id=${data.memberId}&key=edit" target=_blank><img src="Assets/Icon/edit.png" class="iconEdit" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="EditForm.aspx?id=${data.memberId}&key=view" target=_blank><img src="Assets/Icon/view.png" class="iconView" /></a> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="AllMember.aspx?id=${data.memberId}&key=delete"><img src="Assets/Icon/delete.png" class="iconDelete" /></a> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#" type="button" class="iconView" onclick="sendEmail('${full.fullname} ','${full.email} ','${full.memberId}')"><span></span><img src="Assets/Icon/email.png" class="iconView" /></a>`;
                     }
                     else {
                         if (data.branch == '<%=hidUserLogin.Value.ToString()%>' || data.branch == '') {
-                            return '<a href="EditForm.aspx?id=' + data.memberId + "&" + "key=edit" + '" class="editAsset" target="_blank"><img src="Assets/Icon/edit.png" class="iconEdit"  /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a href="EditForm.aspx?id=' + data.memberId + "&" + "key=view" + '" class="editAsset" target="_blank"><img src="Assets/Icon/view.png" class="iconView" /></a> &nbsp;&nbsp;&nbsp;&nbsp;';
+                            return `<a href="EditForm.aspx?id=${data.memberId}&key=edit" target=_blank><img src="Assets/Icon/edit.png" class="iconEdit" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="EditForm.aspx?id=${data.memberId}&key=view" target=_blank><img src="Assets/Icon/view.png" class="iconView" /></a> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#" type="button" class="iconView" onclick="sendEmail('${full.fullname} ','${full.email} ','${full.memberId}')"><span></span><img src="Assets/Icon/email.png" class="iconView" /></a>`;
                         }
                         else {
                             return '<a href="EditForm.aspx?id=' + data.memberId + "&" + "key=view" + '" class="editAsset" target="_blank"><img src="Assets/Icon/view.png" class="iconView" /></a>';
@@ -118,6 +120,34 @@
             }],
         })
     });
+    function sendEmail(name, email, memberId) {
+        $("#imgLoading").css("display", "block");
+        var fullName_email = `${name}##${memberId}##${email}`;
+        //var message = CKEDITOR.instances.editor1.getData();
+        var message ="<p>Dear $,</p>"
+        var subject = "QR Code";
+
+        $.ajax({
+            url: 'api/SendBulkEmail',
+            headers: {
+                'Authorization': 'Bearer ' + window.localStorage.getItem('auth_token')
+            },
+            type: "post",
+            async: true,
+            data: {
+                message: message,
+                fullName_email: fullName_email,
+                subject: subject,
+                type: "QR",
+            },
+            success: function (response) {
+                alert(response);
+                $("#imgLoading").css("display", "none");
+            },
+            error: function () {
+            }
+        })
+    }
 
 </script>
 <asp:HiddenField ID="hidUserLogin" runat="server" />

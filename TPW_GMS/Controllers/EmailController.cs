@@ -67,45 +67,40 @@ namespace TPW_GMS.Controllers
                 if (em.type == "QR")
                 {
                     var orgMessage = em.message;
-                    foreach (string item in em.fullName_email)
+                    List<string> splitData = new List<string>(em.fullName_email[0].Trim().Split(new string[] { "##" }, StringSplitOptions.None));
+                    var alterMessage = orgMessage.Replace("$", splitData[0]);
+                    new Task(() =>
                     {
-                        List<string> splitData = new List<string>(item.Trim().Split(new string[] { "##" }, StringSplitOptions.None));
-                        var alterMessage = orgMessage.Replace("$", splitData[0]);
-                        //new Task(() =>
-                        //{
                         var response = MailService.SendEmailQR(alterMessage, splitData[1], splitData[2], em.subject, em.path);
-                        if (response == "")
-                        {
-                            _logger.Info("##" + "QR Email is Send to {0} email address {1}. ", splitData[0], splitData[2]);
-                        }
-                        else
-                        {
-                            _logger.Warn("##" + "QR Email is Not Send to {0} email address {1} due to {2} ", splitData[0], splitData[2], response);
-                        }
-                        //}).Start();
+                    if (response == "")
+                    {
+                        _logger.Info("##" + "QR Email is Send to {0} email address {1}. ", splitData[0], splitData[2]);
                     }
-                    return Ok("Email are Queued to deliver to Selected GYM Members");
+                    else
+                    {
+                        _logger.Warn("##" + "QR Email is Not Send to {0} email address {1} due to {2} ", splitData[0], splitData[2], response);
+                    }
+                    }).Start();
+                    return Ok($"Email send to {splitData[0]}. Please confirm if the receiver received an Email.");
                 }
                 else if (em.type == "Normal")
                 {
                     var orgMessage = em.message.Replace("<img", "<img style=\"width: 400px\"");
-                    foreach (string item in em.fullName_email)
+
+                    List<string> splitData = new List<string>(em.fullName_email[0].Trim().Split(new string[] { "##" }, StringSplitOptions.None));
+                    var alterMessage = orgMessage.Replace("$", splitData[0]);
+                    new Task(() =>
                     {
-                        List<string> splitData = new List<string>(item.Trim().Split(new string[] { "##" }, StringSplitOptions.None));
-                        var alterMessage = orgMessage.Replace("$", splitData[0]);
-                        //new Task(() =>
-                        //{
                         var response = MailService.SendBroadCastEmail(alterMessage, splitData[1], em.subject);
-                        if (response == "")
-                        {
-                            _logger.Info("##" + "Broadcase Email is Send to {0} email address {1}. ", splitData[0], splitData[1]);
-                        }
-                        else
-                        {
-                            _logger.Warn("##" + "Broadcase Email is Not Send to {0} email address {1}. due to {2} ", splitData[0], splitData[1], response);
-                        }
-                        //}).Start();
+                    if (response == "")
+                    {
+                        _logger.Info("##" + "Broadcase Email is Send to {0} email address {1}. ", splitData[0], splitData[1]);
                     }
+                    else
+                    {
+                        _logger.Warn("##" + "Broadcase Email is Not Send to {0} email address {1}. due to {2} ", splitData[0], splitData[1], response);
+                    }
+                    }).Start();
                     return Ok("Email are Queued to deliver to Selected GYM Members");
                 }
                 else

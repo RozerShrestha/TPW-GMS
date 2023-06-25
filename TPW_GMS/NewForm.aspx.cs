@@ -1052,6 +1052,7 @@ namespace TPW_GMS
                     mLog.paidAmount = p.paidAmount;
                     mLog.dueAmount = p.dueAmount;
                     mLog.dueClearAmount = p.dueClearAmount;
+                    mLog.renewExtend= p.renewExtend;
                     db.MemberInformationLogs.InsertOnSubmit(mLog);
 
                     #endregion

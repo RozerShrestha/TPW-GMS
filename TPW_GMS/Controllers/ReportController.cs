@@ -70,9 +70,9 @@ namespace TPW_GMS.Controllers
                 itemNewAdmissions = itemNewAdmissions.OrderBy(d => d.memberDate);
                 return Ok(itemNewAdmissions);
             }
-            else
+            else if(r.reportType== "renewed")
             {
-                var items = (from m in db.MemberInformations
+                var itemsRenewed = (from m in db.MemberInformations
                              join p in db.Reports on m.memberId equals p.memberId
                              where p.created >= Convert.ToDateTime(r.startDate) && p.created <= Convert.ToDateTime(r.endDate) && p.renewExtend == r.reportType && (m.memberOption== "Regular" || m.memberOption== "OffHour" || m.memberOption== "Universal")
                              select new
@@ -98,18 +98,65 @@ namespace TPW_GMS.Controllers
                                  p.created
                              }).AsEnumerable();
                 if (r.branch != "ALL")
-                    items = items.Where(c => c.branch == r.branch);
+                    itemsRenewed = itemsRenewed.Where(c => c.branch == r.branch);
                 if (r.membershipOption != "ALL")
-                    items = items.Where(c => c.memberOption == r.membershipOption);
+                    itemsRenewed = itemsRenewed.Where(c => c.memberOption == r.membershipOption);
                 if (r.catagory != "ALL")
-                    items = items.Where(c => c.memberCatagory == r.catagory);
+                    itemsRenewed = itemsRenewed.Where(c => c.memberCatagory == r.catagory);
                 if (r.duration != "ALL")
-                    items = items.Where(c => c.memberPaymentType == r.duration);
+                    itemsRenewed = itemsRenewed.Where(c => c.memberPaymentType == r.duration);
                 if (r.shift != "ALL")
-                    items = items.Where(c => c.shift == r.shift);
+                    itemsRenewed = itemsRenewed.Where(c => c.shift == r.shift);
 
-                //items = items.OrderBy(d => d.updatedDate);
-                return Ok(items);
+                //itemsRenewed = itemsRenewed.OrderBy(d => d.updatedDate);
+                return Ok(itemsRenewed);
+            }
+            else if(r.reportType=="extended")
+            {
+                var itemExtended=(from m in db.MemberInformationLogs
+                                  where m.createdDate >= Convert.ToDateTime(r.startDate) && 
+                                  m.createdDate <= Convert.ToDateTime(r.endDate) && 
+                                  m.renewExtend == r.reportType && (m.memberOption == "Regular" || m.memberOption == "OffHour" || m.memberOption == "Universal")
+                                  select new
+                                  {
+                                      m.memberId,
+                                      m.fullname,
+                                      m.contactNo,
+                                      m.shift,
+                                      m.memberDate,
+                                      m.memberBeginDate,
+                                      m.memberExpireDate,
+                                      m.memberOption,
+                                      m.memberCatagory,
+                                      m.gender,
+                                      m.memberPaymentType,
+                                      m.email,
+                                      m.branch,
+                                      m.receiptNo,
+                                      m.paidAmount,
+                                      m.dueAmount,
+                                      m.dueClearAmount,
+                                      m.finalAmount
+
+
+
+                                  }).AsEnumerable();
+                if (r.branch != "ALL")
+                    itemExtended = itemExtended.Where(c => c.branch == r.branch);
+                if (r.membershipOption != "ALL")
+                    itemExtended = itemExtended.Where(c => c.memberOption == r.membershipOption);
+                if (r.catagory != "ALL")
+                    itemExtended = itemExtended.Where(c => c.memberCatagory == r.catagory);
+                if (r.duration != "ALL")
+                    itemExtended = itemExtended.Where(c => c.memberPaymentType == r.duration);
+                if (r.shift != "ALL")
+                    itemExtended = itemExtended.Where(c => c.shift == r.shift);
+
+                return Ok(itemExtended);
+            }
+            else
+            {
+                return null;
             }
 
         }
