@@ -431,7 +431,7 @@ namespace TPW_GMS.Services
         }
         public static NepDate DateFormat(string date)
         {
-            var dtSplit = date.Split('/');
+            var dtSplit =date.Contains("-")?date.Split('-'): date.Split('/');
             NepDate n = new NepDate
             {
                 Year = Convert.ToInt32(dtSplit[0]),

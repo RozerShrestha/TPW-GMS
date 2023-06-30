@@ -384,15 +384,15 @@
                         <li><%--<a href="PaymentPending.aspx"><i><img src="Assets/Icon/payment_pending.png" class="iconDashboard" /></i> <span>Payment Pending</span><span class="pull-right badge bg-green"><%= paymentPendingCount %></span></a>--%></li>
                         <li><a href="PaymentPendingNew.aspx"><i><img src="Assets/Icon/payment_pending.png" class="iconDashboard" /></i> <span>Payment Pending</span></a></li>
                         <li><a href="PaymentHistory.aspx"><i><img src="Assets/Icon/payment-history.png" class="iconDashboard" /></i> <span>Payment History</span></a></li>
-                        <li class="treeview"><a href="#"><i><img src="Assets/Icon/supplement.png" class="iconDashboard" /></i> <span>Supplement</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                       <%-- <li class="treeview"><a href="#"><i><img src="Assets/Icon/supplement.png" class="iconDashboard" /></i> <span>Supplement</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                             <ul class="treeview-menu">
                                 <li class="showAdmin"><a href="BuySupplements.aspx"><i class="fa fa-circle-o"></i>Buying Supplements</a></li>
                                 <li><a href="SellSupplements.aspx"><i class="fa fa-circle-o"></i>Selling Supplements</a></li>
                             </ul>
-                        </li>
-                        <li class="showAdmin"><a href="Merchandise.aspx"><i><img src="Assets/Icon/Merchandise.png" class="iconDashboard" /></i> <span>Merchandise</span></a></li>
-                        <li><a href="SellItems.aspx"><i><img src="Assets/Icon/item-sell.png" class="iconDashboard" /></i> <span>Sell Items</span></a></li>
-                        <li><a href="Expenditures.aspx"><i><img src="Assets/Icon/Expenditures.png" class="iconDashboard" /></i> <span>Expenditures</span></a></li>
+                        </li>--%>
+                        <%--<li class="showAdmin"><a href="Merchandise.aspx"><i><img src="Assets/Icon/Merchandise.png" class="iconDashboard" /></i> <span>Merchandise</span></a></li>--%>
+                        <%--<li><a href="SellItems.aspx"><i><img src="Assets/Icon/item-sell.png" class="iconDashboard" /></i> <span>Sell Items</span></a></li>--%>
+                        <%--<li><a href="Expenditures.aspx"><i><img src="Assets/Icon/Expenditures.png" class="iconDashboard" /></i> <span>Expenditures</span></a></li>--%>
                         <li class="showAdmin"><a href="ExtraOthers.aspx"><i><img src="Assets/Icon/attendance.png" class="iconDashboard" /></i> <span>Extra Others</span></a></li>
                         <li class="showAdmin"><a href="Branch.aspx"><i><img src="Assets/Icon/branch.png" class="iconDashboard" /></i> <span>Branchs</span></a></li>
                         <li class="treeview"><a href="#"><i><img src="Assets/Icon/trainer.png" class="iconDashboard" /></i> <span>Staff Management</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
@@ -402,10 +402,19 @@
                                 <li><a href="TrainerBooking.aspx"><i class="fa fa-circle-o"></i>Trainer Booking</a></li>
                             </ul>
                         </li>
-                        <li class="treeview showAdmin"><a href="#"><i><img src="Assets/Icon/commission.png" class="iconDashboard" /></i> <span>Comission</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                       <%-- <li class="treeview showAdmin"><a href="#"><i><img src="Assets/Icon/commission.png" class="iconDashboard" /></i> <span>Comission</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                             <ul class="treeview-menu">
                                 <li><a href="Commission.aspx"><i class="fa fa-circle-o"></i>Commission Search</a></li>
                                 <li><a href="CommissionLog.aspx"><i class="fa fa-circle-o"></i>Commission Log</a></li>
+                            </ul>
+                        </li>--%>
+                        <li class="treeview"><a href="#"><i><img src="Assets/Icon/report.png" class="iconDashboard" /></i> <span>Call Back</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                            <ul class="treeview-menu">
+                               <%-- <li><a href="TPWReport.aspx"><i class="fa fa-circle-o"></i>Old Report</a></li>--%>
+                                <li><a href="ExClientCallBack.aspx"><i class="fa fa-circle-o"></i>Ex Client Callback List</a></li>
+                                <li class="showAdmin"><a href="DailyReport.aspx"><i class="fa fa-circle-o"></i>Daily Report</a></li>
+                                <li><a href="MemberExpiredReport.aspx"><i class="fa fa-circle-o"></i>Member Expired Report</a></li>
+                                <li><a href="LockerExpiredReport.aspx"><i class="fa fa-circle-o"></i>Locker Report</a></li>
                             </ul>
                         </li>
                         <li class="treeview"><a href="#"><i><img src="Assets/Icon/report.png" class="iconDashboard" /></i> <span>Reports</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>

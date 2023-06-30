@@ -290,8 +290,8 @@ namespace TPW_GMS.Services
                             "<span><i>You can check in a total of 12 times every month to other branches</i></span><br>" +
                             "<table>" +
                             "<tr><td>MemberId: </td><td>" + memberid + "</td></tr>" +
-                            "<tr><td>UserName: </td><td>" + username + "</td></tr>" +
-                            "<tr><td>Password: </td><td>" + password + "</td></tr>" +
+                            //"<tr><td>UserName: </td><td>" + username + "</td></tr>" +
+                            //"<tr><td>Password: </td><td>" + password + "</td></tr>" +
                             "<tr><td>Branch: </td><td>" + branch + "</td></tr>" +
                             "<tr><td>Membership Option: </td><td>" + membershipOption + "</td></tr>" +
                             "<tr><td>Membership Catagory: </td><td>" + catagoryType + "</td></tr>" +

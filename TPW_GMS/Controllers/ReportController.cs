@@ -225,6 +225,10 @@ namespace TPW_GMS.Controllers
                 itemList = itemList.Where(p => p.memberExpireDate >= d1 && p.memberExpireDate <= DateTime.Now).ToList();
                 itemList = itemList.OrderBy(d => d.memberExpireDate).ToList();
             }
+            else if(r.reportType== "ExCientCallBack")
+            {
+                itemList = itemList.Where(p => p.memberExpireDate >= NepaliDateService.NepToEng(r.startDate) && p.memberExpireDate <= NepaliDateService.NepToEng(r.endDate)).ToList();
+            }
             return Ok(itemList);
         }
 
