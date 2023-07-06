@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ExClientCallBack.aspx.cs" Inherits="TPW_GMS.ExClientCallBack" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AbsentCallbackList.aspx.cs" Inherits="TPW_GMS.AbsentCallbackList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script>
         var table = null;
@@ -18,7 +18,6 @@
             form.forEach(function (item) {
                 formData[item.name.split('$')[2]] = item.value;
             });
-            formData["reportType"] = "ExCientCallBack";
             if (table) {
                 $('#dtTable').DataTable().destroy();
             }
@@ -38,7 +37,7 @@
                     'excelHtml5',
                 ],
                 ajax: {
-                    url: 'api/GetMemberExpiry/',
+                    url: 'api/GetAbsentCallBackList/',
                     data: formData,
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     type: "POST",
@@ -55,41 +54,8 @@
                     { 'data': 'fullname' },
                     { 'data': 'contactNo' },
                     { 'data': 'shift' },
-                    {
-                        "data": "memberDate",
-                        "render": function (data) {
-                            try {
-                                var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
-                                let objEng = NepaliFunctions.ConvertToDateObject(dat, "YYYY/MM/DD");
-                                let objNep = NepaliFunctions.AD2BS(objEng);
-                                let dt = NepaliFunctions.ConvertDateFormat(objNep, "YYYY/MM/DD");
-
-                                return dt;
-                            } catch (e) {
-                                return '';
-                            }
-                        }
-                    },
-                    {
-                        "data": "memberExpireDate",
-                        "render": function (data) {
-                            try {
-                                var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
-                                let objEng = NepaliFunctions.ConvertToDateObject(dat, "YYYY/MM/DD");
-                                let objNep = NepaliFunctions.AD2BS(objEng);
-                                let dt = NepaliFunctions.ConvertDateFormat(objNep, "YYYY/MM/DD");
-
-                                return dt;
-                            } catch (e) {
-                                return '';
-                            }
-                        }
-                    },
-                    { 'data': 'memberOption' },
-                    { 'data': 'memberCatagory' },
-                    { 'data': 'memberPaymentType' },
-                    { 'data': 'callStatus' },
-                    { 'data': 'callRemark' },
+                    { 'data': 'absentCallStatus' },
+                    { 'data': 'absentCallRemark' },
                     {
                         'data': null,
                         'className': 'center',
@@ -97,10 +63,10 @@
                     }
                 ],
                 rowCallback: function (row, data) {
-                    if (data["callStatus"] == "Called") {
+                    if (data["absentCallStatus"] == "Called") {
                         $(row).addClass('success')
                     }
-                    else if (data["callStatus"] == "Called but didn't received") {
+                    else if (data["absentCallStatus"] == "Called but didn't received") {
                         $(row).addClass('info')
                     }
 
@@ -123,8 +89,9 @@
             params.append('memberId', $('#txtMemberId').val());
             params.append('callStatus', $('#ddlCallStatus').val());
             params.append('callRemark', $('#txtRemark').val());
+
             axios({
-                url: 'api/UpdateMemberInformationExClientCallBack',
+                url: 'api/UpdateMemberInformationAbsentClientCallBack',
                 method: 'post',
                 data: params,
                 dataType: "JSON",
@@ -145,7 +112,7 @@
 
         //data - target="#modalRegister"
     </script>
-    <asp:HiddenField ID="hidHeader" runat="server" Value="Ex Client Call Back Report" />
+    <asp:HiddenField ID="hidHeader" runat="server" Value="Absent Client Call Back Report" />
     <div class="box box-info">
         <div class="box-body">
             <div class="col-xs-12">
@@ -156,18 +123,14 @@
                         </asp:DropDownList>
                     </div>
                     <div class="col-sm-2">
-                        <strong>StartDate(expired date)</strong>
-                        <asp:TextBox ID="startDate" ReadOnly  runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                    </div>
-                     <div class="col-sm-2">
-                        <strong>EndDate(expired date)</strong>
-                        <asp:TextBox ID="endDate" ReadOnly  runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                        <strong>Report Date(Wednesday)</strong>
+                        <asp:TextBox ID="startDate" ReadOnly="true" runat="server" CssClass="form-control input-sm"></asp:TextBox>
                     </div>
                     <div class="col-sm-2">
                         <input type="button" id="btnSubmit" style="margin-top:17px" class="btn btn-sm btn-success" name="Submit" value="Submit" />
                     </div>
                     <div lass="col-sm-2">
-                       <asp:Button runat="server" ID="btnSendReport" CssClass="btn btn-sm btn-primary" style="margin-top:15px" Text="SendReport"  data-toggle="tooltip" data-delay="{ show: 1000, hide: 10000}" data-placement="top" title="Note:Will send the email to sushant. so click this button only after all the ex client's callback records are filled"   OnClick="btnSendReport_Click" />
+                       <asp:Button runat="server" Visible="false" ID="btnSendReport" CssClass="btn btn-sm btn-primary" style="margin-top:15px" Text="SendReport"  data-toggle="tooltip" data-delay="{ show: 1000, hide: 10000}" data-placement="top" title="Note:Will send the email to sushant. so click this button only after all the Absent Client Callback records are filled"   OnClick="btnSendReport_Click" />
                     </div>
                 </div>
                 <br />
@@ -181,11 +144,6 @@
                                     <th>Full Name</th>
                                     <th>Mobile No</th>
                                     <th>Shift</th>
-                                    <th>Membership Date</th>
-                                    <th>Memebrship Expired Date</th>
-                                    <th>Membership Option </th>
-                                    <th>Catagory </th>
-                                    <th>Payment Type </th>
                                     <th>Call Status</th>
                                     <th>Call FeedBack</th>
                                     <th>Action</th>

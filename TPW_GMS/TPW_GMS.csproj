@@ -79,6 +79,9 @@
     <Reference Include="ActiveUp.Net.WhoIs, Version=5.0.3454.364, Culture=neutral, PublicKeyToken=6b9afb81c1de5ed4, processorArchitecture=MSIL">
       <HintPath>..\packages\MailSystem.NET.2.0.1\lib\ActiveUp.Net.WhoIs.dll</HintPath>
     </Reference>
+    <Reference Include="Aspose.Cells, Version=23.6.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Cells.23.6.0\lib\net40\Aspose.Cells.dll</HintPath>
+    </Reference>
     <Reference Include="CkEditor">
       <HintPath>..\..\CkEditor\CkEditor\bin\CkEditor.dll</HintPath>
     </Reference>
@@ -240,6 +243,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AbsentCallbackList.aspx" />
     <Content Include="AccessDenied.aspx" />
     <Content Include="AddStaff.aspx" />
     <Content Include="AddTrainer.aspx" />
@@ -2689,6 +2693,13 @@
     <Content Include="Views\web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbsentCallbackList.aspx.cs">
+      <DependentUpon>AbsentCallbackList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AbsentCallbackList.aspx.designer.cs">
+      <DependentUpon>AbsentCallbackList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AccessDenied.aspx.cs">
       <DependentUpon>AccessDenied.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

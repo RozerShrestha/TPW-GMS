@@ -11,7 +11,7 @@ namespace TPW_GMS
 {
 
 
-    public partial class ExClientCallBack
+    public partial class AbsentCallbackList
     {
 
         /// <summary>
@@ -40,15 +40,6 @@ namespace TPW_GMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox startDate;
-
-        /// <summary>
-        /// endDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox endDate;
 
         /// <summary>
         /// btnSendReport control.

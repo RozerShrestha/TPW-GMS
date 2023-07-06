@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using TPW_GMS.Data;
+using TPW_GMS.Models;
 
 namespace TPW_GMS.Services
 {
@@ -253,6 +254,45 @@ namespace TPW_GMS.Services
                 }
                 return status;
         }
+        public static string SendEmailToOwner(string path)
+        {
+            string status = "";
+            try
+            {
+                var fromEmailAdd = new MailAddress(senderEmail, "The Physique Workshop");
+                string pwd = extraInformation.password;
+                string txtSubject = "ExClient Report";
+                Attachment attachment = new Attachment(path);
+
+                using (var mm = new MailMessage())
+                {
+                    mm.Subject = txtSubject;
+                    mm.IsBodyHtml = true;
+                    mm.From=fromEmailAdd;
+                    mm.Body = "Please find attachements";
+                    mm.To.Add("rozer.shrestha611@gmail.com, sushantpradhantpw@gmail.com, thephysiqueworkshop@gmail.com");
+                    mm.Attachments.Add(attachment);
+                    //mm.AlternateViews.Add(getEmbeddedExcel(path));
+                   
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.UseDefaultCredentials = false;
+                    NetworkCredential NetworkCred = new NetworkCredential(senderEmail, extraInformation.password);
+                    smtp.Port = Convert.ToInt32(extraInformation.port);
+                    smtp.Host = extraInformation.smtpClient;
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.EnableSsl = true;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = NetworkCred;
+                    smtp.Send(mm);
+                    status = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                status = ex.Message;
+            }
+            return status;
+        }
         public static AlternateView getEmbeddedImageNewMember(string memberid, string username, string branch, string password, string membershipOption, string catagoryType, string membershipDate, string membershipPaymentType, string membershipBeginDate, string membershipExpireDate, string email, string fullname, string contactNo, string dateOfBirth, string address, string discountCode, string finalAmount, string paidAmount, string dueAmount)
         {
             try
@@ -391,6 +431,7 @@ namespace TPW_GMS.Services
             alternateView.LinkedResources.Add(res);
             return alternateView;
         }
+       
         private static AlternateView getEmbeddedImageForEmailMarketing(string message, string filePath)
         {
             LinkedResource res = new LinkedResource(filePath);

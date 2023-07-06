@@ -1173,9 +1173,9 @@ namespace TPW_GMS.Controllers
             }
         }
 
-        [Route("api/UpdateMemberInformation")]
+        [Route("api/UpdateMemberInformationExClientCallBack")]
         [HttpPost]
-        public IHttpActionResult UpdateMemberInformation(MemberInformation m)
+        public IHttpActionResult UpdateMemberInformationExClientCallBack(MemberInformation m)
         {
             using (var db = new TPWDataContext())
             {
@@ -1193,6 +1193,28 @@ namespace TPW_GMS.Controllers
                    
                 }
                
+            }
+        }
+        [Route("api/UpdateMemberInformationAbsentClientCallBack")]
+        [HttpPost]
+        public IHttpActionResult UpdateMemberInformationAbsentClientCallBack(MemberInformation m)
+        {
+            using (var db = new TPWDataContext())
+            {
+                try
+                {
+                    var item = db.MemberInformations.Where(p => p.memberId == m.memberId).FirstOrDefault();
+                    item.absentCallStatus = m.callStatus;
+                    item.absentCallRemark = m.callRemark;
+                    db.SubmitChanges();
+                    return Ok("Update Successfully");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+
+                }
+
             }
         }
         [Route("api/UpdateLockerInformation")]
