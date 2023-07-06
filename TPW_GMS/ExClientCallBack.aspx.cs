@@ -57,54 +57,62 @@ namespace TPW_GMS
 
         protected void btnSendReport_Click(object sender, EventArgs e)
         {
-            var itemList = (from m in db.MemberInformations
-                        where m.memberOption != "Trainer" && m.memberOption != "Super Admin" && m.memberOption != "Gym Admin"
-                        where m.memberExpireDate >= NepaliDateService.NepToEng(startDate.Text) && m.memberExpireDate <= NepaliDateService.NepToEng(endDate.Text)
-                        select new
-                        {
-                            m.branch,
-                            m.fullname,
-                            m.shift,
-                            m.memberExpireDate,
-                            m.callStatus,
-                            m.callRemark
-                        }).ToList();
-            itemList = itemList.Where(p => p.memberExpireDate >= NepaliDateService.NepToEng(startDate.Text) && p.memberExpireDate <= NepaliDateService.NepToEng(endDate.Text)).ToList();
-            itemList = itemList.OrderBy(d => d.memberExpireDate).ToList();
-            itemList = itemList.OrderBy(d => d.branch).ToList();
-
-            
-            // Create a Workbook object
-            Workbook workbook = new Workbook();
-            Worksheet worksheet = workbook.Worksheets[0];
-            var jsonString = JsonConvert.SerializeObject(itemList);
-
-            // Set Styles
-            CellsFactory factory = new CellsFactory();
-            Aspose.Cells.Style style = factory.CreateStyle();
-            style.HorizontalAlignment = TextAlignmentType.Center;
-            style.Font.Color = System.Drawing.Color.BlueViolet;
-            style.Font.IsBold = true;
-
-            // Set JsonLayoutOptions
-            JsonLayoutOptions options = new JsonLayoutOptions();
-            options.TitleStyle = style;
-            options.ArrayAsTable = true;
-
-            // Import JSON Data
-            JsonUtility.ImportData(jsonString, worksheet.Cells, 0, 0, options);
-            // Save Excel file
-            string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, $"Files\\ExClientCallBack\\exclientcallback-{startDate.Text}-{endDate.Text}.xlsx");
-            workbook.Save(filePath);
-            var emailresponse = MailService.SendEmailToOwner(filePath);
-            if (emailresponse == "")
+            try
             {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Email Send')", true);
+                var itemList = (from m in db.MemberInformations
+                            where m.memberOption != "Trainer" && m.memberOption != "Super Admin" && m.memberOption != "Gym Admin"
+                            where m.memberExpireDate >= NepaliDateService.NepToEng(startDate.Text) && m.memberExpireDate <= NepaliDateService.NepToEng(endDate.Text)
+                            select new
+                            {
+                                m.branch,
+                                m.fullname,
+                                m.shift,
+                                m.memberExpireDate,
+                                m.callStatus,
+                                m.callRemark
+                            }).ToList();
+                itemList = itemList.Where(p => p.memberExpireDate >= NepaliDateService.NepToEng(startDate.Text) && p.memberExpireDate <= NepaliDateService.NepToEng(endDate.Text)).ToList();
+                itemList = itemList.OrderBy(d => d.memberExpireDate).ToList();
+                itemList = itemList.OrderBy(d => d.branch).ToList();
+                _logger.Info($"ReportDate: {startDate.Text}");
+
+                // Create a Workbook object
+                Workbook workbook = new Workbook();
+                Worksheet worksheet = workbook.Worksheets[0];
+                var jsonString = JsonConvert.SerializeObject(itemList);
+
+                // Set Styles
+                CellsFactory factory = new CellsFactory();
+                Aspose.Cells.Style style = factory.CreateStyle();
+                style.HorizontalAlignment = TextAlignmentType.Center;
+                style.Font.Color = System.Drawing.Color.BlueViolet;
+                style.Font.IsBold = true;
+
+                // Set JsonLayoutOptions
+                JsonLayoutOptions options = new JsonLayoutOptions();
+                options.TitleStyle = style;
+                options.ArrayAsTable = true;
+
+                // Import JSON Data
+                JsonUtility.ImportData(jsonString, worksheet.Cells, 0, 0, options);
+                // Save Excel file
+                string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, $"Files\\ExClientCallBack\\exclientcallback-{startDate.Text}-{endDate.Text}.xlsx");
+                _logger.Info($"Filepath: {filePath}");
+                workbook.Save(filePath);
+                var emailresponse = MailService.SendEmailToOwner(filePath);
+                if (emailresponse == "")
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Email Send')", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Something went wrong')", true);
+                    _logger.Error($"Ex Client CallBack:Error while sending Email due to {emailresponse}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Something went wrong')", true);
-                _logger.Error($"Ex Client CallBack:Error while sending Email due to {emailresponse}");
+                _logger.Error($"Ex Client Callback Error:{ex}");
             }
         }
 

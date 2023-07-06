@@ -72,46 +72,54 @@ namespace TPW_GMS
         }
         protected void btnSendReport_Click(object sender, EventArgs e)
         {
-            var reportDate = NepaliDateService.NepToEng(startDate.Text).ToShortDateString();
-            reportDate = reportDate.Replace("/", "-");
-            using (var conn = dbCon.CreateConnection())
+            try
             {
-                var result = conn.Query("AbsentcallbackList",
-                    param: new { wedDate = reportDate, branch = "All" }
-                    , commandType: System.Data.CommandType.StoredProcedure).ToList();
-
-                // Create a Workbook object
-                Workbook workbook = new Workbook();
-                Worksheet worksheet = workbook.Worksheets[0];
-                var jsonString = JsonConvert.SerializeObject(result);
-
-                // Set Styles
-                CellsFactory factory = new CellsFactory();
-                Aspose.Cells.Style style = factory.CreateStyle();
-                style.HorizontalAlignment = TextAlignmentType.Center;
-                style.Font.Color = System.Drawing.Color.BlueViolet;
-                style.Font.IsBold = true;
-
-                // Set JsonLayoutOptions
-                JsonLayoutOptions options = new JsonLayoutOptions();
-                options.TitleStyle = style;
-                options.ArrayAsTable = true;
-
-                // Import JSON Data
-                JsonUtility.ImportData(jsonString, worksheet.Cells, 0, 0, options);
-                // Save Excel file
-                string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, $"Files\\AbsentCallback\\absentcallback-{startDate.Text.Replace("/", "-")}.xlsx");
-                workbook.Save(filePath);
-                var emailresponse = MailService.SendEmailToOwner(filePath);
-                if (emailresponse == "")
+                var reportDate = NepaliDateService.NepToEng(startDate.Text).ToShortDateString();
+                reportDate = reportDate.Replace("/", "-");
+                using (var conn = dbCon.CreateConnection())
                 {
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Email Send')", true);
+                    var result = conn.Query("AbsentcallbackList",
+                        param: new { wedDate = reportDate, branch = "All" }
+                        , commandType: System.Data.CommandType.StoredProcedure).ToList();
+                    _logger.Info($"ReportDate: {reportDate}");
+                    // Create a Workbook object
+                    Workbook workbook = new Workbook();
+                    Worksheet worksheet = workbook.Worksheets[0];
+                    var jsonString = JsonConvert.SerializeObject(result);
+
+                    // Set Styles
+                    CellsFactory factory = new CellsFactory();
+                    Aspose.Cells.Style style = factory.CreateStyle();
+                    style.HorizontalAlignment = TextAlignmentType.Center;
+                    style.Font.Color = System.Drawing.Color.BlueViolet;
+                    style.Font.IsBold = true;
+
+                    // Set JsonLayoutOptions
+                    JsonLayoutOptions options = new JsonLayoutOptions();
+                    options.TitleStyle = style;
+                    options.ArrayAsTable = true;
+
+                    // Import JSON Data
+                    JsonUtility.ImportData(jsonString, worksheet.Cells, 0, 0, options);
+                    // Save Excel file
+                    string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, $"Files\\AbsentCallback\\absentcallback-{startDate.Text.Replace("/", "-")}.xlsx");
+                    _logger.Info($"Filepath: {filePath}");
+                    workbook.Save(filePath);
+                    var emailresponse = MailService.SendEmailToOwner(filePath);
+                    if (emailresponse == "")
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Email Send')", true);
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Something went wrong')", true);
+                        _logger.Error($"Absent Callback CallBack:Error while sending Email due to {emailresponse}");
+                    }
                 }
-                else
-                {
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Something went wrong')", true);
-                    _logger.Error($"Absent Callback CallBack:Error while sending Email due to {emailresponse}");
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Absent Callback Error:{ex}");
             }
         }
 
