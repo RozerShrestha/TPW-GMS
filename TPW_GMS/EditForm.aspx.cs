@@ -1367,6 +1367,8 @@ namespace TPW_GMS
                         m1.ActiveInactive = "Active";
                         m1.emailStatus = false;
                         m1.universalMembershipLimit = ddlMemberOption.SelectedValue == "1" ? 12 : ddlMemberOption.SelectedValue == "3" ? 365 : ddlMemberOption.SelectedValue == "2" ? 12 : ddlMemberOption.SelectedValue == "5" ? 365 : ddlMemberOption.SelectedValue == "6" ? 365 : ddlMemberOption.SelectedValue == "7" ? 365 : ddlMemberOption.SelectedValue == "8" ? 0 : 0;
+                        m1.callStatus = string.Empty;
+                        m1.callRemark=string.Empty;
                         #endregion
                         #region Send Email if Renewed
                        

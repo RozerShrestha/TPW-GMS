@@ -224,12 +224,6 @@
         <elementListCompartment Id="271ccbb9-a410-4293-8ded-4c26eb1c1aab" absoluteBounds="12.64, 1.335, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="7183ec00-d083-45e6-91a8-89ac72036795" absoluteBounds="15.75, 6.25, 2, 9.8475569661458326">
-      <DataClassMoniker Name="/TPWDataContext/MemberInformation" />
-      <nestedChildShapes>
-        <elementListCompartment Id="01e4abe5-f3d0-41bc-87ac-9f237724cd0f" absoluteBounds="15.765, 6.71, 1.9700000000000002, 9.2875569661458321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="2a3296d3-d311-42ad-9fee-c6a3c86dfac4" absoluteBounds="18.625, 3.875, 2, 4.4631168619791666">
       <DataClassMoniker Name="/TPWDataContext/Report" />
       <nestedChildShapes>
@@ -258,6 +252,12 @@
       <DataClassMoniker Name="/TPWDataContext/MemberInformationLog" />
       <nestedChildShapes>
         <elementListCompartment Id="9f668bbb-84a2-45cf-af8e-a64d33650ea7" absoluteBounds="24.39, 1.96, 1.9700000000000002, 10.825968424479166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0abb4019-72b1-4414-9fd8-956f195cd14f" absoluteBounds="15.75, 6.75, 2, 10.232159830729165">
+      <DataClassMoniker Name="/TPWDataContext/MemberInformation" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b4dc5a73-f96e-414d-96ab-96cecd0fc20a" absoluteBounds="15.765, 7.2100000000000009, 1.9700000000000002, 9.6721598307291661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

@@ -218,14 +218,40 @@ namespace TPW_GMS.Controllers
             if (r.reportType == "0")
             {
                 itemList = itemList.Where(p => p.memberExpireDate <= d1).ToList();
-                itemList = itemList.OrderBy(d => d.memberExpireDate).ToList();
             }
             else if (r.reportType == "1")
             {
                 itemList = itemList.Where(p => p.memberExpireDate >= d1 && p.memberExpireDate <= DateTime.Now).ToList();
-                itemList = itemList.OrderBy(d => d.memberExpireDate).ToList();
             }
+            else if(r.reportType== "ExCientCallBack")
+            {
+                itemList = itemList.Where(p => p.memberExpireDate >= NepaliDateService.NepToEng(r.startDate) && p.memberExpireDate <= NepaliDateService.NepToEng(r.endDate)).ToList();
+            }
+            itemList = itemList.OrderBy(d => d.memberExpireDate).ToList();
+            itemList=itemList.OrderBy(d=>d.branch).ToList();
             return Ok(itemList);
+        }
+
+        [Route("api/GetAbsentCallBackList")]
+        [HttpPost]
+        public IHttpActionResult GetAbsentCallBackList(ReportParam r)
+        {
+            try
+            {
+                r.startDate = NepaliDateService.NepToEng(r.startDate).ToString();
+                using (var conn = dbCon.CreateConnection())
+                {
+                    var result = conn.Query("AbsentCallBackList",
+                        param: new { @wedDate= r.startDate, r.branch }
+                        , commandType: System.Data.CommandType.StoredProcedure).ToList();
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Ok(ex);
+            }
         }
 
         [Route("api/GetLockerExpiry/")]
