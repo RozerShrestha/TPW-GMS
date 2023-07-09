@@ -254,14 +254,14 @@ namespace TPW_GMS.Services
                 }
                 return status;
         }
-        public static string SendEmailToOwner(string path)
+        public static string SendEmailToOwner(string path, string subject)
         {
             string status = "";
             try
             {
                 var fromEmailAdd = new MailAddress(senderEmail, "The Physique Workshop");
                 string pwd = extraInformation.password;
-                string txtSubject = "ExClient Report";
+                string txtSubject = subject;
                 Attachment attachment = new Attachment(path);
 
                 using (var mm = new MailMessage())

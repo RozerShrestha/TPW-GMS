@@ -12064,6 +12064,12 @@ namespace TPW_GMS.Data
 		
 		private string _absentCallRemark;
 		
+		private string _paymentReminerCallStatus;
+		
+		private string _paymentReminerPaymentFeedback;
+		
+		private string _pamentReminderProgressFeedback;
+		
 		private string _remark;
 		
 		private System.Nullable<System.DateTime> _createdDate;
@@ -12166,6 +12172,12 @@ namespace TPW_GMS.Data
     partial void OnabsentCallStatusChanged();
     partial void OnabsentCallRemarkChanging(string value);
     partial void OnabsentCallRemarkChanged();
+    partial void OnpaymentReminerCallStatusChanging(string value);
+    partial void OnpaymentReminerCallStatusChanged();
+    partial void OnpaymentReminerPaymentFeedbackChanging(string value);
+    partial void OnpaymentReminerPaymentFeedbackChanged();
+    partial void OnpamentReminderProgressFeedbackChanging(string value);
+    partial void OnpamentReminderProgressFeedbackChanged();
     partial void OnremarkChanging(string value);
     partial void OnremarkChanged();
     partial void OncreatedDateChanging(System.Nullable<System.DateTime> value);
@@ -13059,6 +13071,66 @@ namespace TPW_GMS.Data
 					this._absentCallRemark = value;
 					this.SendPropertyChanged("absentCallRemark");
 					this.OnabsentCallRemarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_paymentReminerCallStatus", DbType="VarChar(50)")]
+		public string paymentReminerCallStatus
+		{
+			get
+			{
+				return this._paymentReminerCallStatus;
+			}
+			set
+			{
+				if ((this._paymentReminerCallStatus != value))
+				{
+					this.OnpaymentReminerCallStatusChanging(value);
+					this.SendPropertyChanging();
+					this._paymentReminerCallStatus = value;
+					this.SendPropertyChanged("paymentReminerCallStatus");
+					this.OnpaymentReminerCallStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_paymentReminerPaymentFeedback", DbType="VarChar(500)")]
+		public string paymentReminerPaymentFeedback
+		{
+			get
+			{
+				return this._paymentReminerPaymentFeedback;
+			}
+			set
+			{
+				if ((this._paymentReminerPaymentFeedback != value))
+				{
+					this.OnpaymentReminerPaymentFeedbackChanging(value);
+					this.SendPropertyChanging();
+					this._paymentReminerPaymentFeedback = value;
+					this.SendPropertyChanged("paymentReminerPaymentFeedback");
+					this.OnpaymentReminerPaymentFeedbackChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pamentReminderProgressFeedback", DbType="VarChar(500)")]
+		public string pamentReminderProgressFeedback
+		{
+			get
+			{
+				return this._pamentReminderProgressFeedback;
+			}
+			set
+			{
+				if ((this._pamentReminderProgressFeedback != value))
+				{
+					this.OnpamentReminderProgressFeedbackChanging(value);
+					this.SendPropertyChanging();
+					this._pamentReminderProgressFeedback = value;
+					this.SendPropertyChanged("pamentReminderProgressFeedback");
+					this.OnpamentReminderProgressFeedbackChanged();
 				}
 			}
 		}
