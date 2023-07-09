@@ -12,36 +12,6 @@
 <body>
     <form id="form1" runat="server">
         <div class="container">
-            <%--<div id="login" class="signin-card">
-                <div class="logo-image">
-                    <img src="Assets/css/images/tpwlogo.png" alt="Logo" title="Logo" width="138" />
-                </div>
-                <span class="display1">THE PHYSIQUE</span ><span class="display2">WORKSHOP</span>
-
-                <div id="form-login-username" class="form-group">
-                     <span class="form-highlight"></span>
-                    <span class="form-bar"></span>
-                    <label for="username" class="float-label">login</label>
-                    <asp:TextBox ID="txtUserName" runat="server" placeholder="mobile number" CssClass="form-control"></asp:TextBox>
-                   
-                </div>
-                <div id="form-login-password" class="form-group">
-                    <span class="form-highlight"></span>
-                    <span class="form-bar"></span>
-                    <label for="password" class="float-label">password</label>
-                    <asp:TextBox ID="txtPassword" TextMode="Password" runat="server" placeholder="Password" CssClass="form-control"></asp:TextBox>
-                    
-                </div>
-               <%-- <div id="form-login-remember" class="form-group">
-                    <div class="checkbox checkbox-default">
-                        <input id="remember" type="checkbox" value="yes" alt="Remember me" class="">
-                        <label for="remember">Remember me</label>
-                    </div>
-                </div>
-                <div>
-                    <asp:Button ID="btnSubmit" runat="server" CssClass="btn btn-block btn-info ripple-effect" OnClick="btnSubmit_Click" Text="Login" />
-                </div>
-            </div>--%>
             <!-- Form Module-->
             <div class="module form-module">
                 <div class="togglea">

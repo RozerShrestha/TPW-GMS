@@ -211,9 +211,9 @@ namespace TPW_GMS.Controllers
             var d1 = DateTime.Now.AddMonths(-1);
             List<MemberInformation> itemList = new List<MemberInformation>();
             if(r.branch=="ALL")
-                itemList = db.MemberInformations.Where(k=> k.memberOption != "Trainer" && k.memberOption != "Super Admin" && k.memberOption != "Gym Admin").ToList();
+                itemList = db.MemberInformations.Where(k=> k.memberOption != "Trainer" && k.memberOption != "Operation Manager" && k.memberOption != "Gym Admin").ToList();
             else
-                itemList = db.MemberInformations.Where(k =>k.branch==r.branch &&(k.memberOption != "Trainer" && k.memberOption != "Super Admin" && k.memberOption != "Gym Admin")).ToList();
+                itemList = db.MemberInformations.Where(k =>k.branch==r.branch &&(k.memberOption != "Trainer" && k.memberOption != "Operation Manager" && k.memberOption != "Gym Admin")).ToList();
 
             if (r.reportType == "0")
             {

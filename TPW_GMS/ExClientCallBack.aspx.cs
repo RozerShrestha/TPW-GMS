@@ -60,7 +60,7 @@ namespace TPW_GMS
             try
             {
                 var itemList = (from m in db.MemberInformations
-                            where m.memberOption != "Trainer" && m.memberOption != "Super Admin" && m.memberOption != "Gym Admin"
+                            where m.memberOption != "Trainer" && m.memberOption != "Operation Manager" && m.memberOption != "Gym Admin"
                             where m.memberExpireDate >= NepaliDateService.NepToEng(startDate.Text) && m.memberExpireDate <= NepaliDateService.NepToEng(endDate.Text)
                             select new
                             {

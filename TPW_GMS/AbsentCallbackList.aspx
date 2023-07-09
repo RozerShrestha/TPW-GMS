@@ -49,13 +49,13 @@
                     },
                 },
                 columns: [
-                    { 'data': 'branch' },
-                    { 'data': 'memberId' },
-                    { 'data': 'fullname' },
-                    { 'data': 'contactNo' },
-                    { 'data': 'shift' },
-                    { 'data': 'absentCallStatus' },
-                    { 'data': 'absentCallRemark' },
+                    { 'data': 'Branch' },
+                    { 'data': 'MemberId' },
+                    { 'data': 'Fullname' },
+                    { 'data': 'ContactNo' },
+                    { 'data': 'Shift' },
+                    { 'data': 'CallStatus' },
+                    { 'data': 'CallRemark' },
                     {
                         'data': null,
                         'className': 'center',
@@ -63,10 +63,10 @@
                     }
                 ],
                 rowCallback: function (row, data) {
-                    if (data["absentCallStatus"] == "Called") {
+                    if (data["CallStatus"] == "Called") {
                         $(row).addClass('success')
                     }
-                    else if (data["absentCallStatus"] == "Called but didn't received") {
+                    else if (data["CallStatus"] == "Called but didn't received") {
                         $(row).addClass('info')
                     }
 
