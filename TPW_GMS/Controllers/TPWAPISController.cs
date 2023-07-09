@@ -1195,6 +1195,29 @@ namespace TPW_GMS.Controllers
                
             }
         }
+        [Route("api/UpdateMemberInformationPaymentReminderCallBack")]
+        [HttpPost]
+        public IHttpActionResult UpdateMemberInformationPaymentReminderCallBack(MemberInformation m)
+        {
+            using (var db = new TPWDataContext())
+            {
+                try
+                {
+                    var item = db.MemberInformations.Where(p => p.memberId == m.memberId).FirstOrDefault();
+                    item.paymentReminerCallStatus = m.paymentReminerCallStatus;
+                    item.paymentReminerPaymentFeedback = m.paymentReminerPaymentFeedback;
+                    item.pamentReminderProgressFeedback= m.pamentReminderProgressFeedback;
+                    db.SubmitChanges();
+                    return Ok("Update Successfully");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+
+                }
+
+            }
+        }
         [Route("api/UpdateMemberInformationAbsentClientCallBack")]
         [HttpPost]
         public IHttpActionResult UpdateMemberInformationAbsentClientCallBack(MemberInformation m)

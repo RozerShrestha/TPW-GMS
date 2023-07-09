@@ -227,6 +227,10 @@ namespace TPW_GMS.Controllers
             {
                 itemList = itemList.Where(p => p.memberExpireDate >= NepaliDateService.NepToEng(r.startDate) && p.memberExpireDate <= NepaliDateService.NepToEng(r.endDate)).ToList();
             }
+            else if(r.reportType== "PaymentReminder")
+            {
+                itemList = itemList.Where(p => p.memberExpireDate >= NepaliDateService.NepToEng(r.startDate) && p.memberExpireDate <= NepaliDateService.NepToEng(r.endDate)).ToList();
+            }
             itemList = itemList.OrderBy(d => d.memberExpireDate).ToList();
             itemList=itemList.OrderBy(d=>d.branch).ToList();
             return Ok(itemList);

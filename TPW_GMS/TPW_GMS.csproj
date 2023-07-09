@@ -2107,6 +2107,7 @@
     <Content Include="PaymentHistory.aspx" />
     <Content Include="PaymentPending.aspx" />
     <Content Include="PaymentPendingNew.aspx" />
+    <Content Include="PaymentReminderCallLIst.aspx" />
     <Content Include="plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="plugins\input-mask\phone-codes\phone-codes.json" />
     <Content Include="NLog.config">
@@ -3024,6 +3025,13 @@
     </Compile>
     <Compile Include="PaymentPendingNew.aspx.designer.cs">
       <DependentUpon>PaymentPendingNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentReminderCallLIst.aspx.cs">
+      <DependentUpon>PaymentReminderCallLIst.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PaymentReminderCallLIst.aspx.designer.cs">
+      <DependentUpon>PaymentReminderCallLIst.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QRMessageBroadCast.aspx.cs">

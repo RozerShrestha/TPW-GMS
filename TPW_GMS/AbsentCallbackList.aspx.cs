@@ -105,7 +105,7 @@ namespace TPW_GMS
                     string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, $"Files\\AbsentCallback\\absentcallback-{startDate.Text.Replace("/", "-")}.xlsx");
                     _logger.Info($"Filepath: {filePath}");
                     workbook.Save(filePath);
-                    var emailresponse = MailService.SendEmailToOwner(filePath);
+                    var emailresponse = MailService.SendEmailToOwner(filePath, "Absent Callback List");
                     if (emailresponse == "")
                     {
                         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Email Send')", true);
