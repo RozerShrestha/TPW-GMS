@@ -35,23 +35,39 @@ namespace TPW_GMS
             var item = (from p in db.MemberInformations
                         where p.contactNo.Equals(username) && p.password.Equals(password)
                         select p).SingleOrDefault();
-            if(item!=null)
+            if (item != null)
             {
-                var encryptedMemberId = Service.EncryptData(item.memberId);
-                HttpCookie userExpireDate = new HttpCookie("ExpireDate");
-                HttpCookie loginMember = new HttpCookie("LoginMember");
+                //for staff
+                if (item.memberOption=="Trainer" && item.memberOption != "Operation Manager" && item.memberOption != "Gym Admin")
+                {
+                    var encryptedMemberId = Service.EncryptData(item.memberId);
+                    HttpCookie userExpireDate = new HttpCookie("ExpireDate");
+                    HttpCookie loginMember = new HttpCookie("LoginMember");
 
-                userExpireDate["MemberId"] = encryptedMemberId;
-                loginMember["MemberId"] = encryptedMemberId;
-                Response.Cookies["ExpireDate"].Expires = DateTime.Now.AddDays(100);
-                Response.Cookies["ExpireDate"].Value = encryptedMemberId;
-                //Response.Cookies["ExpireDate"]. = item.fullname;
-                Response.Redirect("MemberDashboard.aspx");
+                    userExpireDate["MemberId"] = encryptedMemberId;
+                    loginMember["MemberId"] = encryptedMemberId;
+                    Response.Cookies["ExpireDate"].Expires = DateTime.Now.AddDays(365);
+                    Response.Cookies["ExpireDate"].Value = encryptedMemberId;
+                    //Response.Cookies["ExpireDate"]. = item.fullname;
+                    Response.Redirect("MemberDashboard.aspx");
+                }
+                //for Clients
+                else
+                {
+                    var memberId = item.memberId;
+                    //HttpCookie userExpireDate = new HttpCookie("ExpireDate");
+                    //userExpireDate["MemberId"] = DateTime.Now.AddDays(365).ToShortDateString();
+                    Response.Cookies["ExpireDate"].Expires = DateTime.Now.AddDays(365);
+                    Response.Cookies["ExpireDate"].Value = memberId;
+                    //Response.Cookies["ExpireDate"]. = item.fullname;
+                    Response.Redirect("MemberDashboard.aspx");
+                }
             }
             else
             {
                 lblInfo.Text = "Wrong Username or Password";
             }
+
         }
 
         protected void btnResetPassword_Click(object sender, EventArgs e)

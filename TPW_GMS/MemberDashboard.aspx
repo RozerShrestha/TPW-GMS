@@ -3,7 +3,12 @@
 <link href="Assets/css/bootstrap.min.css" rel="stylesheet" />
 <link href="Assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 <link href="Assets/css/jquery-ui.css" rel="stylesheet" />
-
+<link href="dist/css/AdminLTE.css" rel="stylesheet">
+<style type="text/css">
+    .widget-user-2 .widget-user-username, .widget-user-2 .widget-user-desc {
+        margin-left: 0px !important;
+    }
+</style>
 <div id="app">
     <div class="container-fluid">
         <div class="box box-widget widget-user-2" >
@@ -17,17 +22,10 @@
                 </div>
             </div>
 
-            <div v-bind:class="{'widget-user-header bg-red':condition.isExpired==true, 'widget-user-header bg-green':condition.isExpired==false}">
-                <div>
-                    <div class="widget-user-image">
-
-                        <%--<img class="img-circle" v-bind:src=result.imageLoc alt="User Avatar" />--%>
-                    </div>
+            <div :class="{'widget-user-header bg-red':condition.isExpired==true, 'widget-user-header bg-green':condition.isExpired==false}">
                     <h3 class="widget-user-username">{{result.fullname}}</h3>
-                    <h5 class="widget-user-desc">{{result.branch}}</h5>
-                    <h5 class="widget-user-desc">{{result.shift}}</h5>
-                </div>
-                
+                    <h5 class="widget-user-desc">Branch: {{result.branch}}</h5>
+                    <h5 class="widget-user-desc">Shift: {{result.shift}}</h5>
             </div>
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover">

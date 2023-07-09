@@ -124,16 +124,26 @@ namespace TPW_GMS.Services
         //for Member Login Only
         public static MemberInformation2 getMemberInfo(string encryptedMemberId)
         {
+            string memberId = "";
             CultureInfo provider = CultureInfo.InvariantCulture;
-            var decryptedMemberId = Service.DecryptString(encryptedMemberId);
-            var splitData = Regex.Split(decryptedMemberId, @"//");
+           
 
-            var memberId = splitData[0];
-            var todayDate8 = splitData[1];
-            var todayDate = DateTime.ParseExact(todayDate8, "yyyyMMdd", provider);
+            if (encryptedMemberId.Contains("TPW"))
+            {
+                memberId = encryptedMemberId;
+            }
+            else
+            {
+                var decryptedMemberId = Service.DecryptString(encryptedMemberId);
+                var splitData = Regex.Split(decryptedMemberId, @"//");
+                memberId = splitData[0];
+                var todayDate8 = splitData[1];
+                var todayDate = DateTime.ParseExact(todayDate8, "yyyyMMdd", provider);
+            }
             var tday = DateTime.Now;
             var tt = DateTime.Today;
             var pday = tday.AddDays(-30);
+            
             var memberInfo = (from p in db.MemberInformations
                               where p.memberId.Equals(memberId)
                               select new MemberInformation2

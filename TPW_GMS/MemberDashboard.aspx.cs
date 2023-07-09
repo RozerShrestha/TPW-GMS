@@ -36,11 +36,22 @@ namespace TPW_GMS
                 {
                     try
                     {
-                        var memberId = Service.DecryptString(loginCookie.Value);
-                        var todayDate = DateTime.Now;
-                        var todayEight = todayDate.ToString("yyyyMMdd");
-                        var extendedMemberId = memberId + "//" + todayEight;
-                        encryptedMemberId = Service.EncryptData(extendedMemberId);
+                        //For Client
+                        if (loginCookie.Value.Contains("TPW"))
+                        {
+                            var memberId = loginCookie.Value;
+                            encryptedMemberId = memberId;
+                        }
+                        //For Staff
+                        else
+                        {
+                            var memberId = Service.DecryptString(loginCookie.Value);
+                            var todayDate = DateTime.Now;
+                            var todayEight = todayDate.ToString("yyyyMMdd");
+                            var extendedMemberId = memberId + "//" + todayEight;
+                            encryptedMemberId = Service.EncryptData(extendedMemberId);
+                        }
+                       
                     }
                     catch (Exception)
                     {
