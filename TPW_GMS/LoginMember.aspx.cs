@@ -38,7 +38,7 @@ namespace TPW_GMS
             if (item != null)
             {
                 //for staff
-                if (item.memberOption=="Trainer" && item.memberOption != "Operation Manager" && item.memberOption != "Gym Admin")
+                if (item.memberOption =="Trainer" || item.memberOption == "Operation Manager" || item.memberOption == "Gym Admin")
                 {
                     var encryptedMemberId = Service.EncryptData(item.memberId);
                     HttpCookie userExpireDate = new HttpCookie("ExpireDate");
