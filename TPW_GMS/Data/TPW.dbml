@@ -635,6 +635,8 @@
       <Column Name="paymentReminerCallStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="paymentReminerPaymentFeedback" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
       <Column Name="pamentReminderProgressFeedback" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="newAdmissionCallStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="newAdmissionCallRemark" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
       <Column Name="remark" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
       <Column Name="createdDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="createdBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />

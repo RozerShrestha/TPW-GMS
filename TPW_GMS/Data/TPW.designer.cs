@@ -12070,6 +12070,10 @@ namespace TPW_GMS.Data
 		
 		private string _pamentReminderProgressFeedback;
 		
+		private string _newAdmissionCallStatus;
+		
+		private string _newAdmissionCallRemark;
+		
 		private string _remark;
 		
 		private System.Nullable<System.DateTime> _createdDate;
@@ -12178,6 +12182,10 @@ namespace TPW_GMS.Data
     partial void OnpaymentReminerPaymentFeedbackChanged();
     partial void OnpamentReminderProgressFeedbackChanging(string value);
     partial void OnpamentReminderProgressFeedbackChanged();
+    partial void OnnewAdmissionCallStatusChanging(string value);
+    partial void OnnewAdmissionCallStatusChanged();
+    partial void OnnewAdmissionCallRemarkChanging(string value);
+    partial void OnnewAdmissionCallRemarkChanged();
     partial void OnremarkChanging(string value);
     partial void OnremarkChanged();
     partial void OncreatedDateChanging(System.Nullable<System.DateTime> value);
@@ -13131,6 +13139,46 @@ namespace TPW_GMS.Data
 					this._pamentReminderProgressFeedback = value;
 					this.SendPropertyChanged("pamentReminderProgressFeedback");
 					this.OnpamentReminderProgressFeedbackChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_newAdmissionCallStatus", DbType="VarChar(50)")]
+		public string newAdmissionCallStatus
+		{
+			get
+			{
+				return this._newAdmissionCallStatus;
+			}
+			set
+			{
+				if ((this._newAdmissionCallStatus != value))
+				{
+					this.OnnewAdmissionCallStatusChanging(value);
+					this.SendPropertyChanging();
+					this._newAdmissionCallStatus = value;
+					this.SendPropertyChanged("newAdmissionCallStatus");
+					this.OnnewAdmissionCallStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_newAdmissionCallRemark", DbType="VarChar(500)")]
+		public string newAdmissionCallRemark
+		{
+			get
+			{
+				return this._newAdmissionCallRemark;
+			}
+			set
+			{
+				if ((this._newAdmissionCallRemark != value))
+				{
+					this.OnnewAdmissionCallRemarkChanging(value);
+					this.SendPropertyChanging();
+					this._newAdmissionCallRemark = value;
+					this.SendPropertyChanged("newAdmissionCallRemark");
+					this.OnnewAdmissionCallRemarkChanged();
 				}
 			}
 		}

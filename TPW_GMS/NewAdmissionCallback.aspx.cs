@@ -20,7 +20,7 @@ using TPW_GMS.Services;
 
 namespace TPW_GMS
 {
-    public partial class ExClientCallBack : System.Web.UI.Page
+    public partial class NewAdmissionCallback : System.Web.UI.Page
     {
         string roleId, loginUser, splitUser;
         public DbConFactory dbCon = new DbConFactory();
@@ -61,15 +61,15 @@ namespace TPW_GMS
             {
                 var itemList = (from m in db.MemberInformations
                             where m.memberOption != "Trainer" && m.memberOption != "Operation Manager" && m.memberOption != "Gym Admin"
-                            where m.memberExpireDate >= NepaliDateService.NepToEng(startDate.Text) && m.memberExpireDate <= NepaliDateService.NepToEng(endDate.Text)
+                            where m.memberDate >= NepaliDateService.NepToEng(startDate.Text) && m.memberDate <= NepaliDateService.NepToEng(endDate.Text)
                             select new
                             {
                                 Branch=m.branch,
                                 FullName = m.fullname,
                                 Shift = m.shift,
                                 MemberExpiredDate = m.memberExpireDate,
-                                CallStatus = m.callStatus,
-                                CallRemark = m.callRemark
+                                CallStatus = m.newAdmissionCallStatus,
+                                CallRemark = m.newAdmissionCallRemark
                             }).ToList();
                 itemList = itemList.OrderBy(d => d.MemberExpiredDate).ToList();
                 itemList = itemList.OrderBy(d => d.Branch).ToList();
@@ -95,10 +95,10 @@ namespace TPW_GMS
                 // Import JSON Data
                 JsonUtility.ImportData(jsonString, worksheet.Cells, 0, 0, options);
                 // Save Excel file
-                string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, $"Files\\ExClientCallBack\\exclientcallback-{startDate.Text}-{endDate.Text}.xlsx");
+                string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, $"Files\\NewAdmissionCallBack\\newadmissioncallback-{startDate.Text.Replace("/", "-")}-{endDate.Text.Replace("/", "-")}.xlsx");
                 _logger.Info($"Filepath: {filePath}");
                 workbook.Save(filePath);
-                var emailresponse = MailService.SendEmailToOwner(filePath,"ExClient Callback List");
+                var emailresponse = MailService.SendEmailToOwner(filePath,"New Admission Callback");
                 if (emailresponse == "")
                 {
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Email Send')", true);
@@ -142,17 +142,21 @@ namespace TPW_GMS
         {
             try
             {
-                using (var conn = dbCon.CreateConnection())
+                DateTime sundayDate = DateTime.Now.AddDays(-1);
+                DateTime fridayDate=DateTime.Now.AddDays(-1);
+                if (DayOfWeek.Sunday == DateTime.Now.DayOfWeek)
                 {
-                    var result = conn.QuerySingle("GetEngNepOneMonthBefore"
-                        , commandType: System.Data.CommandType.StoredProcedure);
-                    if (result != null)
-                    {
-                        startDate.Text = result.NepFirst;
-                        endDate.Text = result.NepLast;
-                    }
+                    sundayDate = DateTime.Now;
                 }
-                
+                else
+                {
+                    while (sundayDate.DayOfWeek != DayOfWeek.Sunday)
+                        sundayDate = sundayDate.AddDays(-1);
+                }
+                sundayDate = sundayDate.AddDays(-7);
+                startDate.Text = NepaliDateService.EngToNep(sundayDate).ToString();
+                endDate.Text = NepaliDateService.EngToNep(sundayDate.AddDays(5)).ToString();
+
             }
             catch (Exception ex)
             {

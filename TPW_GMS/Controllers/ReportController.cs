@@ -226,12 +226,19 @@ namespace TPW_GMS.Controllers
             else if(r.reportType== "ExCientCallBack")
             {
                 itemList = itemList.Where(p => p.memberExpireDate >= NepaliDateService.NepToEng(r.startDate) && p.memberExpireDate <= NepaliDateService.NepToEng(r.endDate)).ToList();
+                itemList = itemList.OrderBy(d => d.memberExpireDate).ToList();
             }
             else if(r.reportType== "PaymentReminder")
             {
                 itemList = itemList.Where(p => p.memberExpireDate >= NepaliDateService.NepToEng(r.startDate) && p.memberExpireDate <= NepaliDateService.NepToEng(r.endDate)).ToList();
+                itemList = itemList.OrderBy(d => d.memberExpireDate).ToList();
             }
-            itemList = itemList.OrderBy(d => d.memberExpireDate).ToList();
+            else if(r.reportType== "NewAdmissionCallBack")
+            {
+                itemList = itemList.Where(p => p.memberDate >= NepaliDateService.NepToEng(r.startDate) && p.memberDate <= NepaliDateService.NepToEng(r.endDate)).ToList();
+                itemList = itemList.OrderBy(d => d.memberDate).ToList();
+            }
+            
             itemList=itemList.OrderBy(d=>d.branch).ToList();
             return Ok(itemList);
         }

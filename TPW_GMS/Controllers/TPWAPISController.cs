@@ -1195,6 +1195,30 @@ namespace TPW_GMS.Controllers
                
             }
         }
+
+        [Route("api/UpdateMemberInformationNewAdmissionCallBack")]
+        [HttpPost]
+        public IHttpActionResult UpdateMemberInformationNewAdmissionCallBack(MemberInformation m)
+        {
+            using (var db = new TPWDataContext())
+            {
+                try
+                {
+                    var item = db.MemberInformations.Where(p => p.memberId == m.memberId).FirstOrDefault();
+                    item.newAdmissionCallStatus = m.newAdmissionCallStatus;
+                    item.newAdmissionCallRemark = m.newAdmissionCallRemark;
+                    db.SubmitChanges();
+                    return Ok("Update Successfully");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+
+                }
+
+            }
+        }
+
         [Route("api/UpdateMemberInformationPaymentReminderCallBack")]
         [HttpPost]
         public IHttpActionResult UpdateMemberInformationPaymentReminderCallBack(MemberInformation m)
@@ -1227,8 +1251,8 @@ namespace TPW_GMS.Controllers
                 try
                 {
                     var item = db.MemberInformations.Where(p => p.memberId == m.memberId).FirstOrDefault();
-                    item.absentCallStatus = m.callStatus;
-                    item.absentCallRemark = m.callRemark;
+                    item.absentCallStatus = m.absentCallStatus;
+                    item.absentCallRemark = m.absentCallRemark;
                     db.SubmitChanges();
                     return Ok("Update Successfully");
                 }

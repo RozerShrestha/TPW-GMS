@@ -112,8 +112,9 @@
                 var data = table.row($(this).closest('tr')).data();
                 $('#txtMemberId').val(data['memberId']);
                 $('#txtMemberFullName').val(data['fullname']);
-                $('#ddlCallStatus').val(data['callStatus']);
-                $('#txtRemark').val(data['callRemark']);
+                $('#ddlCallStatus').val(data['paymentReminerCallStatus']);
+                $('#txtPaymentFeedback').val(data['paymentReminerPaymentFeedback']);
+                $('#txtProgressFeedback').val(data['pamentReminderProgressFeedback']);
 
                 $('#modalRegister').modal("show");
             });

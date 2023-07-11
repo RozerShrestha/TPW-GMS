@@ -1968,6 +1968,7 @@
     <Content Include="EmailMarketingAttendance.aspx" />
     <Content Include="EmailMarketingCSV.aspx" />
     <Content Include="EmailMarketingTemplate.aspx" />
+    <Content Include="NewAdmissionCallback.aspx" />
     <Content Include="ExClientCallBack.aspx" />
     <Content Include="Expenditures.aspx" />
     <Content Include="ExtraOthers.aspx" />
@@ -2860,6 +2861,13 @@
     </Compile>
     <Compile Include="EmailMarketingTemplate.aspx.designer.cs">
       <DependentUpon>EmailMarketingTemplate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="NewAdmissionCallback.aspx.cs">
+      <DependentUpon>NewAdmissionCallback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NewAdmissionCallback.aspx.designer.cs">
+      <DependentUpon>NewAdmissionCallback.aspx</DependentUpon>
     </Compile>
     <Compile Include="ExClientCallBack.aspx.cs">
       <DependentUpon>ExClientCallBack.aspx</DependentUpon>

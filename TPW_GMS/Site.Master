@@ -414,7 +414,7 @@
                                 <li class="showAdmin"><a href="ExClientCallBack.aspx"><i class="fa fa-circle-o"></i>Ex Client Callback List</a></li>
                                <li><a href="AbsentCallbackList.aspx"><i class="fa fa-circle-o"></i>Absent Callback List</a></li>
                                 <li><a href="PaymentReminderCallList.aspx"><i class="fa fa-circle-o"></i>Payment Reminder Call List</a></li>
-                                <%-- <li><a href="LockerExpiredReport.aspx"><i class="fa fa-circle-o"></i>Locker Report</a></li>--%>
+                                <li class="showAdmin"><a href="NewAdmissionCallback.aspx"><i class="fa fa-circle-o"></i>New Admission Callback</a></li>
                             </ul>
                         </li>
                         <li class="treeview"><a href="#"><i><img src="Assets/Icon/report.png" class="iconDashboard" /></i> <span>Reports</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
