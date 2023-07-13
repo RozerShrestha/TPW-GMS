@@ -9,7 +9,6 @@
             $('#btnSubmit').on('click', function () {
                 loadData();
             });
-            loadData();
         });
 
         function loadData() {
