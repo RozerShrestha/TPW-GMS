@@ -138,7 +138,7 @@
                 $('#lblMessage').text(`${response.data} now reloading...`);
                 setTimeout(() => {
                     location.reload(true);
-                }, 1000);
+                }, 100);
 
 
             }).catch(function (error) {

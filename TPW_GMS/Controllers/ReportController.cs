@@ -265,6 +265,24 @@ namespace TPW_GMS.Controllers
             }
         }
 
+        [Route("api/GetRandomCallList")]
+        [HttpPost]
+        public IHttpActionResult GetRandomCallList(ReportParam r)
+        {
+            try
+            {
+               var result=(from p in db.RandomCallListMonthlies
+                           where p.dateCreated==NepaliDateService.NepToEng("2080-03-30").ToString()
+                           select p).ToList();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                return Ok(ex);
+            }
+        }
+
         [Route("api/GetLockerExpiry/")]
         [HttpPost]
         public IHttpActionResult GetLockerExpiry(ReportParam r)

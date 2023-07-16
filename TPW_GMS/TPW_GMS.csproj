@@ -2158,6 +2158,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="RandomMemberCallbackList.aspx" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\CHANGES.html" />
     <Content Include="Scripts\ckeditor\ckeditor.asp" />
@@ -3048,6 +3049,13 @@
     </Compile>
     <Compile Include="QRMessageBroadCast.aspx.designer.cs">
       <DependentUpon>QRMessageBroadCast.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RandomMemberCallbackList.aspx.cs">
+      <DependentUpon>RandomMemberCallbackList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RandomMemberCallbackList.aspx.designer.cs">
+      <DependentUpon>RandomMemberCallbackList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Repository\DbConFactory.cs" />
     <Compile Include="Repository\IDbConFactory.cs" />

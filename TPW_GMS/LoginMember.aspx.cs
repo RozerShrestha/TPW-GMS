@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -40,14 +41,13 @@ namespace TPW_GMS
                 //for staff
                 if (item.memberOption =="Trainer" || item.memberOption == "Operation Manager" || item.memberOption == "Gym Admin")
                 {
-                    var encryptedMemberId = Service.EncryptData(item.memberId);
-                    HttpCookie userExpireDate = new HttpCookie("ExpireDate");
-                    HttpCookie loginMember = new HttpCookie("LoginMember");
+                    var encryptedMemberId = item.memberId;
+                    HttpCookie httpCookie = new HttpCookie("LoginInfo");
+                    httpCookie.Expires = DateTime.Now.AddDays(365);
+                    httpCookie.Value = $"Staff#{encryptedMemberId}";
+                    HttpContext.Current.Response.SetCookie(httpCookie);
+                    Response.Redirect("MemberDashboard.aspx");
 
-                    userExpireDate["MemberId"] = encryptedMemberId;
-                    loginMember["MemberId"] = encryptedMemberId;
-                    Response.Cookies["ExpireDate"].Expires = DateTime.Now.AddDays(365);
-                    Response.Cookies["ExpireDate"].Value = encryptedMemberId;
                     //Response.Cookies["ExpireDate"]. = item.fullname;
                     Response.Redirect("MemberDashboard.aspx");
                 }
@@ -55,11 +55,11 @@ namespace TPW_GMS
                 else
                 {
                     var memberId = item.memberId;
-                    //HttpCookie userExpireDate = new HttpCookie("ExpireDate");
-                    //userExpireDate["MemberId"] = DateTime.Now.AddDays(365).ToShortDateString();
-                    Response.Cookies["ExpireDate"].Expires = DateTime.Now.AddDays(365);
-                    Response.Cookies["ExpireDate"].Value = memberId;
-                    //Response.Cookies["ExpireDate"]. = item.fullname;
+                    HttpCookie httpCookie = new HttpCookie("LoginInfo");
+
+                    httpCookie.Expires = DateTime.Now.AddDays(365);
+                    httpCookie.Value = $"Client#{memberId}";
+                    HttpContext.Current.Response.SetCookie(httpCookie);
                     Response.Redirect("MemberDashboard.aspx");
                 }
             }

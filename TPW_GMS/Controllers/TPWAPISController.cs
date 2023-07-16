@@ -1219,6 +1219,29 @@ namespace TPW_GMS.Controllers
             }
         }
 
+        [Route("api/UpdateRandomCallBack")]
+        [HttpPost]
+        public IHttpActionResult UpdateRandomCallBack(RandomCallListMonthly r)
+        {
+            using (var db = new TPWDataContext())
+            {
+                try
+                {
+                    var item = db.RandomCallListMonthlies.Where(p => p.id ==r.id ).FirstOrDefault();
+                    item.CallStatus = r.CallStatus;
+                    item.CallRemark = r.CallRemark;
+                    db.SubmitChanges();
+                    return Ok("Update Successfully");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+
+                }
+
+            }
+        }
+
         [Route("api/UpdateMemberInformationPaymentReminderCallBack")]
         [HttpPost]
         public IHttpActionResult UpdateMemberInformationPaymentReminderCallBack(MemberInformation m)

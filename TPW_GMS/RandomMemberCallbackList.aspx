@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AbsentCallbackList.aspx.cs" Inherits="TPW_GMS.AbsentCallbackList" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="RandomMemberCallbackList.aspx.cs" Inherits="TPW_GMS.RandomMemberCallbackList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script>
         var table = null;
@@ -18,6 +18,7 @@
             form.forEach(function (item) {
                 formData[item.name.split('$')[2]] = item.value;
             });
+            formData["reportType"] = "Random CallBack";
             if (table) {
                 $('#dtTable').DataTable().destroy();
             }
@@ -37,7 +38,7 @@
                     'excelHtml5',
                 ],
                 ajax: {
-                    url: 'api/GetAbsentCallBackList/',
+                    url: 'api/GetRandomCallList/',
                     data: formData,
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     type: "POST",
@@ -49,11 +50,44 @@
                     },
                 },
                 columns: [
-                    { 'data': 'Branch' },
-                    { 'data': 'MemberId' },
-                    { 'data': 'Fullname' },
-                    { 'data': 'ContactNo' },
-                    { 'data': 'Shift' },
+                    { 'data': 'branch' },
+                    { 'data': 'memberId' },
+                    { 'data': 'fullName' },
+                    { 'data': 'contactNo' },
+                    { 'data': 'shift' },
+                    {
+                        "data": "memberDate",
+                        "render": function (data) {
+                            try {
+                                var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
+                                let objEng = NepaliFunctions.ConvertToDateObject(dat, "YYYY/MM/DD");
+                                let objNep = NepaliFunctions.AD2BS(objEng);
+                                let dt = NepaliFunctions.ConvertDateFormat(objNep, "YYYY/MM/DD");
+
+                                return dt;
+                            } catch (e) {
+                                return '';
+                            }
+                        }
+                    },
+                    {
+                        "data": "memberExpireDate",
+                        "render": function (data) {
+                            try {
+                                var dat = data != null ? (data.split('T')[0]).split('-').join('/') : '';
+                                let objEng = NepaliFunctions.ConvertToDateObject(dat, "YYYY/MM/DD");
+                                let objNep = NepaliFunctions.AD2BS(objEng);
+                                let dt = NepaliFunctions.ConvertDateFormat(objNep, "YYYY/MM/DD");
+
+                                return dt;
+                            } catch (e) {
+                                return '';
+                            }
+                        }
+                    },
+                    { 'data': 'memberOption' },
+                    { 'data': 'memberCatagory' },
+                    { 'data': 'memberPaymentType' },
                     { 'data': 'CallStatus' },
                     { 'data': 'CallRemark' },
                     {
@@ -75,8 +109,8 @@
 
             $(document).on('click', '#dtTable a.editor_View', function () {
                 var data = table.row($(this).closest('tr')).data();
-                $('#txtMemberId').val(data['MemberId']);
-                $('#txtMemberFullName').val(data['Fullname']);
+                $('#txtId').val(data['id']);
+                $('#txtMemberFullName').val(data['fullName']);
                 $('#ddlCallStatus').val(data['CallStatus']);
                 $('#txtRemark').val(data['CallRemark']);
 
@@ -86,12 +120,11 @@
 
         function updateData() {
             const params = new URLSearchParams();
-            params.append('memberId', $('#txtMemberId').val());
-            params.append('absentCallStatus', $('#ddlCallStatus').val());
-            params.append('absentCallRemark', $('#txtRemark').val());
-
+            params.append('id', $('#txtId').val());
+            params.append('CallStatus', $('#ddlCallStatus').val());
+            params.append('CallRemark', $('#txtRemark').val());
             axios({
-                url: 'api/UpdateMemberInformationAbsentClientCallBack',
+                url: 'api/UpdateRandomCallBack',
                 method: 'post',
                 data: params,
                 dataType: "JSON",
@@ -112,7 +145,7 @@
 
         //data - target="#modalRegister"
     </script>
-    <asp:HiddenField ID="hidHeader" runat="server" Value="Absent Client Call Back Report" />
+    <asp:HiddenField ID="hidHeader" runat="server" Value="Random Callback List" />
     <div class="box box-info">
         <div class="box-body">
             <div class="col-xs-12">
@@ -123,14 +156,18 @@
                         </asp:DropDownList>
                     </div>
                     <div class="col-sm-2">
-                        <strong>Report Date(Wednesday)</strong>
-                        <asp:TextBox ID="startDate" ReadOnly="true" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                        <strong>StartDate</strong>
+                        <asp:TextBox ID="startDate" ReadOnly  runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                    </div>
+                     <div class="col-sm-2">
+                        <strong>EndDate</strong>
+                        <asp:TextBox ID="endDate" ReadOnly  runat="server" CssClass="form-control input-sm"></asp:TextBox>
                     </div>
                     <div class="col-sm-2">
                         <input type="button" id="btnSubmit" style="margin-top:17px" class="btn btn-sm btn-success" name="Submit" value="Submit" />
                     </div>
                     <div lass="col-sm-2">
-                       <asp:Button runat="server" Visible="false" ID="btnSendReport" CssClass="btn btn-sm btn-primary" style="margin-top:15px" Text="SendReport"  data-toggle="tooltip" data-delay="{ show: 1000, hide: 10000}" data-placement="top" title="Note:Will send the email to sushant. so click this button only after all the Absent Client Callback records are filled"   OnClick="btnSendReport_Click" />
+                       <asp:Button runat="server" ID="btnSendReport" Visible="false" CssClass="btn btn-sm btn-primary" style="margin-top:15px" Text="SendReport"  data-toggle="tooltip" data-delay="{ show: 1000, hide: 10000}" data-placement="top" title="Note:Will send the email to sushant. so click this button only after all the ex client's callback records are filled"   OnClick="btnSendReport_Click" />
                     </div>
                 </div>
                 <br />
@@ -144,6 +181,11 @@
                                     <th>Full Name</th>
                                     <th>Mobile No</th>
                                     <th>Shift</th>
+                                    <th>Membership Date</th>
+                                    <th>Memebrship Expired Date</th>
+                                    <th>Membership Option </th>
+                                    <th>Catagory </th>
+                                    <th>Payment Type </th>
                                     <th>Call Status</th>
                                     <th>Call FeedBack</th>
                                     <th>Action</th>
@@ -168,12 +210,12 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        Member Id
-                         <input type="text" id="txtMemberId" readonly name="txtMemberId" class="form-control input-sm" value=""/>
+                        Id
+                         <input type="text" id="txtId" readonly name="txtMemberId" class="form-control input-sm" value=""/>
                     </div>
                      <div class="col-md-12">
                         Full Name
-                         <input type="text" id="txtMemberFullName" readonly name="txtMemberId" class="form-control input-sm" value=""/>
+                         <input type="text" id="txtMemberFullName" readonly name="txtMemberFullName" class="form-control input-sm" value=""/>
                     </div>
                     <div class="col-md-12">
                         Call Status

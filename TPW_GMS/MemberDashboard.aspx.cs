@@ -31,25 +31,32 @@ namespace TPW_GMS
                 //    encryptedMemberId = Service.EncryptData(extendedMemberId);
                 //}
                 //HttpCookie reqCookies = Request.Cookies["LoginInformation"];
-                HttpCookie loginCookie = Request.Cookies["ExpireDate"];
+                HttpCookie loginCookie = Request.Cookies["LoginInfo"];
+                HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("LoginInfo");
                 if (loginCookie!= null)
                 {
                     try
                     {
+                        var loginType = loginCookie.Value.Split('#');
                         //For Client
-                        if (loginCookie.Value.Contains("TPW"))
+                        if (loginType[0].Contains("Client"))
                         {
-                            var memberId = loginCookie.Value;
+                            var memberId = loginType[1];
                             encryptedMemberId = memberId;
                         }
                         //For Staff
-                        else
+                        else if(loginType[0].Contains("Staff"))
                         {
-                            var memberId = Service.DecryptString(loginCookie.Value);
+                            var memberId = loginType[1];
                             var todayDate = DateTime.Now;
                             var todayEight = todayDate.ToString("yyyyMMdd");
                             var extendedMemberId = memberId + "//" + todayEight;
                             encryptedMemberId = Service.EncryptData(extendedMemberId);
+                        }
+                        else
+                        {
+                            encryptedMemberId="";
+                            Response.Redirect("LoginMember.aspx");
                         }
                        
                     }
