@@ -272,7 +272,7 @@ namespace TPW_GMS.Controllers
             try
             {
                var result=(from p in db.RandomCallListMonthlies
-                           where p.dateCreated==NepaliDateService.NepToEng("2080-03-30").ToString()
+                           where p.dateCreated==NepaliDateService.NepToEng(r.endDate).ToString()
                            select p).ToList();
                 return Ok(result);
             }
