@@ -172,6 +172,13 @@ namespace TPW_GMS
                         s.discountCode = txtStaffDiscountCode.Text;
                         s.commission = Convert.ToInt32(txtCommissionPercentage.Text);
                         s.status = chkStatus.Checked;
+                        if (!chkStatus.Checked)
+                        {
+                            var item = db.MemberInformations.Where(p => p.memberId == s.memberId).SingleOrDefault();
+                            item.ActiveInactive = "InActive";
+                            item.memberExpireDate= DateTime.Now;
+                            item.remark = "Auto Inactive and ExpiredDate set to today after Staff Resigned";
+                        }
                         s.from1 = txtFrom1.Text;
                         s.from2 = txtFrom2.Text;
                         s.to1 = txtTo1.Text;

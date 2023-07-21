@@ -11,12 +11,13 @@ namespace TPW_GMS
     public partial class MemberDashboard : System.Web.UI.Page
     {
         public string encryptedMemberId;
+        public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 GetLoginCookies();
-            }
+            //}
         }
         protected void GetLoginCookies()
         {
@@ -32,7 +33,7 @@ namespace TPW_GMS
                 //}
                 //HttpCookie reqCookies = Request.Cookies["LoginInformation"];
                 HttpCookie loginCookie = Request.Cookies["LoginInfo"];
-                HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("LoginInfo");
+                _logger.Info($"## {loginCookie.Value}");
                 if (loginCookie!= null)
                 {
                     try
@@ -52,6 +53,11 @@ namespace TPW_GMS
                             var todayEight = todayDate.ToString("yyyyMMdd");
                             var extendedMemberId = memberId + "//" + todayEight;
                             encryptedMemberId = Service.EncryptData(extendedMemberId);
+                        }
+                        else if (loginType[0].Contains("Guest"))
+                        {
+                            var memberId = Service.EncryptData(loginType[1]);
+                            encryptedMemberId = memberId;
                         }
                         else
                         {

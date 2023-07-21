@@ -14,6 +14,7 @@ namespace TPW_GMS
     public partial class LoginMember : System.Web.UI.Page
     {
         private TPWDataContext db = new TPWDataContext();
+        public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -33,6 +34,13 @@ namespace TPW_GMS
         }
         private void CheckLogin(string username, string password)
         {
+            var guestItem = (from m in db.Guests 
+                             where m.mobile == username
+                             select m).SingleOrDefault();
+            if (guestItem != null)
+            {
+
+            }
             var item = (from p in db.MemberInformations
                         where p.contactNo.Equals(username) && p.password.Equals(password)
                         select p).SingleOrDefault();
@@ -46,9 +54,7 @@ namespace TPW_GMS
                     httpCookie.Expires = DateTime.Now.AddDays(365);
                     httpCookie.Value = $"Staff#{encryptedMemberId}";
                     HttpContext.Current.Response.SetCookie(httpCookie);
-                    Response.Redirect("MemberDashboard.aspx");
-
-                    //Response.Cookies["ExpireDate"]. = item.fullname;
+                    _logger.Info($"## Staff Login");
                     Response.Redirect("MemberDashboard.aspx");
                 }
                 //for Clients
@@ -60,6 +66,7 @@ namespace TPW_GMS
                     httpCookie.Expires = DateTime.Now.AddDays(365);
                     httpCookie.Value = $"Client#{memberId}";
                     HttpContext.Current.Response.SetCookie(httpCookie);
+                    _logger.Info($"## Client Login");
                     Response.Redirect("MemberDashboard.aspx");
                 }
             }
