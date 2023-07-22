@@ -85,9 +85,10 @@ namespace TPW_GMS
                 //    encryptedMemberId = Service.EncryptData(extendedMemberId);
                 //}
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.Info($"## {ex.Message}");
+                Response.Redirect("LoginMember.aspx");
             }
         }
     }
