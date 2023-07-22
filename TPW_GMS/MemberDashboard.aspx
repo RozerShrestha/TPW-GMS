@@ -43,7 +43,7 @@
             </div>
         </div>
         <br />
-        <div v-show="!isStaff" id="divPaymentAttendanceHistory" class="box box-info">
+        <div v-show="isMember" id="divPaymentAttendanceHistory" class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">Payment History</h3>
 
@@ -83,7 +83,7 @@
             </div>
     </div>
         <br />
-        <div v-show="!isStaff" id="divMemberAttendanceHistory" class="box box-info">
+        <div v-show="isMember" id="divMemberAttendanceHistory" class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">Attendance History for 30 days</h3>
                 <div class="box-tools pull-right">
@@ -157,6 +157,41 @@
                 </div>
             </div>
         </div>
+        <br />
+        <div v-show="isGuest" id="divGuestAttendanceHistory" class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Guest Attendance History for 30 days</h3>
+                <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive">
+                <table class="table no-margin">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Checkin Branch</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in guestAttendanceHistory" :key="index">
+                        <th>{{index+1}}</th>
+                        <td>{{item.fullName}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.checkin}}</td>
+                        <td>{{item.checkout}}</td>
+                        <td>{{item.checkinBranch}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -173,12 +208,14 @@
         data: {
             encId: '<%=encryptedMemberId %>',
             isStaff: false,
-            isMember:false,
+            isMember: false,
+            isGuest:false,
             result: '',
             todaydate:'',
             paymentHsitory: [],
             memberAttendanceHistory: [],
-            staffAttendanceHistory:[],
+            staffAttendanceHistory: [],
+            guestAttendanceHistory:[],
             condition: {
                 isExpired:false
             },
@@ -199,12 +236,20 @@
                         'Authorization': 'Bearer ' + window.localStorage.getItem('auth_token_staff')
                     },
                 }).then(response => {
-                    console.log(response.data);
-                    this.isStaff = response.data.memberOption === "Gym Admin" ? true : response.data.memberOption === "Trainer" ? true : response.data.memberOption === "Operation Manager" ? true : response.data.memberOption === "Intern"?true:false;
+                    if (response.data.memberOption === "Gym Admin" || response.data.memberOption === "Trainer" || response.data.memberOption === "Operation Manager" || response.data.memberOption === "Intern") {
+                        this.isStaff = true;
+                    }
+                    else if (response.data.memberId == null) {
+                        this.isGuest = true;
+                    }
+                    else {
+                        this.isMember = true;
+                    }
                     this.result = response.data;
                     this.paymentHsitory = response.data.memberPaymentHistorys;
                     this.memberAttendanceHistory = response.data.memberAttendances;
                     this.staffAttendanceHistory = response.data.staffAttendance;
+                    this.guestAttendanceHistory = response.data.guestAttendance;
                     this.totalLate = response.data.staffAttendance.filter(item => item.lateFlag == true).length;
                     this.totalDayDeduction = Math.floor(this.totalLate / 3);
                     this.checkExpire();

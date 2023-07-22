@@ -88,7 +88,7 @@ namespace TPW_GMS
                 Response.Redirect("MemberDashboard.aspx");
             }
             //Guest
-            else
+            else if(who=="Guest")
             {
                 var memberId = guestItem.email;
                 HttpCookie httpCookie = new HttpCookie("LoginInfo");
@@ -98,6 +98,10 @@ namespace TPW_GMS
                 HttpContext.Current.Response.SetCookie(httpCookie);
                 _logger.Info($"## Guest Login");
                 Response.Redirect("MemberDashboard.aspx");
+            }
+            else
+            {
+                lblInfo.Text = "Wrong Username or Password";
             }
            
 
