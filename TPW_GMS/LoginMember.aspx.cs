@@ -34,46 +34,76 @@ namespace TPW_GMS
         }
         private void CheckLogin(string username, string password)
         {
+            var who = "";
             var guestItem = (from m in db.Guests 
                              where m.mobile == username
                              select m).SingleOrDefault();
-            if (guestItem != null)
-            {
-
-            }
+           
             var item = (from p in db.MemberInformations
                         where p.contactNo.Equals(username) && p.password.Equals(password)
                         select p).SingleOrDefault();
-            if (item != null)
+
+            if (guestItem != null)
             {
-                //for staff
-                if (item.memberOption =="Trainer" || item.memberOption == "Operation Manager" || item.memberOption == "Gym Admin")
+                who = "Guest";
+            }
+            else if(item != null)
+            {
+                if (item.memberOption == "Trainer" || item.memberOption == "Operation Manager" || item.memberOption == "Gym Admin")
                 {
-                    var encryptedMemberId = item.memberId;
-                    HttpCookie httpCookie = new HttpCookie("LoginInfo");
-                    httpCookie.Expires = DateTime.Now.AddDays(365);
-                    httpCookie.Value = $"Staff#{encryptedMemberId}";
-                    HttpContext.Current.Response.SetCookie(httpCookie);
-                    _logger.Info($"## Staff Login");
-                    Response.Redirect("MemberDashboard.aspx");
+                    who = "Staff";
                 }
-                //for Clients
                 else
                 {
-                    var memberId = item.memberId;
-                    HttpCookie httpCookie = new HttpCookie("LoginInfo");
-
-                    httpCookie.Expires = DateTime.Now.AddDays(365);
-                    httpCookie.Value = $"Client#{memberId}";
-                    HttpContext.Current.Response.SetCookie(httpCookie);
-                    _logger.Info($"## Client Login");
-                    Response.Redirect("MemberDashboard.aspx");
+                    who = "Client";
                 }
             }
             else
             {
                 lblInfo.Text = "Wrong Username or Password";
             }
+
+            
+            //for staff
+            if (who=="Staff")
+            {
+                var memberId = item.memberId;
+                HttpCookie httpCookie = new HttpCookie("LoginInfo");
+                httpCookie.Expires = DateTime.Now.AddDays(365);
+                httpCookie.Value = $"Staff#{memberId}";
+                HttpContext.Current.Response.SetCookie(httpCookie);
+                _logger.Info($"## Staff Login");
+                Response.Redirect("MemberDashboard.aspx");
+            }
+            //for Clients
+            else if(who=="Client")
+            {
+                var memberId = item.memberId;
+                HttpCookie httpCookie = new HttpCookie("LoginInfo");
+
+                httpCookie.Expires = DateTime.Now.AddDays(365);
+                httpCookie.Value = $"Client#{memberId}";
+                HttpContext.Current.Response.SetCookie(httpCookie);
+                _logger.Info($"## Client Login");
+                Response.Redirect("MemberDashboard.aspx");
+            }
+            //Guest
+            else if(who=="Guest")
+            {
+                var memberId = guestItem.email;
+                HttpCookie httpCookie = new HttpCookie("LoginInfo");
+
+                httpCookie.Expires = DateTime.Now.AddDays(365);
+                httpCookie.Value = $"Guest#{memberId}";
+                HttpContext.Current.Response.SetCookie(httpCookie);
+                _logger.Info($"## Guest Login");
+                Response.Redirect("MemberDashboard.aspx");
+            }
+            else
+            {
+                lblInfo.Text = "Wrong Username or Password";
+            }
+           
 
         }
 

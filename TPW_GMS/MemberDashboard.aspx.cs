@@ -54,10 +54,11 @@ namespace TPW_GMS
                             var extendedMemberId = memberId + "//" + todayEight;
                             encryptedMemberId = Service.EncryptData(extendedMemberId);
                         }
+                        //For Guest
                         else if (loginType[0].Contains("Guest"))
                         {
-                            var memberId = Service.EncryptData(loginType[1]);
-                            encryptedMemberId = memberId;
+                            var memberId = loginType[1];
+                            encryptedMemberId = Service.EncryptData(memberId);
                         }
                         else
                         {

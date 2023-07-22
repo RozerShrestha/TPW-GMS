@@ -125,14 +125,17 @@ namespace TPW_GMS.Services
         public static MemberInformation2 getMemberInfo(string encryptedMemberId)
         {
             string memberId = "";
+            string who = "";
+            who = encryptedMemberId.Contains("TPW") ? "Client" : Service.DecryptString(encryptedMemberId).Contains("TPW") ? "Staff" : "Guest";
             CultureInfo provider = CultureInfo.InvariantCulture;
            
-
-            if (encryptedMemberId.Contains("TPW"))
+            //for client
+            if (who=="Client")
             {
                 memberId = encryptedMemberId;
             }
-            else
+            //for staff
+            else if(who=="Staff")
             {
                 var decryptedMemberId = Service.DecryptString(encryptedMemberId);
                 var splitData = Regex.Split(decryptedMemberId, @"//");
@@ -140,11 +143,20 @@ namespace TPW_GMS.Services
                 var todayDate8 = splitData[1];
                 var todayDate = DateTime.ParseExact(todayDate8, "yyyyMMdd", provider);
             }
+            //Guest
+            else
+            {
+                memberId = Service.DecryptString(encryptedMemberId);
+
+            }
             var tday = DateTime.Now;
             var tt = DateTime.Today;
             var pday = tday.AddDays(-30);
-            
-            var memberInfo = (from p in db.MemberInformations
+
+            dynamic memberInfo = null;
+            if (who != "Guest")
+            {
+                memberInfo = (from p in db.MemberInformations
                               where p.memberId.Equals(memberId)
                               select new MemberInformation2
                               {
@@ -165,19 +177,48 @@ namespace TPW_GMS.Services
                                   shift = p.shift,
                                   imageLoc = p.imageLoc
                               }).SingleOrDefault();
-            memberInfo.memberPaymentHistorys = (from c in db.Reports
-                                                where c.memberId.Equals(memberId)
-                                                select new MemberPaymentHistory
-                                                {
-                                                    memberId = c.memberId,
-                                                    receiptNo = c.receiptNo,
-                                                    memberBeginDate = c.memberBeginDate.ToString(),
-                                                    memberExpireDate = c.memberExpireDate.ToString(),
-                                                    memberOption = c.memberOption,
-                                                    memberCatagory = c.memberCatagory,
-                                                    memberPaymentType = c.memberPaymentType,
-                                                    finalAmount = c.finalAmount.ToString()
-                                                }).ToList();
+            }
+            else
+            {
+                memberInfo = (from p in db.Guests
+                              where p.email.Equals(memberId)
+                              select new MemberInformation2
+                              {
+                                  fullname = p.name,
+                                  email = p.email,
+                                  contactNo = p.mobile,
+                                  memberDate = p.fromDate.ToString(),
+                                  memberBeginDate = p.fromDate.ToString(),
+                                  memberExpireDate = p.toDate.ToString(),
+                              }).SingleOrDefault();
+                memberInfo.guestAttendance = (from m in db.GuestAttandances
+                                              where m.checkin >= Convert.ToDateTime(pday) && m.checkin <= Convert.ToDateTime(tday) && m.email == memberId
+                                              select new GuestAtt
+                                              {
+                                                  fullName = m.name,
+                                                  email = m.email,
+                                                  checkin = m.checkin.ToString(),
+                                                  checkout = m.checkout.ToString(),
+                                                  checkinBranch = m.checkinBranch,
+                                              }).ToList();
+
+            }
+            if (who == "Client")
+            {
+                memberInfo.memberPaymentHistorys = (from c in db.Reports
+                                                    where c.memberId.Equals(memberId)
+                                                    select new MemberPaymentHistory
+                                                    {
+                                                        memberId = c.memberId,
+                                                        receiptNo = c.receiptNo,
+                                                        memberBeginDate = c.memberBeginDate.ToString(),
+                                                        memberExpireDate = c.memberExpireDate.ToString(),
+                                                        memberOption = c.memberOption,
+                                                        memberCatagory = c.memberCatagory,
+                                                        memberPaymentType = c.memberPaymentType,
+                                                        finalAmount = c.finalAmount.ToString()
+                                                    }).ToList();
+            
             memberInfo.memberAttendances = (from m in db.MemberInformations
                                             join a in db.MemberAttandances on m.memberId equals a.memberId
                                             where a.checkin >= Convert.ToDateTime(pday) && a.checkin <= Convert.ToDateTime(tday) && m.memberId == memberId
@@ -190,21 +231,25 @@ namespace TPW_GMS.Services
                                                 branch = a.branch,
                                                 checkinBranch = a.checkinBranch
                                             }).ToList();
-            memberInfo.staffAttendance = (from m in db.MemberInformations
-                                          join a in db.StaffAttandances on m.memberId equals a.memberId
-                                          where a.checkin >= Convert.ToDateTime(pday) && a.checkin <= Convert.ToDateTime(tday) && m.memberId == memberId
-                                          select new StaffAtt
-                                          {
-                                              memberId = m.memberId,
-                                              fullName = m.fullname,
-                                              checkin = a.checkin == null ? "" : a.checkin.ToString(),
-                                              checkout = a.checkout == null ? "" : a.checkout.ToString(),
-                                              branch = a.branch,
-                                              checkinBranch = a.checkinBranch,
-                                              remark = a.remark,
-                                              lateFlag=a.lateFlag
+            }
+            if (who == "Staff")
+            {
+                memberInfo.staffAttendance = (from m in db.MemberInformations
+                                              join a in db.StaffAttandances on m.memberId equals a.memberId
+                                              where a.checkin >= Convert.ToDateTime(pday) && a.checkin <= Convert.ToDateTime(tday) && m.memberId == memberId
+                                              select new StaffAtt
+                                              {
+                                                  memberId = m.memberId,
+                                                  fullName = m.fullname,
+                                                  checkin = a.checkin == null ? "" : a.checkin.ToString(),
+                                                  checkout = a.checkout == null ? "" : a.checkout.ToString(),
+                                                  branch = a.branch,
+                                                  checkinBranch = a.checkinBranch,
+                                                  remark = a.remark,
+                                                  lateFlag = a.lateFlag
 
-                                          }).ToList();
+                                              }).ToList();
+            }
 
 
             return memberInfo;

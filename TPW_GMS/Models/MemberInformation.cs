@@ -105,6 +105,7 @@ namespace TPW_GMS.Models
         public List<MemberPaymentHistory> memberPaymentHistorys { get; set; }
         public List<MemberAttendance> memberAttendances { get; set; }
         public List<StaffAtt> staffAttendance { get; set; }
+        public List<GuestAtt> guestAttendance { get; set; }
 
     }
     public class MemberPaymentHistory
@@ -178,6 +179,29 @@ namespace TPW_GMS.Models
         public string checkinBranch { get; set; }
         public string remark { get; set; }
         public bool lateFlag { get; set; }
+    }
+    public class GuestAtt
+    {
+        public string fullName { get; set; }
+        public string email { get; set; }
+
+        private string _checkin;
+        public string checkin
+        {
+            get { return _checkin; }
+            set { _checkin = Convert.ToDateTime(value).ToString("ddd, dd MMMM yyyy"); }
+        }
+        private string _checkout;
+        public string checkout
+        {
+            get { return _checkout; }
+            set
+            {
+                _checkout = value == "" ? "-" : Convert.ToDateTime(value).ToString("ddd, dd MMMM yyyy");
+            }
+        }
+        public string branch { get; set; }
+        public string checkinBranch { get; set; }
     }
 
 }
