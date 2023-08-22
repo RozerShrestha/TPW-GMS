@@ -50,22 +50,30 @@ namespace TPW_GMS
         }     
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (TPWDataContext db = new TPWDataContext())
+            try
             {
-                MemberAttandance m = new MemberAttandance();
+                using (TPWDataContext db = new TPWDataContext())
+                {
+                    MemberAttandance m = new MemberAttandance();
 
-                //insert into Member Attendance
-                m.memberId = qrCodeScan.Text.Trim();
-                m.checkin = DateTime.Now;
-                m.checkout = DateTime.Now.AddHours(2);
-                m.branch = txtBranch.Value;
-                m.checkinBranch = loginUser;
-                db.MemberAttandances.InsertOnSubmit(m);
+                    //insert into Member Attendance
+                    m.memberId = qrCodeScan.Text.Trim();
+                    m.checkin = DateTime.Now;
+                    m.checkout = DateTime.Now.AddHours(2);
+                    m.branch = txtBranch.Value;
+                    m.checkinBranch = loginUser;
+                    db.MemberAttandances.InsertOnSubmit(m);
 
-                //insert into Report
+                    //insert into Report
 
-                db.SubmitChanges();
+                    db.SubmitChanges();
+                }
             }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+            
         }
         protected void btnReload_Click(object sender, EventArgs e)
         {
@@ -73,44 +81,52 @@ namespace TPW_GMS
         }
         protected void btnSubmitModal_Click(object sender, EventArgs e)
         {
-            using (TPWDataContext db = new TPWDataContext())
+            try
             {
-                Report r = new Report();
-                MemberAttandance m = new MemberAttandance();
-                var trimQR = qrCodeScan.Text.Trim();
-                var yesterdays = DateTime.Now.AddDays(-1).Date;
-                var query = (from p in db.MemberInformations
-                             where p.memberId == trimQR
-                             select p).SingleOrDefault();
-                var attendanceCount = (from a in db.MemberAttandances
-                                       where a.memberId == trimQR && Convert.ToDateTime(a.checkin).Date > yesterdays
-                                       select a);
-                if (attendanceCount.Count() == 0)
+                using (TPWDataContext db = new TPWDataContext())
                 {
+                    Report r = new Report();
+                    MemberAttandance m = new MemberAttandance();
+                    var trimQR = qrCodeScan.Text.Trim();
+                    var yesterdays = DateTime.Now.AddDays(-1).Date;
+                    var query = (from p in db.MemberInformations
+                                 where p.memberId == trimQR
+                                 select p).SingleOrDefault();
+                    var attendanceCount = (from a in db.MemberAttandances
+                                           where a.memberId == trimQR && Convert.ToDateTime(a.checkin).Date > yesterdays
+                                           select a);
+                    if (attendanceCount.Count() == 0)
+                    {
 
-                    r.receiptNo = txtStatic.Text + "-" + txtReceiptNo.Text; ;
-                    r.paymentMethod = "Cash";
-                    r.memberId = trimQR;
-                    r.memberOption = "OffHour/Universal";
-                    r.finalAmount = 100;
-                    r.created = DateTime.Now;
-                    m.memberId = trimQR;
-                    m.checkin = DateTime.Now;
-                    m.checkout = DateTime.Now.AddHours(2);
-                    m.branch = query.branch;
-                    m.checkinBranch = splitUser;
-                    query.universalMembershipLimit -= query.branch.Equals(splitUser) ? 0 : 1;
-                    db.MemberAttandances.InsertOnSubmit(m);
-                    db.Reports.InsertOnSubmit(r);
-                    db.SubmitChanges();
-                    Response.Redirect("Attendance.aspx");
-                }
-                else
-                {
-                    Response.Write("<script>alert('Already Checked In');</script>");
-                }
+                        r.receiptNo = txtStatic.Text + "-" + txtReceiptNo.Text; ;
+                        r.paymentMethod = "Cash";
+                        r.memberId = trimQR;
+                        r.memberOption = "OffHour/Universal";
+                        r.finalAmount = 100;
+                        r.created = DateTime.Now;
+                        m.memberId = trimQR;
+                        m.checkin = DateTime.Now;
+                        m.checkout = DateTime.Now.AddHours(2);
+                        m.branch = query.branch;
+                        m.checkinBranch = splitUser;
+                        query.universalMembershipLimit -= query.branch.Equals(splitUser) ? 0 : 1;
+                        db.MemberAttandances.InsertOnSubmit(m);
+                        db.Reports.InsertOnSubmit(r);
+                        db.SubmitChanges();
+                        Response.Redirect("Attendance.aspx");
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('Already Checked In');</script>");
+                    }
 
+                }
             }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+            
         }
     }
 }

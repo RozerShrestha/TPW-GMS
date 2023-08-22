@@ -14,6 +14,7 @@ namespace TPW_GMS
     public partial class AddStaff : System.Web.UI.Page
     {
         private TPWDataContext db = new TPWDataContext();
+        public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
         string roleId, loginUser, splitUser;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -86,9 +87,9 @@ namespace TPW_GMS
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.Error(ex);
             }
             db.Dispose();
         }
@@ -175,6 +176,9 @@ namespace TPW_GMS
                         if (!chkStatus.Checked)
                         {
                             var item = db.MemberInformations.Where(p => p.memberId == s.memberId).SingleOrDefault();
+                            item.memberOption = "Regular";
+                            item.memberCatagory = "Any1";
+                            item.memberSubCatagory = "Gym";
                             item.ActiveInactive = "InActive";
                             item.memberExpireDate= DateTime.Now;
                             item.remark = "Auto Inactive and ExpiredDate set to today after Staff Resigned";
@@ -195,6 +199,7 @@ namespace TPW_GMS
                 catch (Exception ex)
                 {
                     lblInfo.Text = ex.Message;
+                    _logger.Error(ex);
                     return;
                 }
                 db.Dispose();
@@ -257,6 +262,7 @@ namespace TPW_GMS
                 catch (Exception ex)
                 {
                     lblInfo.Text = ex.Message;
+                    _logger.Error(ex);
                     return;
                 }
                 db.Dispose();
@@ -279,9 +285,9 @@ namespace TPW_GMS
                 db.StaffSalaryDeductions.DeleteOnSubmit(item1);
                 db.SubmitChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.Error(ex);
             }
            
         }

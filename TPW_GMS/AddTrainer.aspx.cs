@@ -14,6 +14,7 @@ namespace TPW_GMS
     public partial class AddTrainer : System.Web.UI.Page
     {
         private TPWDataContext db = new TPWDataContext();
+        public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
         string roleId, loginUser, splitUser;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -82,58 +83,65 @@ namespace TPW_GMS
                 btnEditTrainer.Enabled = true;
                 btnAddTrainer.Enabled = false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.Error(ex);
             }
             db.Dispose();
         }
         protected void btnAddTrainer_Click(object sender, EventArgs e)
         {
             var error = validateTrainer();
-            if (error == "")
+            try
             {
-                Trainer item = new Trainer();
-                item.fullName = txtFullName.Text;
-                item.catagory = ddlCatagory.SelectedItem.Text;
-                item.experience = txtExperience.Text;
-                item.contactNo = txtContactNo.Text;
-                item.address = txtAddress.Text;
-                item.availableTime = txtAvailableTime.Text;
-                item.associateBranch = ddlBranch.SelectedItem.Text;
-                item.joinDate = Convert.ToDateTime(txtTPWJoinDate.Text);
-                item.discountCode = txtTrainerDiscountCode.Text;
-                item.commissionPercentage = Convert.ToInt32(txtCommissionPercentage.Text);
-                item.status = chkStatus.Checked;
-
-                if (FileUpload1.FileName != "")
+                if (error == "")
                 {
-                    HttpPostedFile file = FileUpload1.PostedFile;
-                    if (file.ContentLength < 524288)
+                    Trainer item = new Trainer();
+                    item.fullName = txtFullName.Text;
+                    item.catagory = ddlCatagory.SelectedItem.Text;
+                    item.experience = txtExperience.Text;
+                    item.contactNo = txtContactNo.Text;
+                    item.address = txtAddress.Text;
+                    item.availableTime = txtAvailableTime.Text;
+                    item.associateBranch = ddlBranch.SelectedItem.Text;
+                    item.joinDate = Convert.ToDateTime(txtTPWJoinDate.Text);
+                    item.discountCode = txtTrainerDiscountCode.Text;
+                    item.commissionPercentage = Convert.ToInt32(txtCommissionPercentage.Text);
+                    item.status = chkStatus.Checked;
+
+                    if (FileUpload1.FileName != "")
                     {
-                        string filename = Path.GetFileName(FileUpload1.PostedFile.FileName);
-                        string fileExtension = Path.GetExtension(filename);
-                        FileUpload1.PostedFile.SaveAs(Server.MapPath("~/Image/Trainer/") + txtFullName.Text + "_" + txtContactNo.Text + fileExtension);
-                        item.image = "Image/Trainer/" + txtFullName.Text + "_" + txtContactNo.Text + fileExtension;
+                        HttpPostedFile file = FileUpload1.PostedFile;
+                        if (file.ContentLength < 524288)
+                        {
+                            string filename = Path.GetFileName(FileUpload1.PostedFile.FileName);
+                            string fileExtension = Path.GetExtension(filename);
+                            FileUpload1.PostedFile.SaveAs(Server.MapPath("~/Image/Trainer/") + txtFullName.Text + "_" + txtContactNo.Text + fileExtension);
+                            item.image = "Image/Trainer/" + txtFullName.Text + "_" + txtContactNo.Text + fileExtension;
+                        }
+                        else
+                        {
+                            lblInfo.Text = "Image size is more that 512KB";
+                            //Response.Write("<script>alert('Image size is more that 512KB');</script>");
+                            return;
+                        }
                     }
-                    else
-                    {
-                        lblInfo.Text = "Image size is more that 512KB";
-                        //Response.Write("<script>alert('Image size is more that 512KB');</script>");
-                        return;
-                    }
+                    db.Trainers.InsertOnSubmit(item);
+                    db.SubmitChanges();
+                    lblInfo.Text = "Successfully Inserted Data , now redirecting...";
+                    lblInfo.ForeColor = ColorTranslator.FromHtml("#037203");
+                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "redirectJS", "setTimeout(function() { window.location.replace('AddTrainer.aspx') }, 1000);", true);
                 }
-                db.Trainers.InsertOnSubmit(item);
-                db.SubmitChanges();
-                lblInfo.Text = "Successfully Inserted Data , now redirecting...";
-                lblInfo.ForeColor = ColorTranslator.FromHtml("#037203");
-                ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "redirectJS", "setTimeout(function() { window.location.replace('AddTrainer.aspx') }, 1000);", true);
+                else
+                {
+                    lblInfo.Text = error;
+                    lblInfo.ForeColor = ColorTranslator.FromHtml("#E60D25");
+                    return;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                lblInfo.Text = error;
-                lblInfo.ForeColor = ColorTranslator.FromHtml("#E60D25");
-                return;
+                _logger.Error(ex);
             }
             db.Dispose();
         }
@@ -141,49 +149,56 @@ namespace TPW_GMS
         {
             int id = Convert.ToInt32(hidSnNo.Value);
             var error = validateTrainer();
-            if (error == "")
+            try
             {
-                var item = (from c in db.Trainers
-                            where c.trainerId == id
-                            select c).SingleOrDefault();
-                item.fullName = txtFullName.Text;
-                item.catagory = ddlCatagory.SelectedItem.Text;
-                item.experience = txtExperience.Text;
-                item.contactNo = txtContactNo.Text;
-                item.address = txtAddress.Text;
-                item.availableTime = txtAvailableTime.Text;
-                item.associateBranch = ddlBranch.SelectedItem.Text;
-                item.joinDate = Convert.ToDateTime(txtTPWJoinDate.Text);
-                item.discountCode = txtTrainerDiscountCode.Text;
-                item.commissionPercentage = Convert.ToInt32(txtCommissionPercentage.Text);
-                item.status = chkStatus.Checked;
-
-                if (FileUpload1.FileName != "")
+                if (error == "")
                 {
-                    HttpPostedFile file = FileUpload1.PostedFile;
-                    if (file.ContentLength < 524288)
-                    {
-                        string filename = Path.GetFileName(FileUpload1.PostedFile.FileName);
-                        string fileExtension = Path.GetExtension(filename);
-                        FileUpload1.PostedFile.SaveAs(Server.MapPath("~/Image/Trainer/") + txtFullName.Text + "_" + txtContactNo.Text + fileExtension);
-                        item.image = "Image/Trainer/" + txtFullName.Text + "_" + txtContactNo.Text + fileExtension;
-                    }
-                    else
-                    {
-                        lblInfo.Text = "Image size is more that 512KB";
-                        //Response.Write("<script>alert('Image size is more that 512KB');</script>");
-                        return;
-                    }
-                }
+                    var item = (from c in db.Trainers
+                                where c.trainerId == id
+                                select c).SingleOrDefault();
+                    item.fullName = txtFullName.Text;
+                    item.catagory = ddlCatagory.SelectedItem.Text;
+                    item.experience = txtExperience.Text;
+                    item.contactNo = txtContactNo.Text;
+                    item.address = txtAddress.Text;
+                    item.availableTime = txtAvailableTime.Text;
+                    item.associateBranch = ddlBranch.SelectedItem.Text;
+                    item.joinDate = Convert.ToDateTime(txtTPWJoinDate.Text);
+                    item.discountCode = txtTrainerDiscountCode.Text;
+                    item.commissionPercentage = Convert.ToInt32(txtCommissionPercentage.Text);
+                    item.status = chkStatus.Checked;
 
-                db.SubmitChanges();
-                lblInfo.Text = "Successfully Updated Data , now redirecting...";
-                lblInfo.ForeColor = ColorTranslator.FromHtml("#037203");
-                ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "redirectJS", "setTimeout(function() { window.location.replace('AddTrainer.aspx') }, 1000);", true);
+                    if (FileUpload1.FileName != "")
+                    {
+                        HttpPostedFile file = FileUpload1.PostedFile;
+                        if (file.ContentLength < 524288)
+                        {
+                            string filename = Path.GetFileName(FileUpload1.PostedFile.FileName);
+                            string fileExtension = Path.GetExtension(filename);
+                            FileUpload1.PostedFile.SaveAs(Server.MapPath("~/Image/Trainer/") + txtFullName.Text + "_" + txtContactNo.Text + fileExtension);
+                            item.image = "Image/Trainer/" + txtFullName.Text + "_" + txtContactNo.Text + fileExtension;
+                        }
+                        else
+                        {
+                            lblInfo.Text = "Image size is more that 512KB";
+                            //Response.Write("<script>alert('Image size is more that 512KB');</script>");
+                            return;
+                        }
+                    }
+
+                    db.SubmitChanges();
+                    lblInfo.Text = "Successfully Updated Data , now redirecting...";
+                    lblInfo.ForeColor = ColorTranslator.FromHtml("#037203");
+                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "redirectJS", "setTimeout(function() { window.location.replace('AddTrainer.aspx') }, 1000);", true);
+                }
+                else
+                {
+                    lblInfo.Text = validateTrainer();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                lblInfo.Text = validateTrainer();
+                _logger.Error(ex);
             }
             db.Dispose();
         }

@@ -112,6 +112,7 @@ namespace TPW_GMS.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Error(ex);
                 return "Error: " + ex.Message;
             }
         }

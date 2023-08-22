@@ -100,7 +100,12 @@
                 data: "memberId",
                 className: "center",
                 targets: [-1], render: function (data, type, full, meta) {
-                    if ('<%=hidUserLogin.Value.ToString()%>' == 'superadmin' || '<%=hidUserLogin.Value.ToString()%>' == 'admin') {
+                    if ('<%=hidUserLogin.Value.ToString()%>' == 'admin') {
+                        return `<a href="EditForm.aspx?id=${data.memberId}&key=edit" target=_blank><img src="Assets/Icon/edit.png" class="iconEdit" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="EditForm.aspx?id=${data.memberId}&key=view" target=_blank><img src="Assets/Icon/view.png" class="iconView" /></a> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#" type="button" class="iconView" onclick="sendEmail('${full.fullname} ','${full.email} ','${full.memberId}')"><span></span><img src="Assets/Icon/email.png" class="iconView" /></a>`;
+                    }
+                    else if ('<%=hidUserLogin.Value.ToString()%>' == 'superadmin') {
                         return `<a href="EditForm.aspx?id=${data.memberId}&key=edit" target=_blank><img src="Assets/Icon/edit.png" class="iconEdit" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="EditForm.aspx?id=${data.memberId}&key=view" target=_blank><img src="Assets/Icon/view.png" class="iconView" /></a> &nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="AllMember.aspx?id=${data.memberId}&key=delete"><img src="Assets/Icon/delete.png" class="iconDelete" /></a> &nbsp;&nbsp;&nbsp;&nbsp;
