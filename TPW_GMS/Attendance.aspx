@@ -471,6 +471,13 @@
                 $("#spnNote1").html("<i style='color: red'>Note:Universal Membership Limit is all used </i><br /><i style='color: green'>Do you want to Pay an Extra Charge of Rs 100? </i>");
                 $('#errorModal').modal('show');
             }
+            else if (result.isMembershipFreezed) {
+                $("#spnNote1").html(`<i style='color: red'>Note:If you unfreeze before 15 days, Expired date won't be extended.</i> <br /> <i style='color: green'>Membership has been freezed since ${result.MembershipFreezeddays} days. </i > <br /> Click Activate Button if you want to Unfreeze`);
+                $('#txtReceiptNo').hide();
+                $('#ContentPlaceHolder1_btnSubmitModal').hide();
+                $('#ContentPlaceHolder1_btnActivate').attr('disabled', false);
+                $('#errorModal').modal('show');
+            }
             else if (result.membershipStatus == "InActive") {
                 $("#spnNote1").html(`<i style='color: red'>Note:Membership Status is ${result.isMembershipExpired?'Expired and':''} INACTIVE</i > <br /> Click Activate Button to Activate the Membership`);
                 $('#txtReceiptNo').hide();

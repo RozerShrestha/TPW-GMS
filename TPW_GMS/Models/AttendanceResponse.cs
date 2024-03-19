@@ -26,6 +26,8 @@ namespace TPW_GMS.Models
         public string message { get; set; }
         public bool isMembershipExpired { get; set; } = false;
         public bool isLockerExpired { get; set; } = false;
+        public bool isMembershipFreezed { get; set; }
+        public int MembershipFreezeddays { get; set; }
 
     }
 }

@@ -63,12 +63,15 @@ namespace TPW_GMS.Controllers
                                     DateTime stopDate = Convert.ToDateTime(sitem.stopDate);
                                     DateTime mExpireDate = Convert.ToDateTime(mitem.memberExpireDate);
 
-                                    double stopDays = (startDate - stopDate).TotalDays;
+                                    double stopDays =  startDate.Subtract(stopDate).Days;
                                     sitem.stopLimit = (stopLimit - 1);
                                     sitem.startDate = startDate;
                                     sitem.stopDays = Convert.ToInt32(stopDays);
-
-                                    mitem.memberExpireDate = mExpireDate.AddDays(stopDays);
+                                    if (stopDays>14)
+                                    {
+                                        mitem.memberExpireDate = mExpireDate.AddDays(stopDays);
+                                    }
+                                    
                                 }
                             }
                             catch (Exception ex)
@@ -116,6 +119,11 @@ namespace TPW_GMS.Controllers
                         var checkDueAmount = (from p in db.PaymentInfos
                                               where p.memberId == trimMemberId && p.dueAmount != 0
                                               select p.dueAmount).SingleOrDefault();
+
+                        var startStopRecord = (from p in db.StartStops
+                                               where p.memberId == trimMemberId
+                                               select p).FirstOrDefault();
+
 
                         if (query != null)
                         {
@@ -217,12 +225,16 @@ namespace TPW_GMS.Controllers
                                 ar.isLockerExpired = query.loc.expireDate<DateTime.Today?true:false;
                             }
                             
-
                             ar.pendingPayment = pendingPayment;
                             ar.membershipOption = query.p.memberOption;
                             ar.membershipStatus = query.p.ActiveInactive;
                             ar.attendanceCount = attCount;
                             ar.isValid = isValid;
+                            ar.isMembershipFreezed = startStopRecord.stopDate != null && startStopRecord.startDate == null ? true : false;
+                            if (ar.isMembershipFreezed) {
+                                ar.MembershipFreezeddays = DateTime.Now.Subtract((DateTime)startStopRecord.stopDate).Days;
+                            }
+
                             return Ok(ar);
                         }
                         else
