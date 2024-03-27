@@ -43,11 +43,7 @@ namespace TPW_GMS
                         where p.contactNo.Equals(username) && p.password.Equals(password)
                         select p).SingleOrDefault();
 
-            if (guestItem != null)
-            {
-                who = "Guest";
-            }
-            else if(item != null)
+            if (item != null)
             {
                 if (item.memberOption == "Trainer" || item.memberOption == "Operation Manager" || item.memberOption == "Gym Admin")
                 {
@@ -58,6 +54,11 @@ namespace TPW_GMS
                     who = "Client";
                 }
             }
+            else if (guestItem != null)
+            {
+                who = "Guest";
+            }
+            
             else
             {
                 lblInfo.Text = "Wrong Username or Password";

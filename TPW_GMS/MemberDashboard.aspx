@@ -14,7 +14,7 @@
         <div class="box box-widget widget-user-2" >
             <div class="box box-header">
                 <div style="text-align:center; margin-top: 40px;">
-                    <qrcode :value="encId" :options="{ width: 300 }"></qrcode>
+                    <qrcode :value="encId" :options="{ width: 400 }"></qrcode>
                 </div>
 
                 <div style="text-align:center; font-size:larger; font-weight:700">
@@ -23,7 +23,7 @@
             </div>
 
             <div :class="{'widget-user-header bg-red':condition.isExpired==true, 'widget-user-header bg-green':condition.isExpired==false}">
-                    <h3 class="widget-user-username">{{result.fullname}}</h3>
+                    <h3 class="widget-user-username">{{result.fullname}}({{result.memberOption}})</h3>
                     <h5 class="widget-user-desc">Branch: {{result.branch}}</h5>
                     <h5 class="widget-user-desc">Shift: {{result.shift}}</h5>
             </div>
