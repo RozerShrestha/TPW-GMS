@@ -72,7 +72,7 @@
                                               </asp:DropDownList>
                                   </div>
                                   <div class="col-sm-3">
-                                      <span class="text-label">Membership Catagory</span> <span class="asterik">*</span><br />
+                                      <span class="text-label">Membership Category</span> <span class="asterik">*</span><br />
                                       <asp:DropDownList ID="ddlCatagoryType" runat="server" Width="49%" OnSelectedIndexChanged="ddlCatagoryType_SelectedIndexChanged" Style="display: inline-block;" CssClass="form-control input-sm" AutoPostBack="true">
                                       </asp:DropDownList>
                                       <asp:DropDownList ID="ddlSubCatagoryType" runat="server" Width="49%" Style="display: inline-block;" CssClass="form-control input-sm"></asp:DropDownList>

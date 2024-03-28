@@ -20,6 +20,7 @@ namespace TPW_GMS.Models
         public string lockerExpiredDate { get; set; }
         public string pendingPayment { get; set; }
         public string membershipOption { get; set; }
+        public string membershipCategory { get; set; }
         public string membershipStatus { get; set; }
         public int attendanceCount { get; set; }
         public bool isValid { get; set; }

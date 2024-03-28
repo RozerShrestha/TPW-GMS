@@ -47,17 +47,13 @@
                                             <input type="text" id="txtOffHourAmount" placeholder="charge" class="form-control input-sm" />
                                         </td>
                                     </tr>
-                                    <%--<tr>
-                                        <td><b>First Name:</b></td>
-                                        <td>
-                                            <input type="text" id="txtFirstName" disabled class="form-control input-sm" />
+                                    <tr>
+                                        <td colspan="2"><b>Membership Category:</b>
+                                        </td>
+                                        <td colspan="4">
+                                            <input type="text" id="txtMembershipCategory" disabled class="form-control input-sm" />
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Last Name:</b></td>
-                                        <td>
-                                            <input type="text" id="txtLastName" disabled class="form-control input-sm" /></td>
-                                    </tr>--%>
                                     <tr>
                                         <td colspan="2"><b>Full Name:</b></td>
                                         <td colspan="4">
@@ -433,6 +429,7 @@
             var today = new Date(new Date().toLocaleDateString());
             var exp = new Date(new Date(result.membershipExpireDate).toLocaleDateString());
             $('#txtMembershipOption').val(result.membershipOption);
+            $('#txtMembershipCategory').val(result.membershipCategory);
             //$('#txtFirstName').val(result.firstName);
             //$('#txtLastName').val(result.lastName);
             $('#txtFullName').val(result.fullName);

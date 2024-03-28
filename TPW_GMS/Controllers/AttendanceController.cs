@@ -227,6 +227,7 @@ namespace TPW_GMS.Controllers
                             
                             ar.pendingPayment = pendingPayment;
                             ar.membershipOption = query.p.memberOption;
+                            ar.membershipCategory = $"{query.p.memberCatagory} || {query.p.memberSubCatagory}";
                             ar.membershipStatus = query.p.ActiveInactive;
                             ar.attendanceCount = attCount;
                             ar.isValid = isValid;
