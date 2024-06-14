@@ -987,6 +987,9 @@
     <Content Include="Assets\MultiSelect\multiple-select.js" />
     <Content Include="Assets\nepali.datepicker.v3\css\nepali.datepicker.v3.min.css" />
     <Content Include="Assets\nepali.datepicker.v3\js\nepali.datepicker.v3.min.js" />
+    <Content Include="Assets\nepali.datepicker.v4.0.4\nepali.datepicker.v4.0.4.min.css" />
+    <Content Include="Assets\nepali.datepicker.v4.0.4\nepali.datepicker.v4.0.4.min.js" />
+    <Content Include="Assets\nepali.datepicker.v4.0.4\sample.html" />
     <Content Include="Assets\Select2\select2.min.css" />
     <Content Include="Assets\TimePicker\timepicker.min.css" />
     <Content Include="Assets\Vue\vue.js" />

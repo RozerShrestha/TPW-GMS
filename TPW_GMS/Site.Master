@@ -24,7 +24,8 @@
     <link  href="Assets/DataTables/FixedHeader-3.1.4/css/fixedHeader.dataTables.css" rel="stylesheet" />
     <link href="Assets/DataTables/Responsive-2.2.2/css/responsive.dataTables.css"  rel="stylesheet" />
     <link href="Assets/DataTables/RowGroup-1.1.0/css/rowGroup.dataTables.css" rel="stylesheet" />
-    <link href="Assets/nepali.datepicker.v3/css/nepali.datepicker.v3.min.css" rel="stylesheet" />
+    <%--<link href="Assets/nepali.datepicker.v3/css/nepali.datepicker.v3.min.css" rel="stylesheet" />--%>
+    <link href="Assets/nepali.datepicker.v4.0.4/nepali.datepicker.v4.0.4.min.css" rel="stylesheet" />
     <link href="Assets/css/GridPager.css" rel="stylesheet" />
     <link href="Assets/Select2/select2.min.css" rel="stylesheet" />
     <link href="Assets/TimePicker/timepicker.min.css" rel="stylesheet" />
@@ -133,7 +134,8 @@
     <script src="dist/js/demo.js"></script>
     <script src="Assets/js/Chart.min.js"></script>
     <script src="Assets/js/buttonDateControl.js"></script>
-    <script src="Assets/nepali.datepicker.v3/js/nepali.datepicker.v3.min.js"></script>
+    <%--<script src="Assets/nepali.datepicker.v3/js/nepali.datepicker.v3.min.js"></script>--%>
+    <script src="Assets/nepali.datepicker.v4.0.4/nepali.datepicker.v4.0.4.min.js"></script>
     <script src="Assets/Select2/select2.min.js"></script>
     <script src="Assets/canvasjs-2.3.1/source/CanvasJS.js"></script>
     <script src="Assets/Vue/vue.js"></script>

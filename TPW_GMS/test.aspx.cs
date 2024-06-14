@@ -15,7 +15,7 @@ namespace TPW_GMS
 {
     public partial class test : System.Web.UI.Page
     {
-        string roleId, loginUser, splitUser;
+        string roleId;
         protected void Page_Load(object sender, EventArgs e)
         {
             //CreateNewGuestQR();
