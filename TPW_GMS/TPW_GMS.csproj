@@ -1971,6 +1971,7 @@
     <Content Include="EmailMarketingAttendance.aspx" />
     <Content Include="EmailMarketingCSV.aspx" />
     <Content Include="EmailMarketingTemplate.aspx" />
+    <Content Include="MemberExpiredReportExtended.aspx" />
     <Content Include="NewAdmissionCallback.aspx" />
     <Content Include="ExClientCallBack.aspx" />
     <Content Include="Expenditures.aspx" />
@@ -2865,6 +2866,13 @@
     </Compile>
     <Compile Include="EmailMarketingTemplate.aspx.designer.cs">
       <DependentUpon>EmailMarketingTemplate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MemberExpiredReportExtended.aspx.cs">
+      <DependentUpon>MemberExpiredReportExtended.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MemberExpiredReportExtended.aspx.designer.cs">
+      <DependentUpon>MemberExpiredReportExtended.aspx</DependentUpon>
     </Compile>
     <Compile Include="NewAdmissionCallback.aspx.cs">
       <DependentUpon>NewAdmissionCallback.aspx</DependentUpon>

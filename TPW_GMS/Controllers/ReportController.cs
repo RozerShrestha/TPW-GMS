@@ -210,18 +210,37 @@ namespace TPW_GMS.Controllers
         {
             var d1 = DateTime.Now.AddMonths(-1);
             List<MemberInformation> itemList = new List<MemberInformation>();
-            if(r.branch=="ALL")
-                itemList = db.MemberInformations.Where(k=> k.memberOption != "Trainer" && k.memberOption != "Operation Manager" && k.memberOption != "Gym Admin").ToList();
-            else
-                itemList = db.MemberInformations.Where(k =>k.branch==r.branch &&(k.memberOption != "Trainer" && k.memberOption != "Operation Manager" && k.memberOption != "Gym Admin")).ToList();
+            IQueryable<MemberInformation> items = null;
+            if (r.branch == "ALL")
+            {
+                //itemList = db.MemberInformations.Where(k => k.memberOption != "Trainer" && k.memberOption != "Operation Manager" && k.memberOption != "Gym Admin").ToList();
+                items = from m in db.MemberInformations
+                            join s in db.StartStops on m.memberId equals s.memberId
+                            where (m.memberOption != "Trainer" && m.memberOption != "Operation Manager" && m.memberOption != "Gym Admin") && ((s.stopDate==null) || (s.stopDate!=null && s.startDate!=null))
+                            select m;
 
+            }
+            else
+            {
+                items = from m in db.MemberInformations
+                        join s in db.StartStops on m.memberId equals s.memberId
+                        where (m.branch==r.branch) && (m.memberOption != "Trainer" && m.memberOption != "Operation Manager" && m.memberOption != "Gym Admin") && ((s.stopDate == null) || (s.stopDate != null && s.startDate != null))
+                        select m;
+            }
+            itemList = items.ToList();
+            //Over a month
             if (r.reportType == "0")
             {
                 itemList = itemList.Where(p => p.memberExpireDate <= d1).ToList();
             }
+            //within a month
             else if (r.reportType == "1")
             {
                 itemList = itemList.Where(p => p.memberExpireDate >= d1 && p.memberExpireDate <= DateTime.Now).ToList();
+            }
+            else if (r.reportType == "3")
+            {
+                itemList = itemList.Where(p => p.memberExpireDate >= NepaliDateService.NepToEng(r.startDate) && p.memberExpireDate <= NepaliDateService.NepToEng(r.endDate)).ToList();
             }
             else if(r.reportType== "ExCientCallBack")
             {
@@ -239,7 +258,7 @@ namespace TPW_GMS.Controllers
                 itemList = itemList.OrderBy(d => d.memberDate).ToList();
             }
             
-            itemList=itemList.OrderBy(d=>d.branch).ToList();
+            itemList=itemList.OrderBy(d=>d.memberExpireDate).ToList();
             return Ok(itemList);
         }
 

@@ -141,7 +141,7 @@
                                   </div>
                                   <div class="col-sm-3">
                                       <span class="text-label">Membership Date </span><span class="asterik">*</span>
-                                      <asp:TextBox ID="txtMembershipDate" placeholder="yyyy/mm/dd" runat="server" ClientIDMode="Static" CssClass="form-control input-sm nepCalendar"></asp:TextBox>
+                                      <asp:TextBox ID="txtMembershipDate" placeholder="yyyy/mm/dd"  Enabled="false" runat="server" ClientIDMode="Static" CssClass="form-control input-sm nepCalendar"></asp:TextBox>
                                   </div>
                                   <div class="col-sm-3">
                                       <span class="text-label">Membership payment type</span> <span class="asterik">*</span><asp:Label ID="lblPrePaymentType" runat="server"></asp:Label>

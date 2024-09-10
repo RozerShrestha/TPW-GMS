@@ -9,7 +9,7 @@ using TPW_GMS.Models;
 
 namespace TPW_GMS
 {
-    public partial class MemberExpiredReport : System.Web.UI.Page
+    public partial class MemberExpiredReportExtended : System.Web.UI.Page
     {
         string roleId, loginUser, splitUser;
         protected void Page_Load(object sender, EventArgs e)
@@ -57,7 +57,6 @@ namespace TPW_GMS
                     var branchName = from p in db.Logins
                                      where !p.username.Contains("admin")
                                      select p.username;
-                    
                     branch.DataSource = branchName;
                     branch.DataBind();
                     branch.Items.Insert(0, new ListItem("--Select--", "0"));

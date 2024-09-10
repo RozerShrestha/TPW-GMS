@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using TPW_GMS.Data;
 using TPW_GMS.Models;
+using TPW_GMS.Services;
 
 namespace TPW_GMS
 {
@@ -22,6 +23,7 @@ namespace TPW_GMS
             {
                 branch.Enabled = roleId == "1" || roleId=="4" ? true : false;
                 loadBranch();
+                loadFromAndToDate();
             }
         }
         public void InitialCheck()
@@ -79,6 +81,12 @@ namespace TPW_GMS
                 branch.DataBind();
                 branch.Items.Insert(0, new ListItem("ALL", "0"));
             }
+        }
+        protected void loadFromAndToDate()
+        {
+            startDate.Text=NepaliDateService.EngToNep(DateTime.Now.AddDays(-1)).ToString();
+            endDate.Text = NepaliDateService.EngToNep(DateTime.Now.AddDays(-1)).ToString();
+
         }
         protected void membershipOption_SelectedIndexChanged(object sender, EventArgs e)
         {
