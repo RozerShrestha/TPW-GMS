@@ -123,83 +123,102 @@
                 </div>
                 <br />
                 <div class="row">
-                    <div class="col-md-4 card-padding">
-                        <div class="box box-widget widget-user-2">
-                            <div class="widget-user-header bg-green">
-                               <%-- <div class="widget-user-image">
-                                    <i class="fa fa-users iconplacement"></i>
-                                </div>--%>
-                                <div class="dashHeader">
-                                    Total Membership<span id="totalMembership" class="pull-right headerTotal"></span>
+                    <div class="col-md-1">
+                        <div class="row">
+                            <div class="col">
+                                <div class="box box-widget widget-user-2">
+                                    <div class="widget-user-header bg-info">
+                                        <div class="dashHeader">
+                                            Branches
+                                        </div>
+                                    </div>
+                                    <div class="box-footer no-padding">
+                                        <ul id="allBranchList" class="nav nav-stacked">
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="box-footer no-padding">
-                                <ul id="totalMemberShipCount" class="nav nav-stacked">
-                                </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 card-padding">
-                        <div class="box box-widget widget-user-2">
-                            <div class="widget-user-header bg-yellow">
-                                <%--<div class="widget-user-image">
-                                    <i class="fa fa-users iconplacement"></i>
-                                </div>--%>
-                                <div class="dashHeader">
-                                    Active<span id="activeMemberhip" class="pull-right headerTotal"></span>
+                    <div class="col-md-11">
+                        <div class="row">
+                            <div class="col-md-2 card-padding">
+                                <div class="box box-widget widget-user-2">
+                                    <div class="widget-user-header bg-green">
+                                        <div class="dashHeader">
+                                            Memberships (<span id="totalMembership"></span>)
+                                        </div>
+                                    </div>
+                                    <div class="box-footer no-padding">
+                                        <ul id="totalMemberShipCount" class="nav nav-stacked">
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="box-footer no-padding">
-                                <ul id="activeMembers" class="nav nav-stacked">
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="box box-widget widget-user-2">
-                            <div class="widget-user-header bg-red">
-                                <%--<div class="widget-user-image">
-                                    <i class="fa fa-users iconplacement"></i>
-                                </div>--%>
-                                <div class="dashHeader" data-toggle="tooltip" data-delay="{ show: 1000, hide: 10000}" data-placement="top" title="Note: Average Data is calculated 11 PM onwards and will reflect after day end">
-                                    Average !<span id="activeAvgMemberhip" class="pull-right headerTotal"></span>
+                            <div class="col-md-2 card-padding">
+                                <div class="box box-widget widget-user-2">
+                                    <div class="widget-user-header bg-yellow">
+                                        <div class="dashHeader">
+                                            Renew/Admission<span id="renewNewAdmissionTotal" class="pull-right headerTotal"></span>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer no-padding">
+                                        <ul id="renewNewAdmissionEach" class="nav nav-stacked">
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="box-footer no-padding">
-                                <ul id="activeAvgMembers" class="nav nav-stacked">
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 card-padding">
-                        <div class="box box-widget widget-user-2">
-                            <div class="widget-user-header bg-blue">
-                                <%--<div class="widget-user-image">
-                                    <i class="fa fa-users iconplacement"></i>
-                                </div>--%>
-                                <div class="dashHeader">
-                                    InActive<span id="inactiveMembership" class="pull-right headerTotal"></span>
+                            <div class="col-md-2 card-padding">
+                                <div class="box box-widget widget-user-2">
+                                    <div class="widget-user-header bg-yellow">
+                                        <div class="dashHeader">
+                                            Active<span id="activeMemberhip" class="pull-right headerTotal"></span>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer no-padding">
+                                        <ul id="activeMembers" class="nav nav-stacked">
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="box-footer no-padding">
-                                <ul id="inactiveMembers" class="nav nav-stacked">
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 card-padding">
-                        <div class="box box-widget widget-user-2">
-                            <div class="widget-user-header bg-aqua">
-                                <%--<div class="widget-user-image">
-                                    <i class="fa fa-users iconplacement"></i>
-                                </div>--%>
-                                <div class="dashHeader">
-                                    Gym Traffic<span id="gymTraffics" class="pull-right headerTotal"></span>
+                            <div class="col-md-2 card-padding">
+                                <div class="box box-widget widget-user-2">
+                                    <div class="widget-user-header bg-red">
+                                        <div class="dashHeader" data-toggle="tooltip" data-delay="{ show: 1000, hide: 10000}" data-placement="top" title="Note: Average Data is calculated 11 PM onwards and will reflect after day end">
+                                            Average !<span id="activeAvgMemberhip" class="pull-right headerTotal"></span>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer no-padding">
+                                        <ul id="activeAvgMembers" class="nav nav-stacked">
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="box-footer no-padding">
-                                <ul id="gymTraffic" class="nav nav-stacked">
-                                </ul>
+                            <div class="col-md-2 card-padding">
+                                <div class="box box-widget widget-user-2">
+                                    <div class="widget-user-header bg-blue">
+                                        <div class="dashHeader">
+                                            InActive<span id="inactiveMembership" class="pull-right headerTotal"></span>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer no-padding">
+                                        <ul id="inactiveMembers" class="nav nav-stacked">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 card-padding">
+                                <div class="box box-widget widget-user-2">
+                                    <div class="widget-user-header bg-aqua">
+                                        <div class="dashHeader">
+                                            Gym Traffic<span id="gymTraffics" class="pull-right headerTotal"></span>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer no-padding">
+                                        <ul id="gymTraffic" class="nav nav-stacked">
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -27,6 +27,37 @@ function loadChart() {
         $('#ContentPlaceHolder1_txtStartDate').val(startdt);
         $('#ContentPlaceHolder1_txtEndDate').val(enddt);
     }
+    //load all Branch
+    $.ajax({
+        url: 'api/GetTotalMembershipCount',
+        headers: {
+            'Authorization': 'Bearer ' + window.localStorage.getItem('auth_token')
+        },
+        type: "get",
+        async: false,
+        data: {
+            startdate: startdt,
+            enddate: enddt,
+            branch: branch
+        },
+        success: function (response) {
+            $("#totalMemberShipCount").empty();
+            for (var i = 0; i < response.length; i++) {
+                if (branch === 'All') {
+                    var info = `<li><a id="tm_${response[i].branchName}" href="#">${response[i].branchName}</a></li>`
+                    $("#allBranchList").append(info);
+                }
+                else if (branch === response[i].branchName.charAt(0).toLowerCase() + response[i].branchName.slice(1)) {
+                    var info1 = `<li><a id="tm_${response[i].branchName}" href="#">${response[i].branchName}</a></li>`
+                    $("#allBranchList").append(info1);
+                }
+            }
+            
+        },
+        error: function () {
+
+        }
+    });
     //total Membership
     $.ajax({
         url: 'api/GetTotalMembershipCount',
@@ -44,12 +75,12 @@ function loadChart() {
             $("#totalMemberShipCount").empty();
             for (var i = 0; i < response.length; i++) {
                 if (branch === 'All') {
-                    var info = `<li><a id="tm_${response[i].branchName}" href="#">${response[i].branchName}<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
+                    var info = `<li><a id="tm_${response[i].branchName}" href="#">.<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
                     $("#totalMemberShipCount").append(info);
                     tm += response[i].Count;
                 }
                 else if (branch === response[i].branchName.charAt(0).toLowerCase() + response[i].branchName.slice(1)) {
-                    var info1 = `<li><a id="tm_${response[i].branchName}" href="#">${response[i].branchName}<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
+                    var info1 = `<li><a id="tm_${response[i].branchName}" href="#">.<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
                     $("#totalMemberShipCount").append(info1);
                     tm += response[i].Count;
                 }
@@ -72,7 +103,7 @@ function loadChart() {
             $("#activeMembers").empty();
             for (var i = 0; i < response.length; i++) {
                 if (branch === 'All') {
-                    let info = `<li><a id="am_${response[i].branch}" data-toggle="modal"  data-target="#activeMemberListModal" onclick=ActiveMemberList('${response[i].branch}') href="#">${response[i].branch}
+                    let info = `<li><a id="am_${response[i].branch}" data-toggle="modal"  data-target="#activeMemberListModal" onclick=ActiveMemberList('${response[i].branch}') href="#">.
                                             <span class="pull-right badge bg-${colorArray[i]}">${response[i].No_of_member}</span>
                                         </a>
                                     </li>`
@@ -80,14 +111,14 @@ function loadChart() {
                     am += response[i].No_of_member;
                     avm += response[i].Avg;
 
-                    let infoAvg = `<li><a id="avg_${response[i].branchName}" data-toggle="modal"  data-target="#activeHistoryMonthModal" onclick=ActiveHistoryMonth('${response[i].branch}') href="#">${response[i].branch}
+                    let infoAvg = `<li><a id="avg_${response[i].branchName}" data-toggle="modal"  data-target="#activeHistoryMonthModal" onclick=ActiveHistoryMonth('${response[i].branch}') href="#">.
                                             <span class="pull-right badge bg-red}">${response[i].Avg}</span>
                                         </a>
                                     </li>`
                     $("#activeAvgMembers").append(infoAvg);
                  }
                 else if (branch === response[i].branch.charAt(0).toLowerCase() + response[i].branch.slice(1)) {
-                    var info = `<li><a id="am_${response[i].branch}" data-toggle="modal"  data-target="#activeMemberListModal" onclick=ActiveMemberList('${response[i].branch}') href="#">${response[i].branch}
+                    var info = `<li><a id="am_${response[i].branch}" data-toggle="modal"  data-target="#activeMemberListModal" onclick=ActiveMemberList('${response[i].branch}') href="#">.
                                             <span class="pull-right badge bg-${colorArray[i]}">${response[i].No_of_member}</span>
                                         </a>
                                     </li>`
@@ -95,7 +126,7 @@ function loadChart() {
                     am += response[i].No_of_member;
                     avm += response[i].Avg;
 
-                    let infoAvg = `<li><a id="avg_${response[i].branchName}" data-toggle="modal"  data-target="#activeHistoryMonthModal" onclick=ActiveHistoryMonth('${response[i].branch}') href="#">${response[i].branch}
+                    let infoAvg = `<li><a id="avg_${response[i].branchName}" data-toggle="modal"  data-target="#activeHistoryMonthModal" onclick=ActiveHistoryMonth('${response[i].branch}') href="#">.
                                             <span class="pull-right badge bg-red}">${response[i].Avg}</span>
                                         </a>
                                     </li>`
@@ -136,16 +167,16 @@ function loadChart() {
             $("#inactiveMembers").empty();
             for (var i = 0; i < response.length; i++) {
                 if (branch === 'All') {
-                    let info = `<li><a id="im_${response[i].branchName}" href="#">${response[i].branchName}<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
+                    let info = `<li><a id="im_${response[i].branchName}" href="#">.<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
                     $("#inactiveMembers").append(info);
                     im += response[i].Count;
                 }
                 if (branch === response[i].branchName.charAt(0).toLowerCase() + response[i].branchName.slice(1)) {
-                    var info = `<li><a id="im_${response[i].branchName}" href="#">${response[i].branchName}<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
+                    var info = `<li><a id="im_${response[i].branchName}" href="#">.<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
                     $("#inactiveMembers").append(info);
                     im += response[i].Count;
                 }
-                //let info = `<li><a id="im_${response[i].branchName}" href="#">${response[i].branchName}<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
+                //let info = `<li><a id="im_${response[i].branchName}" href="#">.<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
                 //$("#inactiveMembers").append(info);
                 //im += response[i].Count;
             }
@@ -169,7 +200,7 @@ function loadChart() {
         },
         success: function (response) {
             for (var i = 0; i < response.length; i++) {
-                var info = `<li><a id="gt_${response[i].branchName}" href="#">${response[i].branchName}<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
+                var info = `<li><a id="gt_${response[i].branchName}" href="#">.<span class="pull-right badge bg-${colorArray[i]}">${response[i].Count}</span></a></li>`
                 $("#gymTraffic").append(info);
                 gt += response[i].Count;
             }
